@@ -1,0 +1,13 @@
+{
+  "menu": {
+    "brokers": "Banners",
+    "coupons": "Coupons",
+    "dashboard": "Dashboard",
+    "generations": "Generations",
+    "settings": "Settings"
+  },
+  "actions": {
+    "login": "Login",
+    "logout": "Logout"
+  }
+}
