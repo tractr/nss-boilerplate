@@ -16,13 +16,16 @@ export default getRequestConfig(async () => {
         acceptLanguage?.split("-")[0] ||
         defaultLocale;
 
-    const localePath = path.join(process.cwd(), `locales/${locale}.json`);
+    const localePath = path.join(
+        process.cwd(),
+        `src/i18n/messages/${locale}.json`,
+    );
     if (!(await fs.access(localePath).then(() => true).catch(() => false))) {
         locale = defaultLocale;
     }
 
     return {
         locale,
-        messages: (await import(`../../locales/${locale}.json`)).default,
+        messages: (await import(`./messages/${locale}.json`)).default,
     };
 });
