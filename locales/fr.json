@@ -1,13 +1,7 @@
 {
-  "menu": {
-    "brokers": "Banners",
-    "coupons": "Coupons",
-    "dashboard": "Dashboard",
-    "generations": "Generations",
-    "settings": "Settings"
-  },
   "actions": {
-    "login": "Login",
-    "logout": "Logout"
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "openSettings": "Ouvrir les paramètres"
   }
 }

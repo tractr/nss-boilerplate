@@ -8,14 +8,39 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useTheme } from 'next-themes';
+import { useRouter } from 'next/navigation';
+import { setLanguageCookie } from '@/lib/cookies';
+import { useEffect, useState } from 'react';
 
 interface SettingsModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
+const SUPPORTED_LANGUAGES = [
+  { value: 'en', label: 'English' },
+  { value: 'fr', label: 'Français' },
+] as const;
+
 export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
+  const [language, setLanguage] = useState<string>('en');
+
+  // Get initial language from cookie on mount
+  useEffect(() => {
+    const cookies = document.cookie.split(';');
+    const langCookie = cookies.find(cookie => cookie.trim().startsWith('NEXT_LOCALE='));
+    if (langCookie) {
+      setLanguage(langCookie.split('=')[1]);
+    }
+  }, []);
+
+  const handleLanguageChange = (newLocale: string) => {
+    setLanguage(newLocale);
+    setLanguageCookie(newLocale);
+    router.refresh();
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -34,6 +59,22 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
                 <SelectItem value="light">Light</SelectItem>
                 <SelectItem value="dark">Dark</SelectItem>
                 <SelectItem value="system">System</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="language">Language</Label>
+            <Select value={language} onValueChange={handleLanguageChange}>
+              <SelectTrigger id="language">
+                <SelectValue placeholder="Select language" />
+              </SelectTrigger>
+              <SelectContent>
+                {SUPPORTED_LANGUAGES.map(lang => (
+                  <SelectItem key={lang.value} value={lang.value}>
+                    {lang.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>

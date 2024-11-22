@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, User2, ChevronUp, ListCheck, Settings, LucideProps } from 'lucide-react';
+import { Home, User2, ChevronUp, ListCheck, Monitor, LogOut, LucideProps } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,12 +22,12 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import supabaseClient from '@/lib/supabase-client';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { usePathname } from 'next/navigation';
 import { ForwardRefExoticComponent, RefAttributes, useState } from 'react';
 import { SettingsModal } from '@/components/settings-modal';
+import { useTranslations } from 'next-intl';
 
 // Menu items
 const items: Array<{
@@ -46,6 +46,7 @@ export default function MainSidebar() {
   const currentUser = useCurrentUser();
   const pathname = usePathname();
   const [showSettings, setShowSettings] = useState(false);
+  const t = useTranslations();
 
   const _logout = async () => {
     const { error } = await supabaseClient.auth.signOut();
@@ -116,22 +117,17 @@ export default function MainSidebar() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
                   <DropdownMenuItem onClick={_logout}>
-                    <span data-testid="logout-button">Sign out</span>
+                    <LogOut className="h-[1.2rem] w-[1.2rem]" />
+                    <span data-testid="logout-button">{t('actions.logout')}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setShowSettings(true)}>
+                    <Monitor className="h-[1.2rem] w-[1.2rem]" />
+                    <span>{t('actions.openSettings')}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </SidebarMenuItem>
           </SidebarMenu>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            className="shrink-0"
-            onClick={() => setShowSettings(true)}
-          >
-            <Settings className="h-[1.2rem] w-[1.2rem]" />
-            <span className="sr-only">Settings</span>
-          </Button>
 
           <SettingsModal open={showSettings} onOpenChange={setShowSettings} />
         </div>

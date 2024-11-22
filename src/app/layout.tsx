@@ -19,8 +19,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Edwix - Coupon Generator',
-  description: 'Generate coupons for your customers',
+  title: 'NSS Boilerplate',
+  description: 'A simple boilerplate for Next.js, Supabase and Shadcn/UI',
 };
 
 export default async function RootLayout({
