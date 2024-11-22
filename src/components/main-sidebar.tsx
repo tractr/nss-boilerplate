@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, User2, ChevronUp, Ticket, FileDown, Images, Moon, Sun } from 'lucide-react';
+import { Home, User2, ChevronUp, ListCheck, Moon, Sun } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,19 +31,9 @@ import { usePathname } from 'next/navigation';
 // Menu items.
 const items = [
   {
-    title: 'Banners',
-    url: '/brokers',
-    icon: Images,
-  },
-  {
-    title: 'Coupons',
-    url: '/coupons',
-    icon: Ticket,
-  },
-  {
-    title: 'Generations',
-    url: '/generations',
-    icon: FileDown,
+    title: 'Todos',
+    url: '/todos',
+    icon: ListCheck,
   },
 ];
 

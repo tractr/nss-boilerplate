@@ -8,16 +8,20 @@ export default function LayoutSidebar({
   className,
   containerClassName,
   contentClassName,
+  isOpen,
 }: {
   children: React.ReactNode;
   className?: string;
   containerClassName?: string;
   contentClassName?: string;
+  isOpen?: boolean;
 }) {
   const currentUser = useCurrentUser();
 
   return (
-    <SidebarProvider open={currentUser.data || currentUser.isLoading ? undefined : false}>
+    <SidebarProvider
+      open={isOpen ?? (currentUser.data || currentUser.isLoading ? undefined : false)}
+    >
       <MainSidebar />
       <main className={cn('flex-1 flex flex-col', containerClassName)}>
         {currentUser.data || currentUser.isLoading ? (

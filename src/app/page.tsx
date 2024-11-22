@@ -20,7 +20,9 @@ export default function HomePage() {
             {userLoading && <Skeleton className="absolute inset-0" />}
           </h1>
           <p className="text-muted-foreground">
-            Here&apos;s an overview of your promotion code generation
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos atque nisi
+            necessitatibus neque voluptates libero aperiam nam repellat quam, ab perferendis cum
+            animi repellendus ratione eius dolores et iure rerum!
           </p>
         </div>
       </div>

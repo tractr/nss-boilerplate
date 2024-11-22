@@ -50,6 +50,7 @@ export default function LoginPage() {
 
   return (
     <LayoutSidebar
+      isOpen={false}
       containerClassName="bg-muted/50"
       contentClassName="flex w-full h-full items-center justify-center"
     >
