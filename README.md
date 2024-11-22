@@ -49,7 +49,7 @@ npm install
 npx supabase start
 ```
 
-This will start a local Supabase instance using Docker. Make note of the `anon key` and `URL` that are displayed.
+This will start a local Supabase instance using Docker. Make note of the `anon key` and `API URL` that are displayed.
 
 4. Push database migrations:
 
