@@ -10,6 +10,7 @@ import {
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import { setLanguageCookie } from '@/lib/cookies';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 interface SettingsModalProps {
@@ -25,6 +26,7 @@ const SUPPORTED_LANGUAGES = [
 export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
+  const t = useTranslations();
   const [language, setLanguage] = useState<string>('en');
 
   // Get initial language from cookie on mount
@@ -46,28 +48,28 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Settings</DialogTitle>
+          <DialogTitle>{t('settings.title')}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="theme">Theme</Label>
+            <Label htmlFor="theme">{t('settings.theme.label')}</Label>
             <Select value={theme} onValueChange={setTheme}>
               <SelectTrigger id="theme">
-                <SelectValue placeholder="Select theme" />
+                <SelectValue placeholder={t('settings.theme.placeholder')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="light">Light</SelectItem>
-                <SelectItem value="dark">Dark</SelectItem>
-                <SelectItem value="system">System</SelectItem>
+                <SelectItem value="light">{t('settings.theme.light')}</SelectItem>
+                <SelectItem value="dark">{t('settings.theme.dark')}</SelectItem>
+                <SelectItem value="system">{t('settings.theme.system')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="language">Language</Label>
+            <Label htmlFor="language">{t('settings.language.label')}</Label>
             <Select value={language} onValueChange={handleLanguageChange}>
               <SelectTrigger id="language">
-                <SelectValue placeholder="Select language" />
+                <SelectValue placeholder={t('settings.language.placeholder')} />
               </SelectTrigger>
               <SelectContent>
                 {SUPPORTED_LANGUAGES.map(lang => (

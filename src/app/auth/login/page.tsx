@@ -5,44 +5,63 @@ import { login } from '../actions';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2 } from 'lucide-react';
 import LayoutSidebar from '@/components/layout-sidebar';
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { useTranslations } from 'next-intl';
 
-type LoginFormInputs = {
-  email: string;
-  password: string;
-};
+const createLoginSchema = (t: (key: string) => string) =>
+  z.object({
+    email: z
+      .string()
+      .min(1, { message: t('auth.emailRequired') })
+      .email({ message: t('auth.emailInvalid') }),
+    password: z.string().min(6, { message: t('auth.passwordMinLength') }),
+  });
 
 export default function LoginPage() {
+  const t = useTranslations();
   const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-    reset,
-  } = useForm<LoginFormInputs>();
 
-  const onSubmit = async (data: LoginFormInputs) => {
+  const loginSchema = createLoginSchema(t);
+
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     setIsLoading(true);
     try {
       await new Promise(resolve => setTimeout(resolve, 500));
       await login(data);
       queryClient.invalidateQueries();
-      reset();
+      form.reset();
     } catch (error) {
       if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
         return;
       }
-
       console.log(error);
-      setError('root.serverError', { message: (error as Error).message });
+      form.setError('root', {
+        message: (error as Error).message,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -56,68 +75,66 @@ export default function LoginPage() {
     >
       <Card className="max-w-md w-full">
         <CardHeader className="flex justify-center items-center gap-4">
-          <Image src="/images/logo.svg" alt="logo" width={150} height={100} />
+          <Image src="/images/logo.svg" alt={t('common.logo')} width={150} height={100} />
           <CardTitle className="text-center text-lg font-extrabold">
-            Sign in to your account
+            {t('auth.signInTitle')}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email address</Label>
-                <Input
-                  {...register('email', {
-                    required: 'Email is required',
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: 'Invalid email address',
-                    },
-                  })}
-                  id="email"
-                  type="email"
-                  placeholder="Email address"
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <div className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('auth.emailLabel')}</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="email" placeholder={t('auth.emailPlaceholder')} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
+
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('auth.passwordLabel')}</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="password"
+                          placeholder={t('auth.passwordPlaceholder')}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  {...register('password', {
-                    required: 'Password is required',
-                    minLength: {
-                      value: 6,
-                      message: 'Password must be at least 6 characters',
-                    },
-                  })}
-                  id="password"
-                  type="password"
-                  placeholder="Password"
-                />
-                {errors.password && (
-                  <p className="text-sm text-destructive">{errors.password.message}</p>
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t('auth.signingIn')}
+                  </>
+                ) : (
+                  t('actions.login')
                 )}
-              </div>
-            </div>
+              </Button>
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Signing in...
-                </>
-              ) : (
-                'Sign in'
+              {form.formState.errors.root && (
+                <Alert variant="destructive">
+                  <AlertDescription>{form.formState.errors.root.message}</AlertDescription>
+                </Alert>
               )}
-            </Button>
-
-            {errors.root?.serverError && (
-              <Alert variant="destructive">
-                <AlertDescription>{errors.root.serverError.message}</AlertDescription>
-              </Alert>
-            )}
-          </form>
+            </form>
+          </Form>
         </CardContent>
       </Card>
     </LayoutSidebar>

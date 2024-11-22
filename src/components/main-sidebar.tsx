@@ -31,12 +31,12 @@ import { useTranslations } from 'next-intl';
 
 // Menu items
 const items: Array<{
-  title: string;
+  titleKey: string;
   url: string;
   icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
 }> = [
   {
-    title: 'Todos',
+    titleKey: 'navigation.todos',
     url: '/todos',
     icon: ListCheck,
   },
@@ -61,7 +61,7 @@ export default function MainSidebar() {
     <Sidebar>
       <SidebarHeader>
         <div className="flex-1 flex items-center justify-center p-4">
-          <Image src="/images/logo.svg" alt="logo" width={130} height={100} />
+          <Image src="/images/logo.svg" alt={t('common.logo')} width={130} height={100} />
         </div>
       </SidebarHeader>
       <SidebarContent>
@@ -72,7 +72,7 @@ export default function MainSidebar() {
                 <SidebarMenuButton asChild className={pathname === '/' ? 'bg-accent' : ''}>
                   <Link href="/">
                     <Home />
-                    <span>Home</span>
+                    <span>{t('navigation.home')}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -80,15 +80,15 @@ export default function MainSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel>Main menu</SidebarGroupLabel>
+          <SidebarGroupLabel>{t('navigation.mainMenu')}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map(item => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item.titleKey}>
                   <SidebarMenuButton asChild className={pathname === item.url ? 'bg-accent' : ''}>
                     <Link href={item.url}>
                       <item.icon />
-                      <span>{item.title}</span>
+                      <span>{t(item.titleKey)}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

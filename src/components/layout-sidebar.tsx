@@ -17,16 +17,13 @@ export default function LayoutSidebar({
   isOpen?: boolean;
 }) {
   const currentUser = useCurrentUser();
+  const sidebarOpen = isOpen ?? (currentUser.data || currentUser.isLoading ? undefined : false);
 
   return (
-    <SidebarProvider
-      open={isOpen ?? (currentUser.data || currentUser.isLoading ? undefined : false)}
-    >
+    <SidebarProvider open={sidebarOpen}>
       <MainSidebar />
       <main className={cn('flex-1 flex flex-col', containerClassName)}>
-        {currentUser.data || currentUser.isLoading ? (
-          <SidebarTrigger className="mx-3 mt-2" />
-        ) : null}
+        {sidebarOpen ? <SidebarTrigger className="mx-3 mt-2" /> : null}
         <div className={cn('flex-1 px-4 py-2', className)}>
           <div className={cn('flex-1 container mx-auto', contentClassName)}>{children}</div>
         </div>

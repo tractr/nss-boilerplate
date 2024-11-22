@@ -2,6 +2,51 @@
   "actions": {
     "login": "Login",
     "logout": "Logout",
-    "openSettings": "Open settings"
+    "openSettings": "Open settings",
+    "add": "Add"
+  },
+  "auth": {
+    "signInTitle": "Sign in to your account",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "Email address",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Invalid email address",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Password",
+    "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 6 characters",
+    "signingIn": "Signing in..."
+  },
+  "home": {
+    "welcome": "Welcome back, {email}",
+    "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos atque nisi necessitatibus neque voluptates libero aperiam nam repellat quam, ab perferendis cum animi repellendus ratione eius dolores et iure rerum!"
+  },
+  "common": {
+    "logo": "Logo"
+  },
+  "navigation": {
+    "home": "Home",
+    "mainMenu": "Main menu",
+    "todos": "Todos"
+  },
+  "settings": {
+    "title": "Settings",
+    "theme": {
+      "label": "Theme",
+      "placeholder": "Select theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "language": {
+      "label": "Language",
+      "placeholder": "Select language"
+    }
+  },
+  "todos": {
+    "title": "Todos",
+    "newTodoPlaceholder": "Add a new todo...",
+    "noTodos": "No todos yet",
+    "showAll": "Show all"
   }
 }
