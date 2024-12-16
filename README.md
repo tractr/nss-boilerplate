@@ -2,6 +2,21 @@
 
 A modern full-stack boilerplate featuring Next.js 15, Supabase, Shadcn/UI, and more. Built with TypeScript and includes authentication, dark mode, internationalization, and a todo list demo.
 
+## Table of Contents
+
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [Available Scripts](#available-scripts)
+- [Authentication](#authentication)
+- [Internationalization](#internationalization)
+- [Customization](#customization)
+- [Testing](#testing)
+- [Good Practices](#good-practices)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Features
 
 - 🚀 [Next.js 15](https://nextjs.org/) with App Router
@@ -159,6 +174,17 @@ To run the tests:
 npm run test
 npm run cypress:open
 ```
+
+## Good Practices
+
+- Use kebab-case for all file names (e.g., `my-component.tsx`, `use-auth.ts`)
+- Remove unused boilerplate files (e.g., `lib/api/todos`) when starting a new project
+- Create Supabase migrations whenever you make database changes:
+  ```bash
+  npx supabase db pull
+  ```
+  Then commit these migrations with your changes
+- Don't use `process.env` directly in your code. Instead, use the environment variables defined in `src/lib/env.ts`
 
 ## Contributing
 
