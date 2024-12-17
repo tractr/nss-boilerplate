@@ -41,9 +41,16 @@ body {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --indicator-noData: 0 0% 96%;
+    --indicator-bad: 353 96% 45%;
+    --indicator-poor: 25 85% 54%;
+    --indicator-average: 47 95% 58%;
+    --indicator-good: 92 64% 44%;
+    --indicator-excellent: 207 83% 41%;
+    --indicator-unknown: 0 0% 50%;
   }
 
-  .dark {
+  /* .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
@@ -76,7 +83,7 @@ body {
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-  }
+  } */
 }
 
 @layer base {
@@ -86,4 +93,9 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.map-container {
+  width: 100%;
+  height: 100vh;
 }

@@ -48,5 +48,35 @@
     "newTodoPlaceholder": "Ajouter une nouvelle tâche...",
     "noTodos": "Aucune tâche pour le moment",
     "showAll": "Afficher tout"
+  },
+  "indicators": {
+    "noData": {
+      "title": "Pas de données",
+      "label": "Aucune donnée n'est disponible en raison d'un problème technique ; cela peut être dû à un arrêt temporaire de la transmission des données ou à un manque de données au moment de l'affichage (par exemple, pas de surveillance de la valvométrie pendant une période donnée ou pas de calcul du paramètre correspondant)."
+    },
+    "bad": {
+      "title": "Mauvais",
+      "label": "En cas de dégradation importante de la qualité de l'eau, une enquête est nécessaire pour identifier la source du problème et prendre les mesures d'atténuation appropriées demandées."
+    },
+    "poor": {
+      "title": "Médiocre",
+      "label": "En cas de dégradation importante de la qualité de l'eau, une enquête est nécessaire pour identifier la source du problème et prendre les mesures d'atténuation appropriées demandées."
+    },
+    "average": {
+      "title": "Moyen",
+      "label": "Certaines perturbations sont détectées, des problèmes possibles, il est nécessaire de prêter attention à une éventuelle dérive de la qualité."
+    },
+    "good": {
+      "title": "Bon",
+      "label": "Aucune anomalie détectée, bonne qualité de l'eau, fonctionnement opérationnel normal."
+    },
+    "excellent": {
+      "title": "Très bon",
+      "label": "Aucune anomalie détectée, bonne qualité de l'eau, fonctionnement opérationnel normal."
+    },
+    "unknown": {
+      "title": "Inconnu",
+      "label": "État inconnu"
+    }
   }
 }

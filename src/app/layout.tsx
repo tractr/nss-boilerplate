@@ -19,8 +19,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'NSS Boilerplate',
-  description: 'A simple boilerplate for Next.js, Supabase and Shadcn/UI',
+  title: 'Molluscan',
+  description: "Molluscan carte de qualité de l'eau",
 };
 
 export default async function RootLayout({
