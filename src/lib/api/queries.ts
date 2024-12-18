@@ -44,7 +44,7 @@ async function fetchWeatherForDate(
 
 export function useValvosGeography({ done }: { done?: boolean } = {}) {
   return useQuery({
-    queryKey: ['valvosGeography', { done }],
+    queryKey: ['valvosGeography', done],
     queryFn: () => getValvosGeography({ done }),
   });
 }
@@ -68,11 +68,11 @@ export function useValvoImages(valvoId: string | null, done?: boolean) {
 
 export function useValvoWithIndicator(
   valvoId: string | null,
-  selectedDate: Date,
+  selectedDate?: Date,
   periodOfTime: number = 1
 ) {
   return useQuery<IndicatorGeneralDetails | null>({
-    queryKey: ['valvoWithIndicator', valvoId, selectedDate.toISOString(), periodOfTime],
+    queryKey: ['valvoWithIndicator', valvoId, selectedDate?.toISOString(), periodOfTime],
     queryFn: async () => {
       if (!valvoId) return null;
       const [valvoDetails, generalIndicator] = await Promise.all([
@@ -81,7 +81,7 @@ export function useValvoWithIndicator(
           params: {
             valvo_id: valvoId,
             period_of_time: periodOfTime,
-            start_date: selectedDate,
+            start_date: selectedDate || new Date(),
           },
         }),
       ]);

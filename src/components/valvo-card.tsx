@@ -7,6 +7,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/t
 import Image from 'next/image';
 import { Button } from './ui/button';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 interface ValvoCardProps {
   valvoId: string;
   valvo: IndicatorGeneralDetails | null;
@@ -15,11 +17,17 @@ interface ValvoCardProps {
 }
 
 export function ValvoCard({ valvoId, valvo, open, onOpenChange }: ValvoCardProps) {
+  const router = useRouter();
   const { translatedTitle, color, imageUrl } = useIndicator(
     valvo?.general_indicator || 1,
     valvo?.general_value || 1
   );
+
   if (!valvo) return null;
+
+  const handleClick = () => {
+    router.push(`/valvo/${valvoId}`);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
@@ -29,12 +37,13 @@ export function ValvoCard({ valvoId, valvo, open, onOpenChange }: ValvoCardProps
         </DialogTitle>
       </DialogHeader>
       <DialogContent
+        onClick={handleClick}
         className={cn(
-          'max-w-[425px] sm:max-w-[600px] absolute top-auto bottom-10 h-fit border-white border-2 shadow-2xl backdrop-blur-sm overflow-hidden flex flex-row items-stretch justify-between gap-4 md:gap-8 p-0',
+          'max-w-[calc(100%-2rem)] w-[425px] sm:w-[600px] absolute top-auto bottom-10 left-1/2 -translate-x-1/2 h-fit border-white border-2 shadow-2xl backdrop-blur-sm overflow-hidden flex flex-row items-stretch gap-4 md:gap-8 p-0 cursor-pointer hover:scale-[1.02] transition-transform',
           indicatorColorClasses[color as keyof typeof indicatorColorClasses]
         )}
       >
-        <div className="w-20 md:w-1/4 bg-black/10 backdrop-blur-md flex items-center p-2">
+        <div className="w-20 md:w-1/3 bg-black/10 backdrop-blur-md flex items-center justify-center p-2">
           <Image
             src={imageUrl}
             alt="Indicator"
@@ -44,7 +53,7 @@ export function ValvoCard({ valvoId, valvo, open, onOpenChange }: ValvoCardProps
           />
         </div>
 
-        <div className="flex flex-col items-center justify-center md:w-1/3 py-4 md:py-6">
+        <div className="flex-1 flex flex-col items-center justify-center py-4 md:py-6 pr-4 md:pr-6">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger className="text-base font-medium underline decoration-dotted">
@@ -57,16 +66,12 @@ export function ValvoCard({ valvoId, valvo, open, onOpenChange }: ValvoCardProps
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          <span className="text-base md:text-2xl font-bold leading-tight">{translatedTitle}</span>
-          <span className="text-xs md:text-lg leading-tight">
+          <span className="text-base md:text-2xl font-bold leading-tight text-center">
+            {translatedTitle}
+          </span>
+          <span className="text-xs md:text-lg leading-tight text-center">
             {valvo.location.description || valvo.location.name}
           </span>
-        </div>
-
-        <div className="md:w-1/3 py-4 md:py-6 pr-4 md:pr-6 flex flex-col items-center justify-center">
-          <Button>
-            <Link href={`/valvo/${valvoId}`}>Voir les détails</Link>
-          </Button>
         </div>
       </DialogContent>
     </Dialog>

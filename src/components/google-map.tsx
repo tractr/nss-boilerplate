@@ -12,7 +12,7 @@ const GoogleMapComponent = () => {
     googleMapsApiKey: env().NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
   });
 
-  const { data: valvos } = useValvosGeography() as { data: ValvoGeography[] | undefined };
+  const { data: valvos } = useValvosGeography();
   const [selectedCity, setSelectedCity] = useState<CityGeography | null>(null);
   const [selectedValvoId, setSelectedValvoId] = useState<string | null>(null);
   const [isValvoCardOpen, setIsValvoCardOpen] = useState(false);
