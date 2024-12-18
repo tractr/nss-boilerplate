@@ -108,8 +108,8 @@ export function Statistics({ data, period, onPeriodChange }: StatisticsProps) {
 
   return (
     <div className="w-full">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">Historique</h2>
+      <div className="flex flex-col items-center gap-4 mb-8">
+        <h2 className="text-xl font-bold uppercase">Statistiques</h2>
         <Select
           value={period}
           onValueChange={(value: '30' | '90' | '180') => onPeriodChange(value)}
@@ -125,7 +125,8 @@ export function Statistics({ data, period, onPeriodChange }: StatisticsProps) {
         </Select>
       </div>
       <div className="flex flex-col lg:flex-row gap-8">
-        <div className="w-full lg:w-2/3 bg-white rounded-lg shadow-md p-4">
+        <div className="w-full lg:w-2/3 bg-white rounded-lg border border-gray-200 p-4">
+          <h3 className="text-lg font-semibold mb-2 text-center">Historique</h3>
           <div className="h-[300px] w-full overflow-hidden">
             <div className="overflow-x-auto -ml-4">
               <BarChart
@@ -172,8 +173,8 @@ export function Statistics({ data, period, onPeriodChange }: StatisticsProps) {
           </div>
         </div>
 
-        <div className="w-full lg:w-1/3 bg-white rounded-lg shadow-md p-4">
-          <h3 className="text-lg font-semibold mb-4 text-center">Répartition des indicateurs</h3>
+        <div className="w-full lg:w-1/3 bg-white rounded-lg border border-gray-200 p-4">
+          <h3 className="text-lg font-semibold mb-2 text-center">Répartition des indicateurs</h3>
           <div className="h-[300px] w-full flex justify-center">
             <PieChart width={300} height={300}>
               <Pie

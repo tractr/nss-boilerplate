@@ -66,9 +66,13 @@ export function useValvoImages(valvoId: string | null, done?: boolean) {
   });
 }
 
-export function useValvoWithIndicator(valvoId: string | null, periodOfTime?: number) {
+export function useValvoWithIndicator(
+  valvoId: string | null,
+  selectedDate: Date,
+  periodOfTime: number = 1
+) {
   return useQuery<IndicatorGeneralDetails | null>({
-    queryKey: ['valvoWithIndicator', valvoId],
+    queryKey: ['valvoWithIndicator', valvoId, selectedDate.toISOString(), periodOfTime],
     queryFn: async () => {
       if (!valvoId) return null;
       const [valvoDetails, generalIndicator] = await Promise.all([
@@ -76,8 +80,8 @@ export function useValvoWithIndicator(valvoId: string | null, periodOfTime?: num
         getGeneralIndicator({
           params: {
             valvo_id: valvoId,
-            period_of_time: periodOfTime || 1,
-            start_date: new Date(),
+            period_of_time: periodOfTime,
+            start_date: selectedDate,
           },
         }),
       ]);
@@ -116,17 +120,21 @@ export function useValvoGeography(valvoId: string | null) {
   });
 }
 
-export function useWeatherHistory(valvoId: string | null, daysCount: number = 5) {
+export function useWeatherHistory(
+  valvoId: string | null,
+  selectedDate: Date,
+  daysCount: number = 5
+) {
   const { data: valvoGeo } = useValvoGeography(valvoId);
 
   return useQuery<ValvoHistoryEntry[]>({
-    queryKey: ['valvoHistory', valvoId, daysCount],
+    queryKey: ['valvoHistory', valvoId, selectedDate.toISOString(), daysCount],
     queryFn: async () => {
       if (!valvoId || !valvoGeo) return [];
 
-      // Créer un tableau des X derniers jours
+      // Créer un tableau des X derniers jours à partir de la date sélectionnée
       const dates = Array.from({ length: daysCount }, (_, i) => {
-        const date = new Date();
+        const date = new Date(selectedDate);
         date.setDate(date.getDate() - (daysCount - 1 - i));
         return date;
       });
@@ -165,14 +173,19 @@ export function useWeatherHistory(valvoId: string | null, daysCount: number = 5)
   });
 }
 
-export function useValvoIndicatorHistory(valvoId: string | null, periodInDays: number = 30) {
+export function useValvoIndicatorHistory(
+  valvoId: string | null,
+  selectedDate: Date,
+  periodInDays: number = 30
+) {
   return useQuery({
-    queryKey: ['valvoIndicatorHistory', valvoId, periodInDays],
+    queryKey: ['valvoIndicatorHistory', valvoId, selectedDate.toISOString(), periodInDays],
     queryFn: () =>
       getIndicatorHistory({
         params: {
           valvo_id: valvoId!,
           period_of_time: periodInDays,
+          start_date: selectedDate,
         },
       }),
     enabled: !!valvoId,

@@ -8,19 +8,29 @@ import {
   useValvoIndicatorHistory,
   useValvoImages,
 } from '@/lib/api/queries';
-import { Loader2 } from 'lucide-react';
+import { CalendarIcon, Loader2 } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { IndicatorHeader } from '@/components/indicator-header';
 import { WeatherHistory } from '@/components/weather-history';
 import { IndicatorGrid } from '@/components/indicator-grid';
-import { Statistics } from '@/components/statistics';
+import { Statistics } from '@/components/Statistics';
 import { ValvoImages } from '@/components/valvo-images';
+import { Calendar } from '@/components/ui/calendar';
+import { fr } from 'date-fns/locale';
+import format from 'date-fns/format';
+import { isToday as dateFnsIsToday } from 'date-fns';
+import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 export default function ValvoPage() {
   const { id } = useParams();
   const [period, setPeriod] = useState<'30' | '90' | '180'>('30');
-  const { data: valvo, isLoading, error } = useValvoWithIndicator(id as string);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+
+  const isToday = dateFnsIsToday(selectedDate);
+
+  const { data: valvo, isLoading, error } = useValvoWithIndicator(id as string, selectedDate, 1);
 
   const {
     data: valvoGeo,
@@ -33,9 +43,14 @@ export default function ValvoPage() {
     valvo?.general_value || 1
   );
 
-  const { data: weatherHistory, isLoading: isLoadingWeather } = useWeatherHistory(id as string, 7);
+  const { data: weatherHistory, isLoading: isLoadingWeather } = useWeatherHistory(
+    isToday ? (id as string) : null,
+    selectedDate,
+    7
+  );
   const { data: indicatorHistory, isLoading: isLoadingIndicator } = useValvoIndicatorHistory(
     id as string,
+    selectedDate,
     parseInt(period)
   );
   const { data: valvoImages, isLoading: isLoadingImages } = useValvoImages(id as string);
@@ -63,27 +78,60 @@ export default function ValvoPage() {
 
   return (
     <>
+      <div className="container max-w-4xl mx-auto pt-4 px-4">
+        <div className="flex justify-between items-center gap-4">
+          <div className="flex-1">
+            <h1 className="text-2xl font-bold">
+              {valvo.location.description || valvo.location.name}
+            </h1>
+          </div>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" className="justify-start text-left font-normal">
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {selectedDate ? (
+                  format(selectedDate, 'PPP', { locale: fr })
+                ) : (
+                  <span>Sélectionner une date</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <Calendar
+                mode="single"
+                selected={selectedDate}
+                onSelect={date => date && setSelectedDate(date)}
+                disabled={date => date > new Date()}
+                locale={fr}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+      </div>
+
       <IndicatorHeader
         value={valvo.general_value || 0}
         color={color}
         imageUrl={imageUrl}
         bgImageUrl={bgImageUrl}
         translatedTitle={translatedTitle}
-        currentWeather={currentWeather || undefined}
+        currentWeather={isToday ? currentWeather : undefined}
         waterTemperature={valvo.water_temperature?.water_temperature_max || undefined}
       />
 
-      {isLoadingWeather ? (
-        <div className="flex justify-center items-center py-8">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-        </div>
-      ) : (
-        <WeatherHistory weatherHistory={weatherHistory || []} />
-      )}
+      {isToday &&
+        (isLoadingWeather ? (
+          <div className="flex justify-center items-center py-8">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          </div>
+        ) : (
+          <WeatherHistory weatherHistory={weatherHistory || []} />
+        ))}
 
       <IndicatorGrid indicators={valvo} />
 
-      <div className="container max-w-4xl mx-auto relative mb-8 mt-10">
+      <div className="container max-w-4xl mx-auto relative mb-8 mt-10 p-4">
         {isLoadingIndicator ? (
           <div className="flex justify-center items-center py-8">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -93,7 +141,9 @@ export default function ValvoPage() {
         )}
       </div>
 
-      <ValvoImages images={valvoImages || []} isLoading={isLoadingImages} />
+      {valvoImages && valvoImages.length > 0 && (
+        <ValvoImages images={valvoImages || []} isLoading={isLoadingImages} />
+      )}
     </>
   );
 }

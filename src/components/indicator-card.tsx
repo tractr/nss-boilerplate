@@ -41,7 +41,7 @@ export function IndicatorCard({
   if (reason) return null;
 
   return (
-    <Card className="flex items-center gap-4 p-2 pl-4 relative overflow-hidden shadow-lg">
+    <Card className="flex items-center gap-4 p-2 pl-4 relative overflow-hidden shadow-none">
       <div
         className={cn(
           'w-2 h-full absolute top-0 left-0',

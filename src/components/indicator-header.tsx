@@ -5,6 +5,7 @@ import { Wind, Waves, Ban } from 'lucide-react';
 import Image from 'next/image';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Separator } from './ui/separator';
+import { WeatherData } from '@/types/weather';
 
 interface IndicatorHeaderProps {
   value: number;
@@ -12,14 +13,7 @@ interface IndicatorHeaderProps {
   imageUrl: string;
   bgImageUrl: string;
   translatedTitle: string;
-  currentWeather?: {
-    condition: {
-      icon: string;
-      text: string;
-    };
-    avgtemp_c: number;
-    maxwind_kph: number;
-  };
+  currentWeather?: WeatherData | null;
   waterTemperature?: number;
 }
 
@@ -76,48 +70,46 @@ export function IndicatorHeader({
           </div>
         </CardHeader>
 
-        <CardContent className="p-4 md:p-6">
-          <div className="flex flex-row items-center justify-between gap-2">
-            {currentWeather && (
-              <>
-                <div className="flex flex-col md:flex-row items-center gap-2 rounded-lg p-2">
-                  <Image
-                    src={`https:${currentWeather.condition.icon}`}
-                    alt={currentWeather.condition.text}
-                    width={36}
-                    height={36}
-                    className="drop-shadow-sm"
-                  />
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-medium">{currentWeather.avgtemp_c}°C</span>
-                  </div>
-                </div>
-
-                <Separator
-                  orientation="vertical"
-                  decorative={false}
-                  className="h-full min-h-12 bg-slate-300"
+        {currentWeather && (
+          <CardContent className="p-4 md:p-6">
+            <div className="flex flex-row items-center justify-between gap-2">
+              <div className="flex flex-col md:flex-row items-center gap-2 rounded-lg p-2">
+                <Image
+                  src={`https:${currentWeather.condition.icon}`}
+                  alt={currentWeather.condition.text}
+                  width={36}
+                  height={36}
+                  className="drop-shadow-sm"
                 />
-
-                <div className="flex flex-col md:flex-row items-center gap-2 p-2">
-                  <Wind className="w-8 h-8 text-blue-500" />
-                  <span className="text-lg font-medium">{currentWeather.maxwind_kph} km/h</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-lg font-medium">{currentWeather.avgtemp_c}°C</span>
                 </div>
+              </div>
 
-                <div className="flex flex-col md:flex-row items-center gap-2 p-2">
-                  <Waves className="w-8 h-8 text-cyan-500" />
-                  <span className="text-lg font-medium">
-                    {waterTemperature ? (
-                      `${waterTemperature}°C`
-                    ) : (
-                      <Ban className="w-8 h-8 text-red-500" />
-                    )}
-                  </span>
-                </div>
-              </>
-            )}
-          </div>
-        </CardContent>
+              <Separator
+                orientation="vertical"
+                decorative={false}
+                className="h-full min-h-12 bg-slate-300"
+              />
+
+              <div className="flex flex-col md:flex-row items-center gap-2 p-2">
+                <Wind className="w-8 h-8 text-blue-500" />
+                <span className="text-lg font-medium">{currentWeather.maxwind_kph} km/h</span>
+              </div>
+
+              <div className="flex flex-col md:flex-row items-center gap-2 p-2">
+                <Waves className="w-8 h-8 text-cyan-500" />
+                <span className="text-lg font-medium">
+                  {waterTemperature ? (
+                    `${waterTemperature}°C`
+                  ) : (
+                    <Ban className="w-8 h-8 text-red-500" />
+                  )}
+                </span>
+              </div>
+            </div>
+          </CardContent>
+        )}
       </Card>
     </div>
   );
