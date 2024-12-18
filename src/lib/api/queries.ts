@@ -89,6 +89,7 @@ export function useValvoWithIndicator(valvoId: string | null, periodOfTime?: num
         location: {
           name: valvoDetails.name,
           city: valvoDetails.city || '',
+          description: valvoDetails.description || '',
         },
       };
     },
