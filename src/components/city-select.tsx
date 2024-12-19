@@ -18,7 +18,7 @@ export function CitySelect({ onCityChange }: CitySelectProps) {
   if (!cities) return null;
 
   return (
-    <div className="absolute top-8 right-4 z-10 bg-white rounded-md shadow-lg w-64">
+    <div className="absolute top-8 right-4 z-10 bg-white rounded-md border border-gray-200 w-56 ">
       <Select
         onValueChange={cityId => {
           const selectedCity = cities.find(city => city.id === cityId);

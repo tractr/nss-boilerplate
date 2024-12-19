@@ -5,8 +5,6 @@ import { cn } from '@/lib/utils';
 import { IndicatorGeneralDetails } from '@/types/valvo';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 import Image from 'next/image';
-import { Button } from './ui/button';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 interface ValvoCardProps {
