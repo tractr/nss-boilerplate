@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { indicatorColorClasses } from '@/hooks/use-indicator';
 import { cn } from '@/lib/utils';
-import { Wind, Waves, Ban } from 'lucide-react';
+import { Wind, Waves } from 'lucide-react';
 import Image from 'next/image';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Separator } from './ui/separator';
@@ -100,11 +100,7 @@ export function IndicatorHeader({
               <div className="flex flex-col md:flex-row items-center gap-2 p-2">
                 <Waves className="w-8 h-8 text-cyan-500" />
                 <span className="text-lg font-medium">
-                  {waterTemperature ? (
-                    `${waterTemperature}°C`
-                  ) : (
-                    <Ban className="w-8 h-8 text-red-500" />
-                  )}
+                  {waterTemperature ? `${waterTemperature}°C` : `n/d`}
                 </span>
               </div>
             </div>

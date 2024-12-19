@@ -1,7 +1,7 @@
 import { indicatorColorClasses, getIndicatorState } from '@/hooks/use-indicator';
 import { ValvoHistoryEntry } from '@/lib/api/queries';
 import { cn } from '@/lib/utils';
-import { Ban, Waves, Wind } from 'lucide-react';
+import { Waves, Wind } from 'lucide-react';
 import Image from 'next/image';
 import { Separator } from './ui/separator';
 
@@ -52,11 +52,7 @@ export function WeatherHistory({ weatherHistory }: WeatherHistoryProps) {
                 <div className="flex flex-col items-center gap-1">
                   <Waves className="w-6 h-6 text-cyan-500" />
                   <span className="text-sm font-medium">
-                    {day.waterTemp ? (
-                      `${day.waterTemp}°C`
-                    ) : (
-                      <Ban className="w-8 h-8 text-red-500" />
-                    )}
+                    {day.waterTemp ? `${day.waterTemp}°C` : `n/d`}
                   </span>
                 </div>
               </div>

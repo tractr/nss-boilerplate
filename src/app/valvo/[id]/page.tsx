@@ -3,10 +3,10 @@
 import { useIndicator } from '@/hooks/use-indicator';
 import {
   useValvoWithIndicator,
-  useValvoGeography,
   useWeatherHistory,
   useValvoIndicatorHistory,
   useValvoImages,
+  useValvoGeographyDetails,
 } from '@/lib/api/queries';
 import { CalendarIcon, Loader2 } from 'lucide-react';
 import { useParams } from 'next/navigation';
@@ -36,7 +36,7 @@ export default function ValvoPage() {
     data: valvoGeo,
     isLoading: isLoadingGeo,
     error: geoError,
-  } = useValvoGeography(id as string);
+  } = useValvoGeographyDetails(id as string);
 
   const { translatedTitle, color, imageUrl, bgImageUrl } = useIndicator(
     valvo?.general_indicator || 1,

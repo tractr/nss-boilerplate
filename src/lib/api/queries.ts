@@ -108,9 +108,9 @@ export function useCities({ done }: { done?: boolean } = {}) {
   });
 }
 
-export function useValvoGeography(valvoId: string | null) {
+export function useValvoGeographyDetails(valvoId: string | null) {
   return useQuery({
-    queryKey: ['valvoGeography', valvoId],
+    queryKey: ['valvoGeographyDetails', valvoId],
     queryFn: async () => {
       if (!valvoId) return null;
       const valvos = await getValvosGeography();
@@ -125,7 +125,7 @@ export function useWeatherHistory(
   selectedDate: Date,
   daysCount: number = 5
 ) {
-  const { data: valvoGeo } = useValvoGeography(valvoId);
+  const { data: valvoGeo } = useValvoGeographyDetails(valvoId);
 
   return useQuery<ValvoHistoryEntry[]>({
     queryKey: ['valvoHistory', valvoId, selectedDate.toISOString(), daysCount],
