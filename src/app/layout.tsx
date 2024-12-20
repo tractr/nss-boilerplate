@@ -6,6 +6,7 @@ import { getLocale, getMessages } from 'next-intl/server';
 import { ReactQueryProvider } from '@/components/react-query-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/theme-provider';
+import { LayoutSimple } from '@/components/layout-simple';
 
 const geistSans = localFont({
   src: '../fonts/GeistVF.woff',
@@ -40,7 +41,7 @@ export default async function RootLayout({
         <ReactQueryProvider>
           <NextIntlClientProvider messages={messages}>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              {children}
+              <LayoutSimple>{children}</LayoutSimple>
             </ThemeProvider>
           </NextIntlClientProvider>
           <Toaster />

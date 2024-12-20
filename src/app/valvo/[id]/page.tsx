@@ -77,7 +77,7 @@ export default function ValvoPage() {
   return (
     <>
       <div className="container max-w-4xl mx-auto pt-4 px-4">
-        <div className="flex justify-between items-center gap-4">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex-1">
             <h1 className="text-2xl font-bold">
               {valvo.location.description || valvo.location.name}

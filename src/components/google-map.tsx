@@ -6,11 +6,8 @@ import { CitySelect } from './city-select';
 import { CityGeography, ValvoGeography } from '@/types/database';
 import { ValvoCard } from './valvo-card';
 import { env } from '@/lib/env';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 
 const GoogleMapComponent = () => {
-  const router = useRouter();
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: env().NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
   });
@@ -53,17 +50,6 @@ const GoogleMapComponent = () => {
   return (
     <div className="relative">
       {isLoaded && <Skeleton className="absolute inset-0" />}
-      <div className="absolute top-8 left-4 z-10">
-        <Image
-          src="/images/logo-molluscan.png"
-          alt="Logo"
-          width={120}
-          height={40}
-          className="w-auto h-10 hover:cursor-pointer"
-          onClick={() => router.push('/')}
-          loading="eager"
-        />
-      </div>
       <CitySelect onCityChange={setSelectedCity} />
       <GoogleMap
         zoom={10}

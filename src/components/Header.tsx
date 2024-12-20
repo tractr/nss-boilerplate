@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { Menu, Map, Info, User } from 'lucide-react';
 import Image from 'next/image';
@@ -41,7 +43,7 @@ export const Header = () => {
         isVisible ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+      <div className="container mx-auto px-4 h-16 flex items-center justify-center md:justify-between">
         <div className="flex items-center">
           <Image
             src="/images/logo-molluscan.png"
