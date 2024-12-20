@@ -38,10 +38,8 @@ export default function ValvoPage() {
     error: geoError,
   } = useValvoGeographyDetails(id as string);
 
-  const { translatedTitle, color, imageUrl, bgImageUrl } = useIndicator(
-    valvo?.general_indicator || 1,
-    valvo?.general_value || 1
-  );
+  const { translatedTitle, color, imageUrl, bgImageLeftUrl, bgImageRightUrl, bgImagePatternUrl } =
+    useIndicator(valvo?.general_indicator || 1, valvo?.general_value || 1);
 
   const { data: weatherHistory, isLoading: isLoadingWeather } = useWeatherHistory(
     isToday ? (id as string) : null,
@@ -114,7 +112,9 @@ export default function ValvoPage() {
         value={valvo.general_value || 0}
         color={color}
         imageUrl={imageUrl}
-        bgImageUrl={bgImageUrl}
+        bgImageLeftUrl={bgImageLeftUrl}
+        bgImageRightUrl={bgImageRightUrl}
+        bgImagePatternUrl={bgImagePatternUrl}
         translatedTitle={translatedTitle}
         currentWeather={isToday ? currentWeather : undefined}
         waterTemperature={valvo.water_temperature?.water_temperature_max || undefined}

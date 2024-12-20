@@ -12,7 +12,9 @@ export interface IndicatorProperties {
   label: string;
   color: string;
   imageUrl: string;
-  bgImageUrl: string;
+  bgImageLeftUrl: string;
+  bgImageRightUrl: string;
+  bgImagePatternUrl: string;
 }
 
 export const indicatorColorClasses = {
@@ -55,7 +57,9 @@ export function getIndicatorProperties(level: number, value?: number): Indicator
     //color: state === 'noData' ? `${INDICATOR_COLORS[0]}` : `${INDICATOR_COLORS[normalizedLevel]}`,
     color: state,
     imageUrl: `/images/${state}.png`,
-    bgImageUrl: `/images/bg-mer-${state}.svg`,
+    bgImageLeftUrl: `/images/bg-mer-${state}-left.svg`,
+    bgImageRightUrl: `/images/bg-mer-${state}-right.svg`,
+    bgImagePatternUrl: `/images/bg-mer-${state}-pattern.svg`,
   };
 }
 
