@@ -183,6 +183,8 @@ export function Statistics({ data, period, onPeriodChange }: StatisticsProps) {
                 outerRadius={100}
                 paddingAngle={0}
                 dataKey="value"
+                label={({ value }) => `${value.toFixed(1)}%`}
+                labelLine={false}
               >
                 {donutData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
