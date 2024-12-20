@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Menu } from 'lucide-react';
+import { Menu, Map, Info, User } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+} from '@/components/ui/dropdown-menu';
 
 export const Header = () => {
   const router = useRouter();
@@ -47,9 +54,35 @@ export const Header = () => {
           />
         </div>
 
-        <button className="p-2 hover:bg-gray-100 rounded-full" aria-label="Menu">
-          <Menu className="h-8 w-8 text-black" />
-        </button>
+        <div className="hidden md:block w-12">
+          <DropdownMenu modal={false}>
+            <DropdownMenuTrigger asChild>
+              <button className="p-2 hover:bg-gray-100 rounded-full" aria-label="Menu">
+                <Menu className="h-8 w-8 text-black" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem asChild>
+                <Link href="/" className="flex items-center gap-2">
+                  <Map className="h-4 w-4" />
+                  <span>Carte</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className="opacity-50 pointer-events-none">
+                <Link href="/about" className="flex items-center gap-2">
+                  <Info className="h-4 w-4" />
+                  <span>À propos</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className="opacity-50 pointer-events-none">
+                <Link href="/profile" className="flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  <span>Profil</span>
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </header>
   );
