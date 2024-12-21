@@ -1,5 +1,12 @@
 import supabaseClient from '@/lib/supabase-client';
-import { GeneralIndicator, Tables, ValvoGeography } from '@/types/database';
+import {
+  Feature,
+  GeneralIndicator,
+  Geometry,
+  PostGISGeography,
+  Tables,
+  ValvoGeography,
+} from '@/types/database';
 
 export type Valvo = Tables<'valvo'>;
 export type ValvoImage = Tables<'valvo_image'> & { url: string | null };
@@ -16,7 +23,15 @@ export async function getValvosGeography({ done }: { done?: boolean } = {}): Pro
   const { data, error } = await query;
 
   if (error) throw error;
-  return data;
+  if (!data) return [];
+  return data.map(item => ({
+    id: item.id,
+    location: item.location as PostGISGeography,
+    longitude: item.longitude,
+    latitude: item.latitude,
+    geometry: item.geometry as unknown as Geometry,
+    feature: item.feature as unknown as Feature,
+  }));
 }
 
 export async function getValvo({
@@ -56,7 +71,7 @@ export async function getGeneralIndicator({
 
   const { data, error } = await query;
   if (error) throw error;
-  return data[0];
+  return data[0] as GeneralIndicator;
 }
 
 export async function getImagesValvo({
@@ -74,7 +89,10 @@ export async function getImagesValvo({
 
   const { data, error } = await query;
   if (error) throw error;
-  return data;
+  return data.map(item => ({
+    id: item.id,
+    url: item.image_path,
+  })) as ValvoImage[];
 }
 
 export async function getIndicatorHistory({
@@ -96,5 +114,5 @@ export async function getIndicatorHistory({
 
   const { data, error } = await query;
   if (error) throw error;
-  return data;
+  return data.map(item => item as GeneralIndicator);
 }
