@@ -18,6 +18,10 @@ jobs:
           password: ${{ secrets.SCALEWAY_API_KEY }}
           registry: ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}
       - name: Build the Docker image
-        run: docker build . -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/molluscan-pwa
+        run: docker build . -t ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/molluscan-pwa \
+          --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${{ secrets.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY }} \
+          --build-arg NEXT_PUBLIC_WEATHER_API_KEY=${{ secrets.NEXT_PUBLIC_WEATHER_API_KEY }} \
+          --build-arg SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+          --build-arg SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
       - name: Push the Docker Image
         run: docker push ${{ secrets.CONTAINER_REGISTRY_ENDPOINT }}/molluscan-pwa
