@@ -18,7 +18,7 @@ export function CitySelect({ onCityChange }: CitySelectProps) {
   if (!cities) return null;
 
   return (
-    <div className="absolute top-8 z-10 w-full px-4">
+    <div className="absolute top-8 z-10 w-full px-4 md:w-[280px] md:right-0">
       <div className=" bg-white rounded-md border border-gray-200 w-full ">
         <Select
           onValueChange={cityId => {
