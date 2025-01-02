@@ -1,4 +1,4 @@
-import { GeneralIndicator } from './database';
+import { GeneralIndicator, ValvoGeography } from './database';
 
 export interface IndicatorGeneralDetails extends GeneralIndicator {
   location: {
@@ -6,4 +6,8 @@ export interface IndicatorGeneralDetails extends GeneralIndicator {
     city: string;
     description: string;
   };
+}
+
+export interface ValvoWithIndicator extends ValvoGeography {
+  generalIndicator: GeneralIndicator | null;
 }

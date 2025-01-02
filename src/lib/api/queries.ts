@@ -7,7 +7,7 @@ import {
   getImagesValvo,
 } from './valvo';
 import { getCities } from './cities';
-import { IndicatorGeneralDetails } from '@/types/valvo';
+import { IndicatorGeneralDetails, ValvoWithIndicator } from '@/types/valvo';
 import { WeatherData } from '@/types/weather';
 import { getPublicImageUrl } from '../supabase/storage';
 import { env } from '../env';
@@ -43,9 +43,38 @@ async function fetchWeatherForDate(
 }
 
 export function useValvosGeography({ done }: { done?: boolean } = {}) {
-  return useQuery({
-    queryKey: ['valvosGeography', done],
-    queryFn: () => getValvosGeography({ done }),
+  return useQuery<ValvoWithIndicator[]>({
+    queryKey: ['valvosGeographyWithIndicator', done],
+    queryFn: async () => {
+      const valvos = await getValvosGeography({ done });
+      const valvosWithIndicator = await Promise.all(
+        valvos.map(async valvo => {
+          try {
+            const indicator = await getGeneralIndicator({
+              params: {
+                valvo_id: valvo.id,
+                period_of_time: 1, // Ajustez selon vos besoins
+                start_date: new Date(), // Ajustez selon vos besoins
+              },
+            });
+            return {
+              ...valvo,
+              generalIndicator: indicator || null,
+            };
+          } catch (error) {
+            console.error(
+              `Erreur lors de la récupération de l'indicateur pour Valvo ID: ${valvo.id}`,
+              error
+            );
+            return {
+              ...valvo,
+              generalIndicator: null,
+            };
+          }
+        })
+      );
+      return valvosWithIndicator;
+    },
   });
 }
 

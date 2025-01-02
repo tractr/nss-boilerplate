@@ -43,10 +43,10 @@ export function IndicatorHeader({
       />
 
       <div className="container max-w-4xl pt-20 md:pt-32 pb-4 md:pb-8 px-4 mx-auto mt-5 relative md:aspect-[3098/1729] overflow-hidden">
-        <Card className="border-white border-2 shadow-2xl backdrop-blur-sm bg-white/90 overflow-hidden">
+        <Card className="border-white border-2 backdrop-blur-sm bg-white/90 overflow-hidden shadow-none">
           <CardHeader
             className={cn(
-              'flex flex-row items-stretch justify-between gap-4 md:gap-8 p-0',
+              'flex flex-row items-stretch justify-between gap-4 md:gap-8 p-0 shadow-none',
               indicatorColorClasses[color as keyof typeof indicatorColorClasses]
             )}
           >
