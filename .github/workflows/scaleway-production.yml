@@ -3,7 +3,7 @@ name: Deploy PWA to Scaleway Production
 on:
   push:
     branches:
-      - ci-cd/scaleway
+      - main
   workflow_dispatch:
 
 jobs:
