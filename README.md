@@ -21,6 +21,7 @@ A modern full-stack boilerplate featuring Next.js 15, Supabase, Shadcn/UI, and m
 
 - 🚀 [Next.js 15](https://nextjs.org/) with App Router
 - 🎨 [Shadcn/UI](https://ui.shadcn.com/) components
+- 📚 [Storybook](https://storybook.js.org/) for component development
 - 🔐 [Supabase](https://supabase.com/) Authentication & Database
 - 🌍 Internationalization with [next-intl](https://next-intl-docs.vercel.app/)
 - 🎭 Dark mode with [next-themes](https://github.com/pacocoursey/next-themes)
@@ -118,6 +119,9 @@ src/
 ├── types/              # TypeScript type definitions
 └── i18n/               # Internationalization
     └── messages/       # Internationalization messages
+├── stories/            # Storybook stories
+│   ├── components/     # Component stories
+│   └── pages/          # Page stories
 ```
 
 ## Available Scripts
@@ -130,6 +134,8 @@ src/
 - `npm run cypress:open` - Open Cypress test runner
 - `npm run cypress:run` - Run Cypress tests headlessly
 - `npm run gen:types` - Generate TypeScript types from Supabase schema
+- `npm run storybook` - Start Storybook development server
+- `npm run build-storybook` - Build Storybook for production
 
 ## Authentication
 
@@ -174,6 +180,59 @@ To run the tests:
 npm run test
 npm run cypress:open
 ```
+
+## Storybook
+
+The project includes Storybook for component development and documentation:
+
+### Structure
+
+- Stories are located in `src/stories/`
+- Component stories in `src/stories/components/`
+- Page stories in `src/stories/pages/`
+
+### Running Storybook
+
+```bash
+npm run storybook
+```
+
+Visit `http://localhost:6006` to see your component stories.
+
+### Writing Stories
+
+Create new stories in the `src/stories` directory following the pattern:
+
+```typescript
+// Example: src/stories/components/button.stories.tsx
+import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from '@/components/ui/button';
+
+const meta: Meta<typeof Button> = {
+  component: Button,
+  // ... configuration
+};
+
+export default meta;
+type Story = StoryObj<typeof Button>;
+
+export const Primary: Story = {
+  args: {
+    variant: 'default',
+    children: 'Button',
+  },
+};
+```
+
+### Building Storybook
+
+To build a static version of Storybook:
+
+```bash
+npm run build-storybook
+```
+
+The output will be in the `storybook-static` directory.
 
 ## Good Practices
 

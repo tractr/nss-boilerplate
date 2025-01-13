@@ -1,9 +1,16 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"],
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "plugin:storybook/recommended"
+  ],
   "rules": {
     "react-hooks/exhaustive-deps": "off",
     "typescript-eslint/no-empty-object-type": "off",
     "@typescript-eslint/no-empty-object-type": "off"
   },
-  "ignorePatterns": ["src/components/ui/*", "src/hooks/use-toast.ts"]
+  "ignorePatterns": [
+    "src/components/ui/*",
+    "src/hooks/use-toast.ts"
+  ]
 }
