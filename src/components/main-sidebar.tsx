@@ -12,7 +12,21 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, User2, ChevronUp, ListCheck, Monitor, LogOut, LucideProps } from 'lucide-react';
+import {
+  Home,
+  User2,
+  ChevronUp,
+  Monitor,
+  LogOut,
+  LucideProps,
+  Calendar,
+  Coins,
+  FileText,
+  Users,
+  Store,
+  Home as HomeIcon,
+  Link as LinkIcon,
+} from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,16 +43,67 @@ import { ForwardRefExoticComponent, RefAttributes, useState } from 'react';
 import { SettingsModal } from '@/components/settings-modal';
 import { useTranslations } from 'next-intl';
 
-// Menu items
-const items: Array<{
+// Workspace items
+const workspaceItems: Array<{
   titleKey: string;
   url: string;
   icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
 }> = [
   {
-    titleKey: 'navigation.todos',
-    url: '/todos',
-    icon: ListCheck,
+    titleKey: 'navigation.inbox',
+    url: '/my-documents/recent',
+    icon: Monitor,
+  },
+  {
+    titleKey: 'navigation.dueDates',
+    url: '/reminders',
+    icon: Calendar,
+  },
+  {
+    titleKey: 'navigation.expenses',
+    url: '/expense-tracker',
+    icon: Coins,
+  },
+];
+
+// Explorer items
+const explorerItems: Array<{
+  titleKey: string;
+  url: string;
+  icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
+}> = [
+  {
+    titleKey: 'navigation.documents',
+    url: '/documents',
+    icon: FileText,
+  },
+  {
+    titleKey: 'navigation.merchants',
+    url: '/merchants',
+    icon: Store,
+  },
+];
+
+// Property items
+const propertyItems: Array<{
+  titleKey: string;
+  url: string;
+  icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
+}> = [
+  {
+    titleKey: 'navigation.property',
+    url: '/property',
+    icon: HomeIcon,
+  },
+  {
+    titleKey: 'navigation.members',
+    url: '/members',
+    icon: Users,
+  },
+  {
+    titleKey: 'navigation.connections',
+    url: '/connections',
+    icon: LinkIcon,
   },
 ];
 
@@ -80,10 +145,44 @@ export default function MainSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel>{t('navigation.mainMenu')}</SidebarGroupLabel>
+          <SidebarGroupLabel>{t('navigation.workspaces')}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map(item => (
+              {workspaceItems.map(item => (
+                <SidebarMenuItem key={item.titleKey}>
+                  <SidebarMenuButton asChild className={pathname === item.url ? 'bg-accent' : ''}>
+                    <Link href={item.url}>
+                      <item.icon />
+                      <span>{t(item.titleKey)}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>{t('navigation.explorer')}</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {explorerItems.map(item => (
+                <SidebarMenuItem key={item.titleKey}>
+                  <SidebarMenuButton asChild className={pathname === item.url ? 'bg-accent' : ''}>
+                    <Link href={item.url}>
+                      <item.icon />
+                      <span>{t(item.titleKey)}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>{t('navigation.property')}</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {propertyItems.map(item => (
                 <SidebarMenuItem key={item.titleKey}>
                   <SidebarMenuButton asChild className={pathname === item.url ? 'bg-accent' : ''}>
                     <Link href={item.url}>

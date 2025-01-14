@@ -27,7 +27,17 @@
   "navigation": {
     "home": "Home",
     "mainMenu": "Main menu",
-    "todos": "Todos"
+    "dashboard": "Dashboard",
+    "inbox": "My Documents",
+    "dueDates": "Due Dates",
+    "expenses": "Expenses",
+    "workspaces": "Workspaces",
+    "explorer": "Explorer",
+    "documents": "Documents",
+    "merchants": "Merchants",
+    "property": "Property",
+    "members": "Members",
+    "connections": "Connections"
   },
   "settings": {
     "title": "Settings",

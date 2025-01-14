@@ -9,12 +9,14 @@ export default function LayoutSidebar({
   containerClassName,
   contentClassName,
   isOpen,
+  hideTrigger,
 }: {
   children: React.ReactNode;
   className?: string;
   containerClassName?: string;
   contentClassName?: string;
   isOpen?: boolean;
+  hideTrigger?: boolean;
 }) {
   const currentUser = useCurrentUser();
   const sidebarOpen = isOpen ?? (currentUser.data || currentUser.isLoading ? undefined : false);
@@ -23,7 +25,7 @@ export default function LayoutSidebar({
     <SidebarProvider open={sidebarOpen}>
       <MainSidebar />
       <main className={cn('flex-1 flex flex-col', containerClassName)}>
-        {sidebarOpen !== false ? <SidebarTrigger className="mx-3 mt-2" /> : null}
+        {!hideTrigger && sidebarOpen !== false ? <SidebarTrigger className="mx-3 mt-2" /> : null}
         <div className={cn('flex-1 px-4 py-2', className)}>
           <div className={cn('flex-1 container mx-auto', contentClassName)}>{children}</div>
         </div>

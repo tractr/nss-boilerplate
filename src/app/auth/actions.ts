@@ -1,32 +1,29 @@
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { headers } from "next/headers";
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
+import { headers } from 'next/headers';
 
-import createClient from "@/lib/supabase/server";
+import createClient from '@/lib/supabase/server';
 
-export async function login(data: {
-    email: string;
-    password: string;
-}) {
-    const supabase = await createClient();
+export async function login(data: { email: string; password: string }) {
+  const supabase = await createClient();
 
-    const headersList = await headers();
-    const referer = new URL(headersList.get("referer") || "/");
+  const headersList = await headers();
+  const referer = new URL(headersList.get('referer') || '/');
 
-    const { error } = await supabase.auth.signInWithPassword(data);
+  const { error } = await supabase.auth.signInWithPassword(data);
 
-    if (error) {
-        throw error;
-    }
+  if (error) {
+    throw error;
+  }
 
-    revalidatePath("/", "layout");
+  revalidatePath('/', 'layout');
 
-    const next = referer.searchParams.get("next");
-    if (next) {
-        redirect(next);
-    }
+  const next = referer.searchParams.get('next');
+  if (next) {
+    redirect(next);
+  }
 
-    redirect("/");
+  redirect('/');
 }

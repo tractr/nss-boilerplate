@@ -15,7 +15,17 @@
   "navigation": {
     "home": "Accueil",
     "mainMenu": "Menu principal",
-    "todos": "Tâches"
+    "dashboard": "Tableau de bord",
+    "inbox": "Mes Documents",
+    "dueDates": "Échéances",
+    "expenses": "Dépenses",
+    "workspaces": "Espaces de travail",
+    "explorer": "Explorer",
+    "documents": "Documents",
+    "merchants": "Marchands",
+    "property": "Propriété",
+    "members": "Membres",
+    "connections": "Connexions"
   },
   "settings": {
     "title": "Paramètres",
