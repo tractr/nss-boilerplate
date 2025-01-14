@@ -88,11 +88,13 @@ export default function AppIframe(props: { className?: string; pathname?: string
   }
 
   const url = new URL(props.pathname ?? '/', baseUrl);
+  url.searchParams.set('hideMenu', '');
+  const urlString = url.toString();
 
   return (
     <iframe
-      key={url.toString()}
-      src={url.toString()}
+      key={urlString}
+      src={urlString}
       className={cn('w-full h-full flex-grow', props.className)}
     />
   );
