@@ -122,7 +122,23 @@ src/
 ├── stories/            # Storybook stories
 │   ├── components/     # Component stories
 │   └── pages/          # Page stories
+supabase/
+└── functions/          # Supabase Edge Functions (Deno)
 ```
+
+## IDE Configuration
+
+### VS Code
+
+If you're using VS Code, you can limit Deno's type checking to only the Supabase functions directory by adding this to your `.vscode/settings.json`:
+
+```json
+{
+  "deno.enablePaths": ["supabase/functions"]
+}
+```
+
+This ensures that Deno only runs in the Supabase Edge Functions directory and doesn't interfere with the rest of your TypeScript setup.
 
 ## Available Scripts
 
