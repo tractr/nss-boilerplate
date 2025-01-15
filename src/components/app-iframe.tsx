@@ -16,20 +16,10 @@ export default function AppIframe(props: { className?: string; pathname?: string
     const iframe = document.querySelector('iframe');
     if (!iframe || !iframe.contentWindow) return;
 
+    console.log('posting message to iframe', data);
+
     iframe.contentWindow.postMessage(data, baseUrl ?? '');
   };
-
-  //   const _sendFirstMessageToIframe = async () => {
-  //     const { data, error } = await supabaseClient.auth.getSession();
-  //     if (error || !data.session) return;
-  //     _postMesageToIframe({ event: 'SIGNED_IN', session: data.session });
-  //   };
-
-  //   useEffect(() => {
-  //     setTimeout(() => {
-  //       _sendFirstMessageToIframe();
-  //     }, 5000);
-  //   }, [baseUrl]);
 
   useEffect(() => {
     const handleAuthStateChange = async (event: AuthChangeEvent, session: Session | null) => {
@@ -52,12 +42,20 @@ export default function AppIframe(props: { className?: string; pathname?: string
       const currentSession = await supabaseClient.auth.getSession();
       if (currentSession.error) return;
 
-      if (
+      console.log('handling message', e.data);
+
+      const tokenChanged =
         ['TOKEN_REFRESHED', 'SIGNED_IN'].includes(e.data.event) &&
-        e.data.session.access_token !== currentSession.data.session?.access_token
-      ) {
+        e.data.session &&
+        e.data.session.access_token !== currentSession.data.session?.access_token;
+
+      const initNewSession = e.data.event === 'INITIAL_SESSION' && e.data.session;
+
+      if (tokenChanged || initNewSession) {
         const { access_token, refresh_token } = e.data.session;
         await supabaseClient.auth.setSession({ access_token, refresh_token });
+
+        console.log('setting session', e.data.session);
 
         if (e.data.event === 'SIGNED_IN') {
           router.push('/');
@@ -66,10 +64,10 @@ export default function AppIframe(props: { className?: string; pathname?: string
         return;
       }
 
-      if (
-        e.data.event === 'SIGNED_OUT' ||
-        (e.data.event === 'INITIAL_SESSION' && !e.data.session && currentSession.data.session)
-      ) {
+      const signingOut = e.data.event === 'SIGNED_OUT';
+      const initEmptySession = e.data.event === 'INITIAL_SESSION' && !e.data.session;
+
+      if (signingOut || initEmptySession) {
         await supabaseClient.auth.signOut();
         router.push('/auth/login');
         return;
