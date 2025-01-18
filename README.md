@@ -1,6 +1,4 @@
-# NSS Boilerplate
-
-A modern full-stack boilerplate featuring Next.js 15, Supabase, Shadcn/UI, and more. Built with TypeScript and includes authentication, dark mode, internationalization, and a todo list demo.
+# Afoodi NSS
 
 ## Table of Contents
 
@@ -43,15 +41,9 @@ A modern full-stack boilerplate featuring Next.js 15, Supabase, Shadcn/UI, and m
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/pierrecabriere/nss-boilerplate.git my-project
-cd my-project
+git clone git@github.com:tractr/afoodi-nss.git
+cd afoodi-nss
 ```
-
-**You can also rename all the references to this boilerplate in the project.**
-
-- in `package.json`
-- in `supabase/config.toml`
-- in `src/app/layout.tsx`
 
 2. Install dependencies:
 

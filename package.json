@@ -1,5 +1,5 @@
 {
-  "name": "nss-boilerplate",
+  "name": "afoodi-nss",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "gen:types": "npx supabase gen types typescript --lang=typescript --local > src/types/database.ts",
+    "gen:types": "npx supabase gen types typescript --lang=typescript > src/types/database.ts",
     "test": "vitest",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
