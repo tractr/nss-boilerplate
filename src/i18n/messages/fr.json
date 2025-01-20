@@ -57,11 +57,5 @@
     "passwordRequired": "Le mot de passe est requis",
     "passwordMinLength": "Le mot de passe doit contenir au moins 6 caractères",
     "signingIn": "Connexion en cours..."
-  },
-  "todos": {
-    "title": "Tâches",
-    "newTodoPlaceholder": "Ajouter une nouvelle tâche...",
-    "noTodos": "Aucune tâche pour le moment",
-    "showAll": "Afficher tout"
   }
 }

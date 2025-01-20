@@ -57,11 +57,5 @@
       "label": "Language",
       "placeholder": "Select language"
     }
-  },
-  "todos": {
-    "title": "Todos",
-    "newTodoPlaceholder": "Add a new todo...",
-    "noTodos": "No todos yet",
-    "showAll": "Show all"
   }
 }

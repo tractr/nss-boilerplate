@@ -7,7 +7,7 @@ import AppIframe from '@/components/app-iframe';
 export default function IframePage() {
   return (
     <LayoutSidebar hideTrigger className="p-0 h-full" contentClassName="h-full w-full min-w-full">
-      <AppIframe path="/en/login" />
+      <AppIframe pathname="/en/login" />
     </LayoutSidebar>
   );
 }
