@@ -22,10 +22,12 @@
     "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos atque nisi necessitatibus neque voluptates libero aperiam nam repellat quam, ab perferendis cum animi repellendus ratione eius dolores et iure rerum!"
   },
   "common": {
-    "logo": "Logo"
+    "logo": "Logo",
+    "selectProperty": "Select a property",
+    "untitledProperty": "Untitled property"
   },
   "navigation": {
-    "home": "Home",
+    "home": "Dashboard",
     "mainMenu": "Main menu",
     "dashboard": "Dashboard",
     "inbox": "My Documents",
@@ -37,7 +39,10 @@
     "merchants": "Merchants",
     "property": "Property",
     "members": "Members",
-    "connections": "Connections"
+    "connections": "Connections",
+    "support": "Support",
+    "documentation": "Documentation",
+    "tips": "Tips & Tricks"
   },
   "settings": {
     "title": "Settings",

@@ -10,10 +10,12 @@
     "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos atque nisi necessitatibus neque voluptates libero aperiam nam repellat quam, ab perferendis cum animi repellendus ratione eius dolores et iure rerum!"
   },
   "common": {
-    "logo": "Logo"
+    "logo": "Logo",
+    "selectProperty": "Sélectionner une propriété",
+    "untitledProperty": "Propriété sans titre"
   },
   "navigation": {
-    "home": "Accueil",
+    "home": "Tableau de bord",
     "mainMenu": "Menu principal",
     "dashboard": "Tableau de bord",
     "inbox": "Mes Documents",
@@ -25,7 +27,10 @@
     "merchants": "Marchands",
     "property": "Propriété",
     "members": "Membres",
-    "connections": "Connexions"
+    "connections": "Connexions",
+    "support": "Support",
+    "documentation": "Documentation",
+    "tips": "Trucs et astuces"
   },
   "settings": {
     "title": "Paramètres",

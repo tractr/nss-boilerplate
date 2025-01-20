@@ -6,12 +6,18 @@ import supabaseClient from '@/lib/supabase-client';
 import { cn } from '@/lib/utils';
 import { AuthChangeEvent, Session } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
+import { useCurrentProperty } from '@/hooks/use-current-property';
 
 export default function AppIframe(props: { className?: string; pathname?: string }) {
   const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_EDWIX_APP_URL;
+  const { currentProperty } = useCurrentProperty();
 
-  const _postMesageToIframe = (data: { event: AuthChangeEvent; session: Session | null }) => {
+  const _postMessageToIframe = (data: {
+    event: string;
+    session?: Session | null;
+    property?: { id: string; name: string } | null;
+  }) => {
     // Get the iframe element
     const iframe = document.querySelector('iframe');
     if (!iframe || !iframe.contentWindow) return;
@@ -23,7 +29,7 @@ export default function AppIframe(props: { className?: string; pathname?: string
 
   useEffect(() => {
     const handleAuthStateChange = async (event: AuthChangeEvent, session: Session | null) => {
-      _postMesageToIframe({ event, session });
+      _postMessageToIframe({ event, session });
     };
 
     const sub = supabaseClient.auth.onAuthStateChange(handleAuthStateChange);
@@ -32,6 +38,14 @@ export default function AppIframe(props: { className?: string; pathname?: string
       sub.data.subscription.unsubscribe();
     };
   }, [baseUrl]);
+
+  // Send initial property and handle property changes
+  useEffect(() => {
+    _postMessageToIframe({
+      event: 'PROPERTY_CHANGED',
+      property: currentProperty,
+    });
+  }, [currentProperty]);
 
   useEffect(() => {
     const handleMessage = async (e: MessageEvent) => {
@@ -42,7 +56,7 @@ export default function AppIframe(props: { className?: string; pathname?: string
       const currentSession = await supabaseClient.auth.getSession();
       if (currentSession.error) return;
 
-      console.log('handling message', e.data);
+      console.log('handling message in container', e.data);
 
       const tokenChanged =
         ['TOKEN_REFRESHED', 'SIGNED_IN'].includes(e.data.event) &&
@@ -57,14 +71,14 @@ export default function AppIframe(props: { className?: string; pathname?: string
 
         console.log('setting session', e.data.session);
 
-        if (e.data.event === 'SIGNED_IN') {
+        if (['SIGNED_IN'].includes(e.data.event)) {
           router.push('/');
         }
 
         return;
       }
 
-      const signingOut = e.data.event === 'SIGNED_OUT';
+      const signingOut = e.data.event === 'SIGNED_OUT' && currentSession.data.session?.access_token;
       const initEmptySession = e.data.event === 'INITIAL_SESSION' && !e.data.session;
 
       if (signingOut || initEmptySession) {

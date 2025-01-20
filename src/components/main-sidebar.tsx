@@ -15,7 +15,6 @@ import {
 import {
   Home,
   User2,
-  ChevronUp,
   Monitor,
   LogOut,
   LucideProps,
@@ -26,6 +25,9 @@ import {
   Store,
   Home as HomeIcon,
   Link as LinkIcon,
+  BookOpen,
+  HelpCircle,
+  Lightbulb,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -42,6 +44,7 @@ import { usePathname } from 'next/navigation';
 import { ForwardRefExoticComponent, RefAttributes, useState } from 'react';
 import { SettingsModal } from '@/components/settings-modal';
 import { useTranslations } from 'next-intl';
+import { PropertySelect } from '@/components/property-select';
 
 // Workspace items
 const workspaceItems: Array<{
@@ -74,12 +77,12 @@ const explorerItems: Array<{
 }> = [
   {
     titleKey: 'navigation.documents',
-    url: '/documents',
+    url: '/my-documents/folders',
     icon: FileText,
   },
   {
     titleKey: 'navigation.merchants',
-    url: '/merchants',
+    url: '/v2/contacts',
     icon: Store,
   },
 ];
@@ -92,7 +95,7 @@ const propertyItems: Array<{
 }> = [
   {
     titleKey: 'navigation.property',
-    url: '/property',
+    url: '/v2/property',
     icon: HomeIcon,
   },
   {
@@ -102,8 +105,31 @@ const propertyItems: Array<{
   },
   {
     titleKey: 'navigation.connections',
-    url: '/connections',
+    url: '/v2/connections',
     icon: LinkIcon,
+  },
+];
+
+// Support items
+const supportItems: Array<{
+  titleKey: string;
+  url: string;
+  icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
+}> = [
+  {
+    titleKey: 'navigation.documentation',
+    url: 'https://help.edwix.com',
+    icon: BookOpen,
+  },
+  {
+    titleKey: 'navigation.support',
+    url: '#',
+    icon: HelpCircle,
+  },
+  {
+    titleKey: 'navigation.tips',
+    url: 'https://edwix.com/blog',
+    icon: Lightbulb,
   },
 ];
 
@@ -129,12 +155,18 @@ export default function MainSidebar() {
           <Image src="/images/logo.svg" alt={t('common.logo')} width={130} height={100} />
         </div>
       </SidebarHeader>
+
+      <PropertySelect />
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className={pathname === '/' ? 'bg-accent' : ''}>
+                <SidebarMenuButton
+                  asChild
+                  className={pathname === '/' ? 'text-blue [&_svg]:bg-blue [&_svg]:text-white' : ''}
+                >
                   <Link href="/">
                     <Home />
                     <span>{t('navigation.home')}</span>
@@ -150,7 +182,12 @@ export default function MainSidebar() {
             <SidebarMenu>
               {workspaceItems.map(item => (
                 <SidebarMenuItem key={item.titleKey}>
-                  <SidebarMenuButton asChild className={pathname === item.url ? 'bg-accent' : ''}>
+                  <SidebarMenuButton
+                    asChild
+                    className={
+                      pathname === item.url ? 'text-blue [&_svg]:bg-blue [&_svg]:text-white' : ''
+                    }
+                  >
                     <Link href={item.url}>
                       <item.icon />
                       <span>{t(item.titleKey)}</span>
@@ -167,7 +204,12 @@ export default function MainSidebar() {
             <SidebarMenu>
               {explorerItems.map(item => (
                 <SidebarMenuItem key={item.titleKey}>
-                  <SidebarMenuButton asChild className={pathname === item.url ? 'bg-accent' : ''}>
+                  <SidebarMenuButton
+                    asChild
+                    className={
+                      pathname === item.url ? 'text-blue [&_svg]:bg-blue [&_svg]:text-white' : ''
+                    }
+                  >
                     <Link href={item.url}>
                       <item.icon />
                       <span>{t(item.titleKey)}</span>
@@ -184,11 +226,33 @@ export default function MainSidebar() {
             <SidebarMenu>
               {propertyItems.map(item => (
                 <SidebarMenuItem key={item.titleKey}>
-                  <SidebarMenuButton asChild className={pathname === item.url ? 'bg-accent' : ''}>
+                  <SidebarMenuButton
+                    asChild
+                    className={
+                      pathname === item.url ? 'text-blue [&_svg]:bg-blue [&_svg]:text-white' : ''
+                    }
+                  >
                     <Link href={item.url}>
                       <item.icon />
                       <span>{t(item.titleKey)}</span>
                     </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>{t('navigation.support')}</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {supportItems.map(item => (
+                <SidebarMenuItem key={item.titleKey}>
+                  <SidebarMenuButton asChild>
+                    <a href={item.url} target="_blank" rel="noopener noreferrer">
+                      <item.icon />
+                      <span>{t(item.titleKey)}</span>
+                    </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -211,7 +275,6 @@ export default function MainSidebar() {
                     ) : (
                       <Skeleton className="h-6 w-full" />
                     )}
-                    <ChevronUp className="ml-auto" />
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
