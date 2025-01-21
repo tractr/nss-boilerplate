@@ -278,6 +278,12 @@ export default function MainSidebar() {
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
+                  <DropdownMenuItem asChild>
+                    <Link href="/v2/profile">
+                      <User2 className="h-[1.2rem] w-[1.2rem]" />
+                      <span>{t('navigation.profile')}</span>
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={_logout}>
                     <LogOut className="h-[1.2rem] w-[1.2rem]" />
                     <span data-testid="logout-button">{t('actions.logout')}</span>

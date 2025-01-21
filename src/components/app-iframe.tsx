@@ -5,11 +5,12 @@ import { useEffect } from 'react';
 import supabaseClient from '@/lib/supabase-client';
 import { cn } from '@/lib/utils';
 import { AuthChangeEvent, Session } from '@supabase/supabase-js';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useCurrentProperty } from '@/hooks/use-current-property';
 
 export default function AppIframe(props: { className?: string; pathname?: string }) {
   const router = useRouter();
+  const pathname = usePathname();
   const baseUrl = process.env.NEXT_PUBLIC_EDWIX_APP_URL;
   const { currentProperty } = useCurrentProperty();
 
@@ -57,6 +58,16 @@ export default function AppIframe(props: { className?: string; pathname?: string
       if (currentSession.error) return;
 
       console.log('handling message in container', e.data);
+
+      if (e.data.event === 'URL_CHANGED') {
+        const url = new URL(e.data.href);
+        const nextPathname = url.pathname.replace(/^\/(en|fr)/, '');
+        if (pathname !== nextPathname) {
+          router.push(nextPathname);
+        }
+
+        return;
+      }
 
       const tokenChanged =
         ['TOKEN_REFRESHED', 'SIGNED_IN'].includes(e.data.event) &&
