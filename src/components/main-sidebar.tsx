@@ -1,5 +1,6 @@
 'use client';
 
+import { EdwixButton } from './edwix-button';
 import {
   Sidebar,
   SidebarContent,
@@ -157,6 +158,7 @@ export default function MainSidebar() {
       </SidebarHeader>
 
       <PropertySelect />
+      <EdwixButton />
 
       <SidebarContent>
         <SidebarGroup>
