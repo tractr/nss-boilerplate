@@ -19,6 +19,13 @@ import {
   MessageSquare,
 } from 'lucide-react';
 import Link from 'next/link';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from './ui/dropdown-menu';
 import Image from 'next/image';
 import {
   Select,
@@ -31,6 +38,23 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useTheme } from 'next-themes';
+
+interface MenuItem {
+  value: string;
+  label: string;
+  icon: React.ElementType;
+  href?: string;
+}
+
+interface UserMenuItem {
+  profile: {
+    name: string;
+    email: string;
+  };
+  mainItems: MenuItem[];
+  settingsItems: MenuItem[];
+  supportItems: MenuItem[];
+}
 
 const LogoSection = () => {
   return (
@@ -46,7 +70,13 @@ const LogoSection = () => {
   );
 };
 
-const MainMenuSelect = ({ theme, menuItems }) => {
+const MainMenuSelect = ({
+  theme,
+  menuItems,
+}: {
+  theme: string | undefined;
+  menuItems: MenuItem[];
+}) => {
   return (
     <div className="w-48">
       <Select defaultValue="drive">
@@ -61,7 +91,7 @@ const MainMenuSelect = ({ theme, menuItems }) => {
         <SelectContent className={theme === 'dark' ? 'bg-gray-800 text-white' : ''}>
           <SelectGroup>
             <SelectLabel>Links</SelectLabel>
-            {menuItems.map(item => (
+            {menuItems.map((item: MenuItem) => (
               <SelectItem key={item.value} value={item.value}>
                 <div className="flex items-center">
                   <item.icon className="mr-2 h-4 w-4" />
@@ -90,7 +120,7 @@ const AddButton = () => {
   );
 };
 
-const SearchButton = ({ theme }) => {
+const SearchButton = ({ theme }: { theme: string | undefined }) => {
   return (
     <button
       className={`inline-flex items-center justify-center rounded-full text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent h-10 w-10 ${
@@ -102,7 +132,7 @@ const SearchButton = ({ theme }) => {
   );
 };
 
-const PropertySelect = ({ theme }) => {
+const PropertySelect = ({ theme }: { theme: string | undefined }) => {
   return (
     <Select>
       <SelectTrigger
@@ -128,80 +158,85 @@ const PropertySelect = ({ theme }) => {
     </Select>
   );
 };
-
-const NotificationsSelect = ({ theme }) => {
+const NotificationsSelect = ({ theme }: { theme: string | undefined }) => {
   return (
-    <Select>
-      <SelectTrigger
-        className={`flex border shadow-none border-gray-200  items-center justify-center text-sm font-medium w-10 relative rounded-full p-1 ${
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        className={`flex border shadow-none border-gray-200 items-center justify-center text-sm font-medium w-10 relative rounded-full p-1 ${
           theme === 'dark' ? 'bg-gray-800' : ''
         }`}
       >
         <Bell
-          className={`h boder-none shadow-none  w-5 ${
+          className={`h boder-none shadow-none w-5 ${
             theme === 'dark' ? 'text-white' : 'text-gray-700'
           }`}
         />
         <span className="absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center rounded-full bg-red-500 text-xs text-white font-medium bg-red ring-red dark:ring-gray-800">
           2
         </span>
-      </SelectTrigger>
+      </DropdownMenuTrigger>
 
-      <SelectContent className={`w-72 ${theme === 'dark' ? 'bg-gray-800 text-white' : ''}`}>
-        <SelectGroup>
-          <SelectLabel>New Notifications</SelectLabel>
-          <SelectItem value="notif1">
-            <div className="flex items-center">
-              <Bell className="mr-2 h-4 w-4 text-red-500" />
-              <div>
-                <p className="text-sm">New message from John</p>
-                <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                  2 minutes ago
-                </p>
-              </div>
+      <DropdownMenuContent className={`w-72 ${theme === 'dark' ? 'bg-gray-800 text-white' : ''}`}>
+        <div className="px-2 py-1.5">
+          <h4 className="text-sm font-semibold">New Notifications</h4>
+        </div>
+        <DropdownMenuItem>
+          <div className="flex items-center">
+            <Bell className="mr-2 h-4 w-4 text-red-500" />
+            <div>
+              <p className="text-sm">New message from John</p>
+              <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                2 minutes ago
+              </p>
             </div>
-          </SelectItem>
-          <SelectItem value="notif2">
-            <div className="flex items-center">
-              <Bell className="mr-2 h-4 w-4 text-red-500" />
-              <div>
-                <p className="text-sm">Document shared by Sarah</p>
-                <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                  1 hour ago
-                </p>
-              </div>
+          </div>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <div className="flex items-center">
+            <Bell className="mr-2 h-4 w-4 text-red-500" />
+            <div>
+              <p className="text-sm">Document shared by Sarah</p>
+              <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                1 hour ago
+              </p>
             </div>
-          </SelectItem>
-        </SelectGroup>
-        <SelectSeparator />
-        <SelectGroup>
-          <SelectLabel>Read</SelectLabel>
-          <SelectItem value="notif3">
-            <div className="flex items-center">
-              <Bell className="mr-2 h-4 w-4 text-gray-400" />
-              <div>
-                <p className="text-sm">Task completed</p>
-                <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                  Yesterday
-                </p>
-              </div>
+          </div>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <div className="px-2 py-1.5">
+          <h4 className="text-sm font-semibold">Read</h4>
+        </div>
+        <DropdownMenuItem>
+          <div className="flex items-center">
+            <Bell className="mr-2 h-4 w-4 text-gray-400" />
+            <div>
+              <p className="text-sm">Task completed</p>
+              <p className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                Yesterday
+              </p>
             </div>
-          </SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+          </div>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
-const UserMenuSelect = ({ theme, userMenuItems }) => {
+const UserMenuSelect = ({
+  theme,
+  userMenuItems,
+}: {
+  theme: string | undefined;
+  userMenuItems: UserMenuItem;
+}) => {
   return (
-    <Select>
-      <SelectTrigger
+    <DropdownMenu>
+      <DropdownMenuTrigger
         className={`rounded-full w-[40px] p-0 border-0 ${theme === 'dark' ? 'bg-gray-800' : ''}`}
       >
         <User className={`h-5 w-5 ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`} />
-      </SelectTrigger>
-      <SelectContent className={`w-56 ${theme === 'dark' ? 'bg-gray-800 text-white' : ''}`}>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className={`w-56 ${theme === 'dark' ? 'bg-gray-800 text-white' : ''}`}>
         <div className="px-2 py-1.5 text-sm font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">{userMenuItems.profile.name}</p>
@@ -214,42 +249,42 @@ const UserMenuSelect = ({ theme, userMenuItems }) => {
             </p>
           </div>
         </div>
-        <SelectSeparator className="-mx-1 my-1 h-px bg-gray-200" />
-        {userMenuItems.mainItems.map(item => (
-          <SelectItem key={item.value} value={item.value}>
-            <Link href={item.href} className="flex items-center">
+        <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-gray-200" />
+        {userMenuItems.mainItems.map((item: MenuItem) => (
+          <DropdownMenuItem key={item.value} asChild>
+            <Link href={item.href || ''} className="flex items-center">
               <item.icon className="mr-2 h-4 w-4" />
               {item.label}
             </Link>
-          </SelectItem>
+          </DropdownMenuItem>
         ))}
-        <SelectSeparator className="-mx-1 my-1 h-px bg-gray-200" />
-        {userMenuItems.settingsItems.map(item => (
-          <SelectItem key={item.value} value={item.value}>
-            <Link href={item.href} className="flex items-center">
+        <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-gray-200" />
+        {userMenuItems.settingsItems.map((item: MenuItem) => (
+          <DropdownMenuItem key={item.value} asChild>
+            <Link href={item.href || ''} className="flex items-center">
               <item.icon className="mr-2 h-4 w-4" />
               {item.label}
             </Link>
-          </SelectItem>
+          </DropdownMenuItem>
         ))}
-        <SelectSeparator className="-mx-1 my-1 h-px bg-gray-200" />
-        {userMenuItems.supportItems.map(item => (
-          <SelectItem key={item.value} value={item.value}>
-            <Link href={item.href} className="flex items-center">
+        <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-gray-200" />
+        {userMenuItems.supportItems.map((item: MenuItem) => (
+          <DropdownMenuItem key={item.value} asChild>
+            <Link href={item.href || ''} className="flex items-center">
               <item.icon className="mr-2 h-4 w-4" />
               {item.label}
             </Link>
-          </SelectItem>
+          </DropdownMenuItem>
         ))}
-        <SelectSeparator className="-mx-1 my-1 h-px bg-gray-200" />
-        <SelectItem value="logout">
+        <DropdownMenuSeparator className="-mx-1 my-1 h-px bg-gray-200" />
+        <DropdownMenuItem>
           <div className="flex items-center">
             <LogOut className="mr-2 h-4 w-4" />
             Log out
           </div>
-        </SelectItem>
-      </SelectContent>
-    </Select>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
@@ -287,11 +322,12 @@ const Navbar = () => {
   const { theme } = useTheme();
   console.log(theme);
   return (
-    <div className="sticky z-10 top-0 w-full">
-      <nav className={`${theme === 'dark' ? 'bg-gray-900' : 'bg-white'} border border-bottom`}>
+    <div className="  z-50 top-0 w-full sticky">
+      <nav className={`bg-background w-full`}>
         <div className="px-8 h-16 flex items-center">
           <LogoSection />
-          <MainMenuSelect theme={theme} menuItems={menuItems} />
+          {/* <MainMenuSelect theme={theme} menuItems={menuItems} /> */}
+
           <div className="flex-grow"></div>
           <div className="flex items-center space-x-4">
             <AddButton />

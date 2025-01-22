@@ -44,6 +44,7 @@ import { usePathname } from 'next/navigation';
 import { ForwardRefExoticComponent, RefAttributes, useState } from 'react';
 import { SettingsModal } from '@/components/settings-modal';
 import { useTranslations } from 'next-intl';
+import Navbar from './horizontal-navbar';
 import { PropertySelect } from '@/components/property-select';
 
 // Workspace items
@@ -149,157 +150,161 @@ export default function MainSidebar() {
   };
 
   return (
-    <Sidebar>
-      <SidebarHeader>
-        <div className="flex-1 flex items-center justify-center p-4">
-          <Image src="/images/logo.svg" alt={t('common.logo')} width={130} height={100} />
-        </div>
-      </SidebarHeader>
+    <>
+      <Sidebar>
+        <SidebarHeader>
+          <div className="flex-1 flex items-center justify-center p-4">
+            <Image src="/images/logo.svg" alt={t('common.logo')} width={130} height={100} />
+          </div>
+        </SidebarHeader>
 
-      <PropertySelect />
+        <PropertySelect />
 
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    asChild
+                    className={
+                      pathname === '/' ? 'text-blue [&_svg]:bg-blue [&_svg]:text-white' : ''
+                    }
+                  >
+                    <Link href="/">
+                      <Home />
+                      <span>{t('navigation.home')}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+          <SidebarGroup>
+            <SidebarGroupLabel>{t('navigation.workspaces')}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {workspaceItems.map(item => (
+                  <SidebarMenuItem key={item.titleKey}>
+                    <SidebarMenuButton
+                      asChild
+                      className={
+                        pathname === item.url ? 'text-blue [&_svg]:bg-blue [&_svg]:text-white' : ''
+                      }
+                    >
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span>{t(item.titleKey)}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+          <SidebarGroup>
+            <SidebarGroupLabel>{t('navigation.explorer')}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {explorerItems.map(item => (
+                  <SidebarMenuItem key={item.titleKey}>
+                    <SidebarMenuButton
+                      asChild
+                      className={
+                        pathname === item.url ? 'text-blue [&_svg]:bg-blue [&_svg]:text-white' : ''
+                      }
+                    >
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span>{t(item.titleKey)}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+          <SidebarGroup>
+            <SidebarGroupLabel>{t('navigation.property')}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {propertyItems.map(item => (
+                  <SidebarMenuItem key={item.titleKey}>
+                    <SidebarMenuButton
+                      asChild
+                      className={
+                        pathname === item.url ? 'text-blue [&_svg]:bg-blue [&_svg]:text-white' : ''
+                      }
+                    >
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span>{t(item.titleKey)}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+          <SidebarGroup>
+            <SidebarGroupLabel>{t('navigation.support')}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {supportItems.map(item => (
+                  <SidebarMenuItem key={item.titleKey}>
+                    <SidebarMenuButton asChild>
+                      <a href={item.url} target="_blank" rel="noopener noreferrer">
+                        <item.icon />
+                        <span>{t(item.titleKey)}</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+        <SidebarFooter>
+          <div className="flex items-center justify-between gap-2">
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  className={pathname === '/' ? 'text-blue [&_svg]:bg-blue [&_svg]:text-white' : ''}
-                >
-                  <Link href="/">
-                    <Home />
-                    <span>{t('navigation.home')}</span>
-                  </Link>
-                </SidebarMenuButton>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <SidebarMenuButton data-testid="user-button">
+                      <User2 />
+                      {currentUser?.data?.email ? (
+                        <span className="h-6 inline-flex items-center text-sm truncate flex-shrink">
+                          {currentUser?.data?.email}
+                        </span>
+                      ) : (
+                        <Skeleton className="h-6 w-full" />
+                      )}
+                    </SidebarMenuButton>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
+                    <DropdownMenuItem asChild>
+                      <Link href="/v2/profile">
+                        <User2 className="h-[1.2rem] w-[1.2rem]" />
+                        <span>{t('navigation.profile')}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={_logout}>
+                      <LogOut className="h-[1.2rem] w-[1.2rem]" />
+                      <span data-testid="logout-button">{t('actions.logout')}</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setShowSettings(true)}>
+                      <Monitor className="h-[1.2rem] w-[1.2rem]" />
+                      <span>{t('actions.openSettings')}</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </SidebarMenuItem>
             </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>{t('navigation.workspaces')}</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {workspaceItems.map(item => (
-                <SidebarMenuItem key={item.titleKey}>
-                  <SidebarMenuButton
-                    asChild
-                    className={
-                      pathname === item.url ? 'text-blue [&_svg]:bg-blue [&_svg]:text-white' : ''
-                    }
-                  >
-                    <Link href={item.url}>
-                      <item.icon />
-                      <span>{t(item.titleKey)}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>{t('navigation.explorer')}</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {explorerItems.map(item => (
-                <SidebarMenuItem key={item.titleKey}>
-                  <SidebarMenuButton
-                    asChild
-                    className={
-                      pathname === item.url ? 'text-blue [&_svg]:bg-blue [&_svg]:text-white' : ''
-                    }
-                  >
-                    <Link href={item.url}>
-                      <item.icon />
-                      <span>{t(item.titleKey)}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>{t('navigation.property')}</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {propertyItems.map(item => (
-                <SidebarMenuItem key={item.titleKey}>
-                  <SidebarMenuButton
-                    asChild
-                    className={
-                      pathname === item.url ? 'text-blue [&_svg]:bg-blue [&_svg]:text-white' : ''
-                    }
-                  >
-                    <Link href={item.url}>
-                      <item.icon />
-                      <span>{t(item.titleKey)}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>{t('navigation.support')}</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {supportItems.map(item => (
-                <SidebarMenuItem key={item.titleKey}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url} target="_blank" rel="noopener noreferrer">
-                      <item.icon />
-                      <span>{t(item.titleKey)}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter>
-        <div className="flex items-center justify-between gap-2">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton data-testid="user-button">
-                    <User2 />
-                    {currentUser?.data?.email ? (
-                      <span className="h-6 inline-flex items-center text-sm truncate flex-shrink">
-                        {currentUser?.data?.email}
-                      </span>
-                    ) : (
-                      <Skeleton className="h-6 w-full" />
-                    )}
-                  </SidebarMenuButton>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
-                  <DropdownMenuItem asChild>
-                    <Link href="/v2/profile">
-                      <User2 className="h-[1.2rem] w-[1.2rem]" />
-                      <span>{t('navigation.profile')}</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={_logout}>
-                    <LogOut className="h-[1.2rem] w-[1.2rem]" />
-                    <span data-testid="logout-button">{t('actions.logout')}</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setShowSettings(true)}>
-                    <Monitor className="h-[1.2rem] w-[1.2rem]" />
-                    <span>{t('actions.openSettings')}</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </SidebarMenuItem>
-          </SidebarMenu>
 
-          <SettingsModal open={showSettings} onOpenChange={setShowSettings} />
-        </div>
-      </SidebarFooter>
-    </Sidebar>
+            <SettingsModal open={showSettings} onOpenChange={setShowSettings} />
+          </div>
+        </SidebarFooter>
+      </Sidebar>
+    </>
   );
 }

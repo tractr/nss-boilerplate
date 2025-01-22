@@ -3,6 +3,8 @@ import localFont from 'next/font/local';
 import './globals.css';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
+
+import Navbar from '@/components/horizontal-navbar';
 import { ReactQueryProvider } from '@/components/react-query-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/theme-provider';
