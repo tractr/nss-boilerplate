@@ -34,24 +34,302 @@ export type Database = {
   }
   public: {
     Tables: {
-      todos: {
+      Config: {
+        Row: {
+          key: string
+          value: string
+        }
+        Insert: {
+          key: string
+          value: string
+        }
+        Update: {
+          key?: string
+          value?: string
+        }
+        Relationships: []
+      }
+      File: {
         Row: {
           created_at: string
-          done: boolean | null
-          id: number
-          label: string | null
+          file_bucket: string
+          file_path: string
+          id: string
         }
         Insert: {
           created_at?: string
-          done?: boolean | null
-          id?: number
-          label?: string | null
+          file_bucket: string
+          file_path: string
+          id?: string
         }
         Update: {
           created_at?: string
-          done?: boolean | null
-          id?: number
-          label?: string | null
+          file_bucket?: string
+          file_path?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      Menu: {
+        Row: {
+          created_at: string
+          file: string | null
+          id: string
+          label: string
+          owner: string
+          updated_date: string | null
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          file?: string | null
+          id?: string
+          label: string
+          owner: string
+          updated_date?: string | null
+          version?: number
+        }
+        Update: {
+          created_at?: string
+          file?: string | null
+          id?: string
+          label?: string
+          owner?: string
+          updated_date?: string | null
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Menu_file_fkey"
+            columns: ["file"]
+            isOneToOne: false
+            referencedRelation: "File"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Sell: {
+        Row: {
+          created_at: string
+          file: string | null
+          id: string
+          label: string
+          owner: string
+          updated_date: string | null
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          file?: string | null
+          id?: string
+          label: string
+          owner: string
+          updated_date?: string | null
+          version?: number
+        }
+        Update: {
+          created_at?: string
+          file?: string | null
+          id?: string
+          label?: string
+          owner?: string
+          updated_date?: string | null
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Sell_file_fkey"
+            columns: ["file"]
+            isOneToOne: false
+            referencedRelation: "File"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      StreamIAHistory: {
+        Row: {
+          created_at: string
+          finished_at: string | null
+          id: string
+          input: Json
+          output: Json | null
+          state: string
+          step: Database["public"]["Enums"]["StreamIAStep"]
+        }
+        Insert: {
+          created_at?: string
+          finished_at?: string | null
+          id?: string
+          input: Json
+          output?: Json | null
+          state: string
+          step: Database["public"]["Enums"]["StreamIAStep"]
+        }
+        Update: {
+          created_at?: string
+          finished_at?: string | null
+          id?: string
+          input?: Json
+          output?: Json | null
+          state?: string
+          step?: Database["public"]["Enums"]["StreamIAStep"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "StreamIAHistory_state_fkey"
+            columns: ["state"]
+            isOneToOne: false
+            referencedRelation: "StreamIAState"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      StreamIAMenuOCR: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          ingredients: string[]
+          item: string
+          price: number
+          state: string
+          type: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          id?: string
+          ingredients: string[]
+          item: string
+          price: number
+          state: string
+          type: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          ingredients?: string[]
+          item?: string
+          price?: number
+          state?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "StreamIAMenuOCR_state_fkey"
+            columns: ["state"]
+            isOneToOne: false
+            referencedRelation: "StreamIAMenuState"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      StreamIAMenuState: {
+        Row: {
+          created_at: string
+          id: string
+          menu: string
+          state: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          menu: string
+          state: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          menu?: string
+          state?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "MenuProcessState_menu_fkey"
+            columns: ["menu"]
+            isOneToOne: false
+            referencedRelation: "Menu"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "StreamIAMenuState_state_fkey"
+            columns: ["state"]
+            isOneToOne: false
+            referencedRelation: "StreamIAState"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      StreamIASellState: {
+        Row: {
+          created_at: string
+          id: string
+          sell: string
+          state: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          sell: string
+          state: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          sell?: string
+          state?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "StreamIASellState_sell_fkey"
+            columns: ["sell"]
+            isOneToOne: false
+            referencedRelation: "Sell"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "StreamIASellState_state_fkey"
+            columns: ["state"]
+            isOneToOne: false
+            referencedRelation: "StreamIAState"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      StreamIAState: {
+        Row: {
+          created_at: string
+          current_step: Database["public"]["Enums"]["StreamIAStep"] | null
+          error_message: string | null
+          id: string
+          status: Database["public"]["Enums"]["StreamIAProcessStatus"]
+          type: Database["public"]["Enums"]["StreamIAType"]
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          current_step?: Database["public"]["Enums"]["StreamIAStep"] | null
+          error_message?: string | null
+          id?: string
+          status?: Database["public"]["Enums"]["StreamIAProcessStatus"]
+          type: Database["public"]["Enums"]["StreamIAType"]
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          current_step?: Database["public"]["Enums"]["StreamIAStep"] | null
+          error_message?: string | null
+          id?: string
+          status?: Database["public"]["Enums"]["StreamIAProcessStatus"]
+          type?: Database["public"]["Enums"]["StreamIAType"]
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -63,7 +341,14 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      StreamIAProcessStatus:
+        | "created"
+        | "processing"
+        | "step-finished"
+        | "fully-finished"
+        | "error"
+      StreamIAStep: "menu_step1" | "menu_step2" | "sell_step1" | "sell_step2"
+      StreamIAType: "menu" | "sell"
     }
     CompositeTypes: {
       [_ in never]: never

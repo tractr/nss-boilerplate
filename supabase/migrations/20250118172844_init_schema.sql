@@ -68,7 +68,8 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "extensions";
 CREATE TYPE "public"."StreamIAProcessStatus" AS ENUM (
     'created',
     'processing',
-    'finished',
+    'step-finished',
+    'fully-finished',
     'error'
 );
 
@@ -152,6 +153,35 @@ COMMENT ON TABLE "public"."Sell" IS 'This is a duplicate of Menu';
 
 
 
+CREATE TABLE IF NOT EXISTS "public"."StreamIAHistory" (
+    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
+    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
+    "state" "uuid" NOT NULL,
+    "input" "jsonb" NOT NULL,
+    "output" "jsonb",
+    "finished_at" timestamp with time zone,
+    "step" "public"."StreamIAStep" NOT NULL
+);
+
+
+ALTER TABLE "public"."StreamIAHistory" OWNER TO "postgres";
+
+
+CREATE TABLE IF NOT EXISTS "public"."StreamIAMenuOCR" (
+    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
+    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
+    "state" "uuid" NOT NULL,
+    "item" "text" NOT NULL,
+    "price" real NOT NULL,
+    "category" "text" NOT NULL,
+    "type" "text" NOT NULL,
+    "ingredients" "text"[] NOT NULL
+);
+
+
+ALTER TABLE "public"."StreamIAMenuOCR" OWNER TO "postgres";
+
+
 CREATE TABLE IF NOT EXISTS "public"."StreamIAMenuState" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
@@ -215,6 +245,16 @@ ALTER TABLE ONLY "public"."Sell"
 
 
 
+ALTER TABLE ONLY "public"."StreamIAHistory"
+    ADD CONSTRAINT "StreamIAHistory_pkey" PRIMARY KEY ("id");
+
+
+
+ALTER TABLE ONLY "public"."StreamIAMenuOCR"
+    ADD CONSTRAINT "StreamIAMenuOCR_pkey" PRIMARY KEY ("id");
+
+
+
 ALTER TABLE ONLY "public"."StreamIAState"
     ADD CONSTRAINT "StreamIAProcessState_pkey" PRIMARY KEY ("id");
 
@@ -255,6 +295,16 @@ ALTER TABLE ONLY "public"."Sell"
 
 
 
+ALTER TABLE ONLY "public"."StreamIAHistory"
+    ADD CONSTRAINT "StreamIAHistory_state_fkey" FOREIGN KEY ("state") REFERENCES "public"."StreamIAState"("id") ON DELETE CASCADE;
+
+
+
+ALTER TABLE ONLY "public"."StreamIAMenuOCR"
+    ADD CONSTRAINT "StreamIAMenuOCR_state_fkey" FOREIGN KEY ("state") REFERENCES "public"."StreamIAMenuState"("id") ON DELETE CASCADE;
+
+
+
 ALTER TABLE ONLY "public"."StreamIAMenuState"
     ADD CONSTRAINT "StreamIAMenuState_state_fkey" FOREIGN KEY ("state") REFERENCES "public"."StreamIAState"("id") ON DELETE CASCADE;
 
@@ -280,6 +330,12 @@ ALTER TABLE "public"."Menu" ENABLE ROW LEVEL SECURITY;
 
 
 ALTER TABLE "public"."Sell" ENABLE ROW LEVEL SECURITY;
+
+
+ALTER TABLE "public"."StreamIAHistory" ENABLE ROW LEVEL SECURITY;
+
+
+ALTER TABLE "public"."StreamIAMenuOCR" ENABLE ROW LEVEL SECURITY;
 
 
 ALTER TABLE "public"."StreamIAMenuState" ENABLE ROW LEVEL SECURITY;
@@ -516,6 +572,18 @@ GRANT ALL ON TABLE "public"."Menu" TO "service_role";
 GRANT ALL ON TABLE "public"."Sell" TO "anon";
 GRANT ALL ON TABLE "public"."Sell" TO "authenticated";
 GRANT ALL ON TABLE "public"."Sell" TO "service_role";
+
+
+
+GRANT ALL ON TABLE "public"."StreamIAHistory" TO "anon";
+GRANT ALL ON TABLE "public"."StreamIAHistory" TO "authenticated";
+GRANT ALL ON TABLE "public"."StreamIAHistory" TO "service_role";
+
+
+
+GRANT ALL ON TABLE "public"."StreamIAMenuOCR" TO "anon";
+GRANT ALL ON TABLE "public"."StreamIAMenuOCR" TO "authenticated";
+GRANT ALL ON TABLE "public"."StreamIAMenuOCR" TO "service_role";
 
 
 
