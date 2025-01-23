@@ -85,7 +85,7 @@ export type Database = {
           file?: string | null
           id?: string
           label: string
-          owner: string
+          owner?: string
           updated_date?: string | null
           version?: number
         }

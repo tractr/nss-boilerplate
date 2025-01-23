@@ -1,21 +1,35 @@
 {
   "actions": {
-    "login": "Connexion",
-    "logout": "Déconnexion",
+    "login": "Se connecter",
+    "logout": "Se déconnecter",
     "openSettings": "Ouvrir les paramètres",
-    "add": "Ajouter"
+    "add": "Ajouter",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "cancel": "Annuler"
   },
   "home": {
     "welcome": "Bienvenue, {email}",
-    "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos atque nisi necessitatibus neque voluptates libero aperiam nam repellat quam, ab perferendis cum animi repellendus ratione eius dolores et iure rerum!"
+    "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos atque nisi necessitatibus neque voluptates libero aperiam nam repellat quam, ab perferendis cum animi repellendus ratione eius dolores et iure rerum!",
+    "activeMenu": {
+      "title": "Menu actif",
+      "description": "Informations sur le menu actuellement sélectionné",
+      "name": "Nom",
+      "id": "Identifiant",
+      "noMenu": "Aucun menu sélectionné"
+    }
   },
   "common": {
-    "logo": "Logo"
+    "logo": "Logo",
+    "loading": "Chargement..."
   },
   "navigation": {
-    "home": "Accueil",
+    "home": "Dashboard",
     "mainMenu": "Menu principal",
-    "todos": "Tâches"
+    "todos": "Tâches",
+    "manageMenus": "Gérer les menus"
   },
   "settings": {
     "title": "Paramètres",
@@ -35,7 +49,7 @@
     "signInTitle": "Connectez-vous à votre compte",
     "emailLabel": "Adresse e-mail",
     "emailPlaceholder": "Adresse e-mail",
-    "emailRequired": "L'email est requis",
+    "emailRequired": "L'e-mail est requis",
     "emailInvalid": "Adresse e-mail invalide",
     "passwordLabel": "Mot de passe",
     "passwordPlaceholder": "Mot de passe",
@@ -47,6 +61,16 @@
     "title": "Tâches",
     "newTodoPlaceholder": "Ajouter une nouvelle tâche...",
     "noTodos": "Aucune tâche pour le moment",
-    "showAll": "Afficher tout"
+    "showAll": "Tout afficher"
+  },
+  "menus": {
+    "selectMenu": "Sélectionner un menu...",
+    "title": "Menus",
+    "createMenu": "Créer un menu",
+    "editMenu": "Modifier le menu",
+    "label": "Libellé",
+    "version": "Version",
+    "actions": "Actions",
+    "image": "Image"
   }
 }

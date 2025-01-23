@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, User2, ChevronUp, ListCheck, Monitor, LogOut, LucideProps } from 'lucide-react';
+import { Home, User2, ChevronUp, Monitor, LogOut, LucideProps } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,25 +28,23 @@ import { usePathname } from 'next/navigation';
 import { ForwardRefExoticComponent, RefAttributes, useState } from 'react';
 import { SettingsModal } from '@/components/settings-modal';
 import { useTranslations } from 'next-intl';
+import { MenuIcon } from 'lucide-react';
+import { useMenus } from '@/hooks/use-menus';
+import { Button } from '@/components/ui/button';
 
 // Menu items
 const items: Array<{
   titleKey: string;
   url: string;
   icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
-}> = [
-  {
-    titleKey: 'navigation.todos',
-    url: '/todos',
-    icon: ListCheck,
-  },
-];
+}> = [];
 
 export default function MainSidebar() {
   const currentUser = useCurrentUser();
   const pathname = usePathname();
   const [showSettings, setShowSettings] = useState(false);
   const t = useTranslations();
+  const { menus, activeMenuId, setActiveMenuId, isLoading } = useMenus();
 
   const _logout = async () => {
     const { error } = await supabaseClient.auth.signOut();
@@ -67,6 +65,42 @@ export default function MainSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
+            <div className="px-2 py-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="w-full justify-start">
+                    {activeMenuId
+                      ? menus?.find(m => m.id === activeMenuId)?.label
+                      : t('menus.selectMenu')}
+                    <ChevronUp className="ml-auto h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {isLoading ? (
+                    <DropdownMenuItem disabled>{t('common.loading')}</DropdownMenuItem>
+                  ) : (
+                    <>
+                      {menus?.map(menu => (
+                        <DropdownMenuItem key={menu.id} onClick={() => setActiveMenuId(menu.id)}>
+                          {menu.label}
+                        </DropdownMenuItem>
+                      ))}
+                      <DropdownMenuItem asChild className="border-t">
+                        <Link href="/menus" className="flex items-center">
+                          <MenuIcon className="w-4 h-4 mr-2" />
+                          {t('navigation.manageMenus')}
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>{t('navigation.mainMenu')}</SidebarGroupLabel>
+          <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild className={pathname === '/' ? 'bg-accent' : ''}>
@@ -76,13 +110,6 @@ export default function MainSidebar() {
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>{t('navigation.mainMenu')}</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
               {items.map(item => (
                 <SidebarMenuItem key={item.titleKey}>
                   <SidebarMenuButton asChild className={pathname === item.url ? 'bg-accent' : ''}>

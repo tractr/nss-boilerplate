@@ -3,7 +3,12 @@
     "login": "Login",
     "logout": "Logout",
     "openSettings": "Open settings",
-    "add": "Add"
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel"
   },
   "auth": {
     "signInTitle": "Sign in to your account",
@@ -22,7 +27,8 @@
     "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos atque nisi necessitatibus neque voluptates libero aperiam nam repellat quam, ab perferendis cum animi repellendus ratione eius dolores et iure rerum!"
   },
   "common": {
-    "logo": "Logo"
+    "logo": "Logo",
+    "loading": "Loading..."
   },
   "navigation": {
     "home": "Home",
@@ -48,5 +54,15 @@
     "newTodoPlaceholder": "Add a new todo...",
     "noTodos": "No todos yet",
     "showAll": "Show all"
+  },
+  "menus": {
+    "selectMenu": "Select a menu...",
+    "title": "Menus",
+    "createMenu": "Create Menu",
+    "editMenu": "Edit Menu",
+    "label": "Label",
+    "version": "Version",
+    "actions": "Actions",
+    "image": "Image"
   }
 }
