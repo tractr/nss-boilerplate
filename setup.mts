@@ -1,7 +1,7 @@
 import { spawn } from 'child_process';
 import fs from 'fs/promises';
 import { existsSync } from 'fs';
-import { SupabaseClient } from '@supabase/supabase-js';
+import SupabaseClient from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import readline from 'readline';
 
@@ -89,7 +89,7 @@ async function generateTypes(): Promise<void> {
     });
   });
 }
-async function createPublicBucket(client: SupabaseClient) {
+async function createPublicBucket(client: SupabaseClient.SupabaseClient) {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -162,7 +162,7 @@ async function promptUser(): Promise<{ email: string; password: string }> {
   return { email, password };
 }
 
-async function createInitialUser(client: SupabaseClient) {
+async function createInitialUser(client: SupabaseClient.SupabaseClient) {
   // Check if any users exist
   const { data: existingUsers, error: usersError } = await client.auth.admin.listUsers();
 
@@ -190,7 +190,7 @@ async function createInitialUser(client: SupabaseClient) {
 }
 
 async function logSetupSummary(config: SupabaseConfig) {
-  const client = new SupabaseClient(config.SUPABASE_URL, config.SUPABASE_SERVICE_ROLE_KEY);
+  const client = new SupabaseClient.SupabaseClient(config.SUPABASE_URL, config.SUPABASE_SERVICE_ROLE_KEY);
   const { data: userData } = await client.auth.admin.listUsers();
 
   console.log('\n=== Supabase Setup Summary ===');
@@ -206,7 +206,7 @@ async function logSetupSummary(config: SupabaseConfig) {
 if (existsSync('.env')) {
   console.log('Loading existing Supabase configuration...');
   dotenv.config();
-  const client = new SupabaseClient(
+  const client = new SupabaseClient.SupabaseClient(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
@@ -269,7 +269,7 @@ supabaseStart.stdout.on('data', async data => {
   env = env.replace(/^\s+/gm, '');
   await fs.writeFile('.env', env);
   console.log('✓ Environment variables written to .env');
-  const client = new SupabaseClient(config.SUPABASE_URL, config.SUPABASE_SERVICE_ROLE_KEY);
+  const client = new SupabaseClient.SupabaseClient(config.SUPABASE_URL, config.SUPABASE_SERVICE_ROLE_KEY);
   console.log('✓ Supabase client initialized');
   await createPublicBucket(client);
   await createInitialUser(client);
