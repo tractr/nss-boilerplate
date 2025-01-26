@@ -167,6 +167,7 @@ async function createInitialUser(client: SupabaseClient.SupabaseClient) {
   const { data: existingUsers, error: usersError } = await client.auth.admin.listUsers();
 
   if (usersError) {
+
     console.error('Error checking for existing users:', usersError);
     return;
   }
@@ -205,6 +206,22 @@ async function logSetupSummary(config: SupabaseConfig) {
 // Load existing env vars if .env exists
 if (existsSync('.env')) {
   console.log('Loading existing Supabase configuration...');
+  try {
+    await fs.access('.env', fs.constants.F_OK);
+    const checkStatus = spawn('npx', ['supabase', 'status']);
+    const response = await new Promise((resolve, reject) => {
+      checkStatus.on('error', (error) => reject(error));
+      checkStatus.on('close', (code) => resolve(code === 0));
+    });
+    if (!response) {
+      console.error('Supabase is not running. Please start Supabase first with: npx supabase start');
+      process.exit(1);
+    }
+    console.log('✓ Supabase is running');
+  } catch (error) {
+    console.error('Error checking Supabase status:', error);
+    process.exit(1);
+  }
   dotenv.config();
   const client = new SupabaseClient.SupabaseClient(
     process.env.SUPABASE_URL!,
@@ -231,6 +248,9 @@ if (existsSync('.env')) {
 // No .env file, start Supabase and create one
 console.log('Starting new Supabase project...');
 const supabaseStart = spawn('npx', ['supabase', 'start']);
+supabaseStart.stderr.on('data', (data) => {
+  console.error('Error: Supabase is not running. Please ensure Supabase is installed and running properly.\n', data.toString());
+});
 
 supabaseStart.stdout.on('data', async data => {
   const output: string = data.toString();
