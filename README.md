@@ -86,12 +86,18 @@ Update the `.env` file with your Supabase credentials:
 - `SUPABASE_URL`: Usually `http://127.0.0.1:54321`
 - `SUPABASE_ANON_KEY`: The anon key from step 3
 - `SUPABASE_BASE_KEY`: Same as your anon key for local development
-
 6. Create a first user:
 
+a) Using the setup script:
+```bash
+npm run setup
+```
+This will guide you through creating your first admin user interactively & bucket setup.
+
+b) Manually through Supabase Studio:
 - Open Supabase Studio at `http://127.0.0.1:54323`
 - Go to Authentication > Users
-- Create a new user with email/password
+- Create a new user with email/password and set to "auto-confirm"
 - Ensure the user has the `authenticated` role
 
 7. Start the development server:
