@@ -72,7 +72,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "extensions";
 
 
 
-CREATE TYPE "public"."StreamIAProcessStatus" AS ENUM (
+CREATE TYPE "public"."StreamAIProcessStatus" AS ENUM (
     'created',
     'processing',
     'step-finished',
@@ -81,27 +81,27 @@ CREATE TYPE "public"."StreamIAProcessStatus" AS ENUM (
 );
 
 
-ALTER TYPE "public"."StreamIAProcessStatus" OWNER TO "postgres";
+ALTER TYPE "public"."StreamAIProcessStatus" OWNER TO "postgres";
 
 
-CREATE TYPE "public"."StreamIAStep" AS ENUM (
-    'menu_step1',
-    'menu_step2',
-    'sell_step1',
-    'sell_step2'
+CREATE TYPE "public"."StreamAIStep" AS ENUM (
+    'menu_ocr',
+    'menu_recipe',
+    'menu_environmental_impact',
+    'menu_summary'
 );
 
 
-ALTER TYPE "public"."StreamIAStep" OWNER TO "postgres";
+ALTER TYPE "public"."StreamAIStep" OWNER TO "postgres";
 
 
-CREATE TYPE "public"."StreamIAType" AS ENUM (
+CREATE TYPE "public"."StreamAIType" AS ENUM (
     'menu',
     'sell'
 );
 
 
-ALTER TYPE "public"."StreamIAType" OWNER TO "postgres";
+ALTER TYPE "public"."StreamAIType" OWNER TO "postgres";
 
 SET default_tablespace = '';
 
@@ -160,7 +160,7 @@ COMMENT ON TABLE "public"."Sell" IS 'This is a duplicate of Menu';
 
 
 
-CREATE TABLE IF NOT EXISTS "public"."StreamIAMenuRunContext" (
+CREATE TABLE IF NOT EXISTS "public"."StreamAIMenuRunContext" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
     "updated_at" timestamp with time zone,
@@ -169,39 +169,39 @@ CREATE TABLE IF NOT EXISTS "public"."StreamIAMenuRunContext" (
 );
 
 
-ALTER TABLE "public"."StreamIAMenuRunContext" OWNER TO "postgres";
+ALTER TABLE "public"."StreamAIMenuRunContext" OWNER TO "postgres";
 
 
-CREATE TABLE IF NOT EXISTS "public"."StreamIARun" (
+CREATE TABLE IF NOT EXISTS "public"."StreamAIRun" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
     "updated_at" timestamp with time zone,
-    "status" "public"."StreamIAProcessStatus" DEFAULT 'created'::"public"."StreamIAProcessStatus" NOT NULL,
+    "status" "public"."StreamAIProcessStatus" DEFAULT 'created'::"public"."StreamAIProcessStatus" NOT NULL,
     "error_message" "text",
-    "current_step" "public"."StreamIAStep",
-    "type" "public"."StreamIAType" NOT NULL
+    "current_step" "public"."StreamAIStep",
+    "type" "public"."StreamAIType" NOT NULL
 );
 
 
-ALTER TABLE "public"."StreamIARun" OWNER TO "postgres";
+ALTER TABLE "public"."StreamAIRun" OWNER TO "postgres";
 
 
-CREATE TABLE IF NOT EXISTS "public"."StreamIARunStep" (
+CREATE TABLE IF NOT EXISTS "public"."StreamAIRunStep" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
     "run" "uuid" NOT NULL,
     "input" "jsonb" NOT NULL,
     "output" "jsonb",
     "finished_at" timestamp with time zone,
-    "step" "public"."StreamIAStep" NOT NULL,
+    "step" "public"."StreamAIStep" NOT NULL,
     "error_message" "text"
 );
 
 
-ALTER TABLE "public"."StreamIARunStep" OWNER TO "postgres";
+ALTER TABLE "public"."StreamAIRunStep" OWNER TO "postgres";
 
 
-CREATE TABLE IF NOT EXISTS "public"."StreamIASellRunContext" (
+CREATE TABLE IF NOT EXISTS "public"."StreamAISellRunContext" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
     "updated_at" timestamp with time zone,
@@ -210,7 +210,7 @@ CREATE TABLE IF NOT EXISTS "public"."StreamIASellRunContext" (
 );
 
 
-ALTER TABLE "public"."StreamIASellRunContext" OWNER TO "postgres";
+ALTER TABLE "public"."StreamAISellRunContext" OWNER TO "postgres";
 
 
 ALTER TABLE ONLY "public"."Config"
@@ -223,7 +223,7 @@ ALTER TABLE ONLY "public"."File"
 
 
 
-ALTER TABLE ONLY "public"."StreamIAMenuRunContext"
+ALTER TABLE ONLY "public"."StreamAIMenuRunContext"
     ADD CONSTRAINT "MenuProcessState_pkey" PRIMARY KEY ("id");
 
 
@@ -238,18 +238,18 @@ ALTER TABLE ONLY "public"."Sell"
 
 
 
-ALTER TABLE ONLY "public"."StreamIARunStep"
-    ADD CONSTRAINT "StreamIAHistory_pkey" PRIMARY KEY ("id");
+ALTER TABLE ONLY "public"."StreamAIRunStep"
+    ADD CONSTRAINT "StreamAIHistory_pkey" PRIMARY KEY ("id");
 
 
 
-ALTER TABLE ONLY "public"."StreamIARun"
-    ADD CONSTRAINT "StreamIAProcessState_pkey" PRIMARY KEY ("id");
+ALTER TABLE ONLY "public"."StreamAIRun"
+    ADD CONSTRAINT "StreamAIProcessState_pkey" PRIMARY KEY ("id");
 
 
 
-ALTER TABLE ONLY "public"."StreamIASellRunContext"
-    ADD CONSTRAINT "StreamIASellState_pkey" PRIMARY KEY ("id");
+ALTER TABLE ONLY "public"."StreamAISellRunContext"
+    ADD CONSTRAINT "StreamAISellState_pkey" PRIMARY KEY ("id");
 
 
 
@@ -258,7 +258,7 @@ ALTER TABLE ONLY "public"."File"
 
 
 
-ALTER TABLE ONLY "public"."StreamIAMenuRunContext"
+ALTER TABLE ONLY "public"."StreamAIMenuRunContext"
     ADD CONSTRAINT "MenuProcessState_menu_fkey" FOREIGN KEY ("menu") REFERENCES "public"."Menu"("id") ON DELETE CASCADE;
 
 
@@ -283,23 +283,23 @@ ALTER TABLE ONLY "public"."Sell"
 
 
 
-ALTER TABLE ONLY "public"."StreamIARunStep"
-    ADD CONSTRAINT "StreamIAHistory_state_fkey" FOREIGN KEY ("run") REFERENCES "public"."StreamIARun"("id") ON DELETE CASCADE;
+ALTER TABLE ONLY "public"."StreamAIRunStep"
+    ADD CONSTRAINT "StreamAIHistory_state_fkey" FOREIGN KEY ("run") REFERENCES "public"."StreamAIRun"("id") ON DELETE CASCADE;
 
 
 
-ALTER TABLE ONLY "public"."StreamIAMenuRunContext"
-    ADD CONSTRAINT "StreamIAMenuState_state_fkey" FOREIGN KEY ("run") REFERENCES "public"."StreamIARun"("id") ON DELETE CASCADE;
+ALTER TABLE ONLY "public"."StreamAIMenuRunContext"
+    ADD CONSTRAINT "StreamAIMenuState_state_fkey" FOREIGN KEY ("run") REFERENCES "public"."StreamAIRun"("id") ON DELETE CASCADE;
 
 
 
-ALTER TABLE ONLY "public"."StreamIASellRunContext"
-    ADD CONSTRAINT "StreamIASellState_sell_fkey" FOREIGN KEY ("sell") REFERENCES "public"."Sell"("id") ON DELETE CASCADE;
+ALTER TABLE ONLY "public"."StreamAISellRunContext"
+    ADD CONSTRAINT "StreamAISellState_sell_fkey" FOREIGN KEY ("sell") REFERENCES "public"."Sell"("id") ON DELETE CASCADE;
 
 
 
-ALTER TABLE ONLY "public"."StreamIASellRunContext"
-    ADD CONSTRAINT "StreamIASellState_state_fkey" FOREIGN KEY ("run") REFERENCES "public"."StreamIARun"("id") ON DELETE CASCADE;
+ALTER TABLE ONLY "public"."StreamAISellRunContext"
+    ADD CONSTRAINT "StreamAISellState_state_fkey" FOREIGN KEY ("run") REFERENCES "public"."StreamAIRun"("id") ON DELETE CASCADE;
 
 
 
@@ -315,16 +315,16 @@ ALTER TABLE "public"."Menu" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."Sell" ENABLE ROW LEVEL SECURITY;
 
 
-ALTER TABLE "public"."StreamIAMenuRunContext" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "public"."StreamAIMenuRunContext" ENABLE ROW LEVEL SECURITY;
 
 
-ALTER TABLE "public"."StreamIARun" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "public"."StreamAIRun" ENABLE ROW LEVEL SECURITY;
 
 
-ALTER TABLE "public"."StreamIARunStep" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "public"."StreamAIRunStep" ENABLE ROW LEVEL SECURITY;
 
 
-ALTER TABLE "public"."StreamIASellRunContext" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "public"."StreamAISellRunContext" ENABLE ROW LEVEL SECURITY;
 
 
 
@@ -564,27 +564,27 @@ GRANT ALL ON TABLE "public"."Sell" TO "service_role";
 
 
 
-GRANT ALL ON TABLE "public"."StreamIAMenuRunContext" TO "anon";
-GRANT ALL ON TABLE "public"."StreamIAMenuRunContext" TO "authenticated";
-GRANT ALL ON TABLE "public"."StreamIAMenuRunContext" TO "service_role";
+GRANT ALL ON TABLE "public"."StreamAIMenuRunContext" TO "anon";
+GRANT ALL ON TABLE "public"."StreamAIMenuRunContext" TO "authenticated";
+GRANT ALL ON TABLE "public"."StreamAIMenuRunContext" TO "service_role";
 
 
 
-GRANT ALL ON TABLE "public"."StreamIARun" TO "anon";
-GRANT ALL ON TABLE "public"."StreamIARun" TO "authenticated";
-GRANT ALL ON TABLE "public"."StreamIARun" TO "service_role";
+GRANT ALL ON TABLE "public"."StreamAIRun" TO "anon";
+GRANT ALL ON TABLE "public"."StreamAIRun" TO "authenticated";
+GRANT ALL ON TABLE "public"."StreamAIRun" TO "service_role";
 
 
 
-GRANT ALL ON TABLE "public"."StreamIARunStep" TO "anon";
-GRANT ALL ON TABLE "public"."StreamIARunStep" TO "authenticated";
-GRANT ALL ON TABLE "public"."StreamIARunStep" TO "service_role";
+GRANT ALL ON TABLE "public"."StreamAIRunStep" TO "anon";
+GRANT ALL ON TABLE "public"."StreamAIRunStep" TO "authenticated";
+GRANT ALL ON TABLE "public"."StreamAIRunStep" TO "service_role";
 
 
 
-GRANT ALL ON TABLE "public"."StreamIASellRunContext" TO "anon";
-GRANT ALL ON TABLE "public"."StreamIASellRunContext" TO "authenticated";
-GRANT ALL ON TABLE "public"."StreamIASellRunContext" TO "service_role";
+GRANT ALL ON TABLE "public"."StreamAISellRunContext" TO "anon";
+GRANT ALL ON TABLE "public"."StreamAISellRunContext" TO "authenticated";
+GRANT ALL ON TABLE "public"."StreamAISellRunContext" TO "service_role";
 
 
 
