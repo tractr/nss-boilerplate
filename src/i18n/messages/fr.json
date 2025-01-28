@@ -8,7 +8,8 @@
     "delete": "Supprimer",
     "save": "Enregistrer",
     "saving": "Enregistrement...",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "view": "Voir"
   },
   "home": {
     "welcome": "Bienvenue, {email}",
@@ -71,6 +72,8 @@
     "label": "Libellé",
     "version": "Version",
     "actions": "Actions",
-    "image": "Image"
+    "image": "Image",
+    "noImage": "Aucune image disponible",
+    "download": "Télécharger le menu"
   }
 }

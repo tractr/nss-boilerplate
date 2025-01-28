@@ -10,6 +10,7 @@ import LayoutSidebar from '@/components/layout-sidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslations } from 'next-intl';
 import { Dropzone } from '@/components/ui/dropzone';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 export default function EditMenuPage() {
   const params = useParams();
@@ -20,6 +21,7 @@ export default function EditMenuPage() {
   const queryClient = useQueryClient();
   const t = useTranslations();
   const isNew = id === 'new';
+  const currentUser = useCurrentUser();
 
   useEffect(() => {
     if (!isNew && id) {
@@ -41,12 +43,18 @@ export default function EditMenuPage() {
     mutationFn: async (data: { id?: string; label: string; file?: File }) => {
       let imagePath = null;
 
+      if (!currentUser?.data?.id) {
+        throw new Error('User not found');
+      }
+
       if (data.file) {
         const fileExt = data.file.name.split('.').pop();
-        const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+        const timestamp = Date.now();
+        const fileName = `${timestamp}.${fileExt}`;
+        const filePath = `${currentUser?.data?.id}/${fileName}`;
         const { error: uploadError } = await supabaseClient.storage
           .from('menu-images')
-          .upload(fileName, data.file);
+          .upload(filePath, data.file);
 
         if (uploadError) {
           throw uploadError;

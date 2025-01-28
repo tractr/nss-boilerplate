@@ -53,6 +53,9 @@ export function MenusDataTable() {
               <TableCell>
                 <div className="flex gap-2">
                   <Button variant="outline" size="sm" asChild>
+                    <Link href={`/menus/${menu.id}/view`}>{t('actions.view')}</Link>
+                  </Button>
+                  <Button variant="outline" size="sm" asChild>
                     <Link href={`/menus/${menu.id}`}>{t('actions.edit')}</Link>
                   </Button>
                   <Button variant="destructive" size="sm" onClick={() => setDeletingMenu(menu)}>

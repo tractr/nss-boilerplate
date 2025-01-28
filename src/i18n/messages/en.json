@@ -8,7 +8,8 @@
     "delete": "Delete",
     "save": "Save",
     "saving": "Saving...",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "view": "View"
   },
   "auth": {
     "signInTitle": "Sign in to your account",
@@ -63,6 +64,8 @@
     "label": "Label",
     "version": "Version",
     "actions": "Actions",
-    "image": "Image"
+    "image": "Image",
+    "noImage": "No image available",
+    "download": "Download menu"
   }
 }
