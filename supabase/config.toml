@@ -82,11 +82,11 @@ file_size_limit = "50MiB"
 enabled = true
 
 # Uncomment to configure local storage buckets
-[storage.buckets.menu]
+[storage.buckets.menu_files]
 public = true
 file_size_limit = "50MiB"
 allowed_mime_types = ["image/png", "image/jpeg"]
-objects_path = "./menu"
+objects_path = "./menu_files"
 
 [auth]
 enabled = true
