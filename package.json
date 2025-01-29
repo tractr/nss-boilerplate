@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "typecheck": "tsc --noEmit",
     "lint": "next lint",
     "gen:types": "npx supabase gen types typescript --lang=typescript --local > src/types/database.ts",
     "test": "vitest",
