@@ -17,7 +17,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
-type Menu = Tables<'Menu'>;
+type Menu = Tables<'menus'>;
 
 export function MenusDataTable() {
   const [deletingMenu, setDeletingMenu] = useState<Menu | null>(null);
@@ -28,7 +28,7 @@ export function MenusDataTable() {
     queryKey: ['menus'],
     queryFn: async () => {
       const { data } = await supabaseClient
-        .from('Menu')
+        .from('menus')
         .select('*')
         .order('created_at', { ascending: false });
       return data || [];

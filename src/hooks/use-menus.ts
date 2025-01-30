@@ -4,14 +4,14 @@ import { type Database } from '@/types/database';
 import { useActiveMenuStore } from '@/stores/use-active-menu-store';
 import { useEffect } from 'react';
 
-type Menu = Database['public']['Tables']['Menu']['Row'];
+type Menu = Database['public']['Tables']['menus']['Row'];
 
 export function useMenus() {
   const { data: menus, isLoading } = useQuery<Menu[]>({
     queryKey: ['menus'],
     queryFn: async () => {
       const { data, error } = await supabaseClient
-        .from('Menu')
+        .from('menus')
         .select('*')
         .order('created_at', { ascending: false });
 

@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Home, User2, ChevronUp, Monitor, LogOut, LucideProps } from 'lucide-react';
+import { Home, User2, ChevronUp, Monitor, LogOut, LucideProps, Utensils, Plus } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,7 +28,6 @@ import { usePathname } from 'next/navigation';
 import { ForwardRefExoticComponent, RefAttributes, useState } from 'react';
 import { SettingsModal } from '@/components/settings-modal';
 import { useTranslations } from 'next-intl';
-import { MenuIcon } from 'lucide-react';
 import { useMenus } from '@/hooks/use-menus';
 import { Button } from '@/components/ui/button';
 
@@ -37,7 +36,18 @@ const items: Array<{
   titleKey: string;
   url: string;
   icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
-}> = [];
+}> = [
+  {
+    titleKey: 'navigation.home',
+    url: '/',
+    icon: Home,
+  },
+  {
+    titleKey: 'navigation.menus',
+    url: '/menus',
+    icon: Utensils,
+  },
+];
 
 export default function MainSidebar() {
   const currentUser = useCurrentUser();
@@ -69,6 +79,7 @@ export default function MainSidebar() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="w-full justify-start">
+                    <Utensils className="w-4 h-4 mr-2" />
                     {activeMenuId
                       ? menus?.find(m => m.id === activeMenuId)?.label
                       : t('menus.selectMenu')}
@@ -86,9 +97,9 @@ export default function MainSidebar() {
                         </DropdownMenuItem>
                       ))}
                       <DropdownMenuItem asChild className="border-t">
-                        <Link href="/menus" className="flex items-center">
-                          <MenuIcon className="w-4 h-4 mr-2" />
-                          {t('navigation.manageMenus')}
+                        <Link href="/menus/new" className="flex items-center">
+                          <Plus className="w-4 h-4 mr-2" />
+                          {t('menus.createMenu')}
                         </Link>
                       </DropdownMenuItem>
                     </>
@@ -102,14 +113,6 @@ export default function MainSidebar() {
           <SidebarGroupLabel>{t('navigation.mainMenu')}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild className={pathname === '/' ? 'bg-accent' : ''}>
-                  <Link href="/">
-                    <Home />
-                    <span>{t('navigation.home')}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
               {items.map(item => (
                 <SidebarMenuItem key={item.titleKey}>
                   <SidebarMenuButton asChild className={pathname === item.url ? 'bg-accent' : ''}>

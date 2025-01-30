@@ -30,7 +30,8 @@
     "home": "Dashboard",
     "mainMenu": "Menu principal",
     "todos": "Tâches",
-    "manageMenus": "Gérer les menus"
+    "manageMenus": "Gérer les menus",
+    "menus": "Menus"
   },
   "settings": {
     "title": "Paramètres",
@@ -74,6 +75,31 @@
     "actions": "Actions",
     "image": "Image",
     "noImage": "Aucune image disponible",
-    "download": "Télécharger le menu"
+    "download": "Télécharger le menu",
+    "details": "Voir les détails",
+    "steps": {
+      "title": "Étapes",
+      "noSteps": "Aucune étape n'a été trouvée",
+      "notStarted": "Cette étape n'a pas encore été démarrée",
+      "createdAt": "Créé le",
+      "finishedAt": "Terminé le",
+      "duration": "Durée d'exécution",
+      "error": "Erreur",
+      "input": "Entrée",
+      "output": "Sortie",
+      "menu_ocr": "Reconnaissance de texte",
+      "menu_recipe": "Extraction des recettes",
+      "menu_environmental_impact": "Impact environnemental",
+      "menu_summary": "Résumé",
+      "status": "Statut",
+      "status_not_started": "Non démarré",
+      "status_in_progress": "En cours",
+      "status_completed": "Terminé",
+      "status_error": "Erreur",
+      "expand": "Déplier",
+      "collapse": "Plier",
+      "expandAll": "Tout déplier",
+      "collapseAll": "Tout plier"
+    }
   }
 }

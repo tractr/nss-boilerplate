@@ -27,21 +27,24 @@ export default function EditMenuPage() {
     if (!isNew && id) {
       // Fetch menu data if editing
       supabaseClient
-        .from('Menu')
+        .from('menus')
         .select()
         .eq('id', id)
         .single()
         .then(({ data }) => {
           if (data) {
             setLabel(data.label);
+          } else {
+            // Redirect to menus list if menu not found
+            router.push('/menus');
           }
         });
     }
-  }, [id, isNew]);
+  }, [id, isNew, router]);
 
   const mutation = useMutation({
     mutationFn: async (data: { id?: string; label: string; file?: File }) => {
-      let imagePath = null;
+      let filePath = null;
 
       if (!currentUser?.data?.id) {
         throw new Error('User not found');
@@ -51,26 +54,26 @@ export default function EditMenuPage() {
         const fileExt = data.file.name.split('.').pop();
         const timestamp = Date.now();
         const fileName = `${timestamp}.${fileExt}`;
-        const filePath = `${currentUser?.data?.id}/${fileName}`;
-        const { error: uploadError } = await supabaseClient.storage
-          .from('menu-images')
-          .upload(filePath, data.file);
+        const { error: uploadError, data: uploadData } = await supabaseClient.storage
+          .from('menu_files')
+          .upload(`${currentUser?.data?.id}/${fileName}`, data.file);
 
         if (uploadError) {
           throw uploadError;
         }
 
-        imagePath = fileName;
+        filePath = uploadData.path;
       }
 
       if (data.id && !isNew) {
-        return supabaseClient.from('Menu').update({ label: data.label }).eq('id', data.id);
+        return supabaseClient.from('menus').update({ label: data.label }).eq('id', data.id);
       }
 
-      return supabaseClient.from('Menu').insert([
+      return supabaseClient.from('menus').insert([
         {
           label: data.label,
-          image_url: imagePath,
+          file_bucket: 'menu_files',
+          file_path: filePath,
         },
       ]);
     },

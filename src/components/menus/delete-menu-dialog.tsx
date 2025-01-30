@@ -6,7 +6,7 @@ import { Tables } from '@/types/database';
 import supabaseClient from '@/lib/supabase-client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-type Menu = Tables<'Menu'>;
+type Menu = Tables<'menus'>;
 
 interface DeleteMenuDialogProps {
   menu: Menu | null;
@@ -20,7 +20,7 @@ export function DeleteMenuDialog({ menu, open, onOpenChange, onDelete }: DeleteM
 
   const mutation = useMutation({
     mutationFn: async (id: string) => {
-      return supabaseClient.from('Menu').delete().eq('id', id);
+      return supabaseClient.from('menus').delete().eq('id', id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['menus'] });

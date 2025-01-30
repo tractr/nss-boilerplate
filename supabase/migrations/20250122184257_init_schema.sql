@@ -96,7 +96,7 @@ ALTER TYPE "public"."stream_ai_step" OWNER TO "postgres";
 
 
 CREATE TYPE "public"."stream_ai_type" AS ENUM (
-    'menu',
+    'menus',
     'sell'
 );
 

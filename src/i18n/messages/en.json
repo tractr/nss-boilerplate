@@ -32,9 +32,11 @@
     "loading": "Loading..."
   },
   "navigation": {
-    "home": "Home",
+    "home": "Dashboard",
     "mainMenu": "Main menu",
-    "todos": "Todos"
+    "todos": "Todos",
+    "manageMenus": "Manage menus",
+    "menus": "Menus"
   },
   "settings": {
     "title": "Settings",
@@ -66,6 +68,21 @@
     "actions": "Actions",
     "image": "Image",
     "noImage": "No image available",
-    "download": "Download menu"
+    "download": "Download menu",
+    "details": "View details",
+    "steps": {
+      "title": "Steps",
+      "noSteps": "No steps found",
+      "notStarted": "This step has not started yet",
+      "createdAt": "Created at",
+      "finishedAt": "Finished at",
+      "error": "Error",
+      "input": "Input",
+      "output": "Output",
+      "menu_ocr": "Text recognition",
+      "menu_recipe": "Recipe extraction",
+      "menu_environmental_impact": "Environmental impact",
+      "menu_summary": "Summary"
+    }
   }
 }

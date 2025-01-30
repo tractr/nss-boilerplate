@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
-type Menu = Tables<'Menu'>;
+type Menu = Tables<'menus'>;
 
 interface MenuViewerProps {
   menu: Menu;
@@ -18,30 +18,20 @@ export function MenuViewer({ menu }: MenuViewerProps) {
   const currentUser = useCurrentUser();
 
   const handleDownload = async () => {
-    if (!menu.image_url || !currentUser?.data?.id) return;
-    const path = `${currentUser?.data?.id}/${menu.image_url}`;
-
-    const { data } = await supabaseClient.storage.from('menu-images').download(path);
+    if (!menu.file_path || !menu.file_bucket || !currentUser?.data?.id) return;
+    const { data } = await supabaseClient.storage.from(menu.file_bucket).download(menu.file_path);
 
     if (!data) return;
 
     const url = URL.createObjectURL(data);
     const a = document.createElement('a');
     a.href = url;
-    a.download = menu.image_url;
+    a.download = menu.label;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
-
-  if (!menu.image_url) {
-    return (
-      <div className="flex items-center justify-center h-96 bg-muted rounded-lg">
-        <p className="text-muted-foreground">{t('menus.noImage')}</p>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-4">
