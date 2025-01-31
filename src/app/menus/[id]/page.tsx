@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslations } from 'next-intl';
 import { Dropzone } from '@/components/ui/dropzone';
 import { useCurrentUser } from '@/hooks/use-current-user';
+import { useActiveMenuStore } from '@/stores/use-active-menu-store';
 
 export default function EditMenuPage() {
   const params = useParams();
@@ -22,6 +23,7 @@ export default function EditMenuPage() {
   const t = useTranslations();
   const isNew = id === 'new';
   const currentUser = useCurrentUser();
+  const setActiveMenuId = useActiveMenuStore(state => state.setActiveMenuId);
 
   useEffect(() => {
     if (!isNew && id) {
@@ -66,7 +68,12 @@ export default function EditMenuPage() {
       }
 
       if (data.id && !isNew) {
-        return supabaseClient.from('menus').update({ label: data.label }).eq('id', data.id);
+        const { error } = await supabaseClient
+          .from('menus')
+          .update({ label: data.label })
+          .eq('id', data.id);
+        if (error) throw error;
+        return { id: data.id };
       }
 
       const { data: menu, error } = await supabaseClient
@@ -85,19 +92,28 @@ export default function EditMenuPage() {
         throw error;
       }
 
-      const menuId = menu.id;
-
-      if (menuId && data.file) {
-        await supabaseClient.functions.invoke('trigger-menu-run', {
-          body: {
-            menu_id: menuId,
-          },
-        });
+      if (!menu) {
+        throw new Error('Failed to create menu');
       }
     },
-    onSuccess: () => {
+    onSuccess: async data => {
+      if (!data?.id) {
+        return;
+      }
+
+      await supabaseClient.functions.invoke('trigger-menu-run', {
+        body: {
+          menu_id: data.id,
+        },
+      });
+
       queryClient.invalidateQueries({ queryKey: ['menus'] });
-      router.push('/menus');
+      if (isNew) {
+        setActiveMenuId(data.id);
+        router.push('/');
+      } else {
+        router.push('/menus');
+      }
     },
   });
 
