@@ -69,13 +69,31 @@ export default function EditMenuPage() {
         return supabaseClient.from('menus').update({ label: data.label }).eq('id', data.id);
       }
 
-      return supabaseClient.from('menus').insert([
-        {
-          label: data.label,
-          file_bucket: 'menu_files',
-          file_path: filePath,
-        },
-      ]);
+      const { data: menu, error } = await supabaseClient
+        .from('menus')
+        .insert([
+          {
+            label: data.label,
+            file_bucket: 'menu_files',
+            file_path: filePath,
+          },
+        ])
+        .select('id')
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      const menuId = menu.id;
+
+      if (menuId && data.file) {
+        await supabaseClient.functions.invoke('trigger-menu-run', {
+          body: {
+            menu_id: menuId,
+          },
+        });
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['menus'] });

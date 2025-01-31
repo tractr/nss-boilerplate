@@ -241,6 +241,53 @@ The output will be in the `storybook-static` directory.
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+## Edge Functions
+
+The project includes Supabase Edge Functions for serverless functionality:
+
+### Structure
+
+- Edge Functions are located in `supabase/functions/`
+- Each function has its own directory (e.g., `trigger-menu-run`)
+- Environment variables are managed through `.env` file
+
+### Running Edge Functions Locally
+
+To run Edge Functions locally while developing:
+
+```bash
+# Start Supabase services
+supabase start
+
+# In a separate terminal, serve the Edge Function
+supabase functions serve trigger-menu-run --no-verify-jwt --env-file .env
+```
+
+The function will be available at `http://localhost:54321/functions/v1/trigger-menu-run`
+
+### Testing Edge Functions
+
+You can test the functions using curl:
+
+```bash
+# Using POST
+curl -i --location --request POST 'http://localhost:54321/functions/v1/trigger-menu-run' \
+  --header 'Content-Type: application/json' \
+  --data '{"menu_id":"your-menu-uuid"}'
+
+# Using GET
+curl -i --location --request GET 'http://localhost:54321/functions/v1/trigger-menu-run?menu_id=your-menu-uuid'
+```
+
+### Environment Variables
+
+Edge Functions use their own environment variables. Make sure your `.env` file includes any variables needed by your functions:
+
+```bash
+STREAM_AI_API_URL=http://host.docker.internal:8000
+# Add other Edge Function specific variables here
+```
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
