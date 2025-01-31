@@ -88,6 +88,8 @@ export default function EditMenuPage() {
         .select('id')
         .single();
 
+      console.log('menu', menu);
+
       if (error) {
         throw error;
       }
@@ -95,6 +97,8 @@ export default function EditMenuPage() {
       if (!menu) {
         throw new Error('Failed to create menu');
       }
+
+      return menu;
     },
     onSuccess: async data => {
       if (!data?.id) {
