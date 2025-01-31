@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import supabaseClient from '@/lib/supabase-client';
 import { Tables } from '@/types/database';
 
-type MenuStep = Tables<'stream_ai_run_step'>;
+type MenuStep = Tables<'stream_ai_run_steps'>;
 
 export function useMenuSteps(menuId?: string) {
   return useQuery<MenuStep[]>({
@@ -11,17 +11,17 @@ export function useMenuSteps(menuId?: string) {
       if (!menuId) throw new Error('Menu ID is required');
 
       const { data, error } = await supabaseClient
-        .from('stream_ai_menu_run_context')
-        .select('run(stream_ai_run_step(*))')
+        .from('stream_ai_menu_run_contexts')
+        .select('run(stream_ai_run_steps(*))')
         .eq('menu', menuId)
         .single();
 
-      const run = data?.run as unknown as Tables<'stream_ai_run'> & {
-        stream_ai_run_step: Tables<'stream_ai_run_step'>[];
+      const run = data?.run as unknown as Tables<'stream_ai_runs'> & {
+        stream_ai_run_steps: Tables<'stream_ai_run_steps'>[];
       };
 
       if (error) throw error;
-      return run.stream_ai_run_step;
+      return run.stream_ai_run_steps;
     },
     enabled: !!menuId,
   });

@@ -33,7 +33,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import supabaseClient from '@/lib/supabase-client';
 import { useToast } from '@/hooks/use-toast';
 
-type MenuStep = Tables<'stream_ai_run_step'>;
+type MenuStep = Tables<'stream_ai_run_steps'>;
 type StepType = MenuStep['step'];
 
 const STEP_TYPES: StepType[] = [
@@ -85,7 +85,7 @@ function EditStepInputDialog({ step, open, onOpenChange }: EditStepInputDialogPr
       if (!step) return;
 
       const { data: newStep, error } = await supabaseClient
-        .from('stream_ai_run_step')
+        .from('stream_ai_run_steps')
         .insert({
           run: step.run,
           step: step.step,

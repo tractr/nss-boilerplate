@@ -9,7 +9,7 @@ AS $function$
 DECLARE
     run_owner uuid;
 BEGIN
-    SELECT owner FROM public."stream_ai_run" WHERE id = run INTO run_owner;
+    SELECT owner FROM public."stream_ai_runs" WHERE id = run INTO run_owner;
 
     RETURN run_owner;
 END;
