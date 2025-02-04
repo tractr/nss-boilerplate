@@ -7,7 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import { setLanguageCookie } from '@/lib/cookies';
 import { useTranslations } from 'next-intl';
@@ -24,7 +23,6 @@ const SUPPORTED_LANGUAGES = [
 ] as const;
 
 export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
-  const { theme, setTheme } = useTheme();
   const router = useRouter();
   const t = useTranslations();
   const [language, setLanguage] = useState<string>('en');
@@ -51,20 +49,6 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
           <DialogTitle>{t('settings.title')}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="theme">{t('settings.theme.label')}</Label>
-            <Select value={theme} onValueChange={setTheme}>
-              <SelectTrigger id="theme">
-                <SelectValue placeholder={t('settings.theme.placeholder')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="light">{t('settings.theme.light')}</SelectItem>
-                <SelectItem value="dark">{t('settings.theme.dark')}</SelectItem>
-                <SelectItem value="system">{t('settings.theme.system')}</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
           <div className="space-y-2">
             <Label htmlFor="language">{t('settings.language.label')}</Label>
             <Select value={language} onValueChange={handleLanguageChange}>

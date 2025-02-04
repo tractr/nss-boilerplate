@@ -35,13 +35,6 @@
   },
   "settings": {
     "title": "Paramètres",
-    "theme": {
-      "label": "Thème",
-      "placeholder": "Sélectionner un thème",
-      "light": "Clair",
-      "dark": "Sombre",
-      "system": "Système"
-    },
     "language": {
       "label": "Langue",
       "placeholder": "Sélectionner une langue"
@@ -114,6 +107,9 @@
       "invalidJson": "JSON invalide",
       "history": "Historique",
       "viewHistory": "Voir l'historique"
-    }
+    },
+    "analyze": "Analyse",
+    "activeMenu": "Menu actif",
+    "changeMenu": "Changer de menu"
   }
 }

@@ -22,7 +22,7 @@ export default function LayoutSidebar({
   return (
     <SidebarProvider open={sidebarOpen}>
       <MainSidebar />
-      <main className={cn('flex-1 flex flex-col', containerClassName)}>
+      <main className={cn('flex-1 flex flex-col overflow-auto', containerClassName)}>
         {sidebarOpen !== false ? <SidebarTrigger className="mx-3 mt-2" /> : null}
         <div className={cn('flex-1 px-4 py-2', className)}>
           <div className={cn('flex-1 container mx-auto', contentClassName)}>{children}</div>

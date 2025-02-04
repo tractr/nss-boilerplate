@@ -25,7 +25,14 @@
   },
   "home": {
     "welcome": "Welcome back, {email}",
-    "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos atque nisi necessitatibus neque voluptates libero aperiam nam repellat quam, ab perferendis cum animi repellendus ratione eius dolores et iure rerum!"
+    "description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos atque nisi necessitatibus neque voluptates libero aperiam nam repellat quam, ab perferendis cum animi repellendus ratione eius dolores et iure rerum!",
+    "activeMenu": {
+      "title": "Active Menu",
+      "description": "Information about the currently selected menu",
+      "name": "Name",
+      "id": "Identifier",
+      "noMenu": "No menu selected"
+    }
   },
   "common": {
     "logo": "Logo",
@@ -40,13 +47,6 @@
   },
   "settings": {
     "title": "Settings",
-    "theme": {
-      "label": "Theme",
-      "placeholder": "Select theme",
-      "light": "Light",
-      "dark": "Dark",
-      "system": "System"
-    },
     "language": {
       "label": "Language",
       "placeholder": "Select language"
@@ -59,30 +59,57 @@
     "showAll": "Show all"
   },
   "menus": {
-    "selectMenu": "Select a menu...",
     "title": "Menus",
+    "description": "Manage your menus and their analysis",
+    "add": "Add menu",
+    "addDescription": "Add a new menu to analyze",
+    "label": "Menu name",
+    "labelPlaceholder": "Menu name",
+    "labelRequired": "Menu name is required",
+    "file": "File",
+    "fileRequired": "File is required",
+    "fileInvalid": "File must be an image (jpg, jpeg, png)",
+    "fileMaxSize": "File must not exceed 50MB",
+    "download": "Download menu",
+    "selectMenu": "Select a menu...",
     "createMenu": "Create Menu",
     "editMenu": "Edit Menu",
-    "label": "Label",
     "version": "Version",
     "actions": "Actions",
     "image": "Image",
     "noImage": "No image available",
-    "download": "Download menu",
     "details": "View details",
     "steps": {
-      "title": "Steps",
-      "noSteps": "No steps found",
-      "notStarted": "This step has not started yet",
-      "createdAt": "Created at",
-      "finishedAt": "Finished at",
-      "error": "Error",
-      "input": "Input",
-      "output": "Output",
       "menu_ocr": "Text recognition",
       "menu_recipe": "Recipe extraction",
       "menu_environmental_impact": "Environmental impact",
-      "menu_summary": "Summary"
-    }
+      "menu_summary": "Summary",
+      "status_not_started": "Not started",
+      "status_in_progress": "In progress",
+      "status_created": "Created",
+      "status_completed": "Completed",
+      "status_error": "Error",
+      "createdAt": "Created at",
+      "finishedAt": "Finished at",
+      "duration": "Duration",
+      "error": "Error",
+      "input": "Input",
+      "output": "Output",
+      "notStarted": "This step has not started yet",
+      "collapse": "Collapse",
+      "expand": "Expand",
+      "collapseAll": "Collapse all",
+      "expandAll": "Expand all",
+      "editInput": "Edit input",
+      "editSuccess": "Input modified",
+      "editSuccessDescription": "The input has been successfully modified",
+      "editError": "Error while modifying",
+      "invalidJson": "Invalid JSON",
+      "history": "History",
+      "viewHistory": "View history"
+    },
+    "analyze": "Analyze",
+    "activeMenu": "Active menu",
+    "changeMenu": "Change menu"
   }
 }

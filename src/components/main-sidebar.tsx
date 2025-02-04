@@ -25,11 +25,10 @@ import Link from 'next/link';
 import supabaseClient from '@/lib/supabase-client';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { usePathname } from 'next/navigation';
-import { ForwardRefExoticComponent, RefAttributes, useState } from 'react';
+import { ForwardRefExoticComponent, RefAttributes, useState, useRef } from 'react';
 import { SettingsModal } from '@/components/settings-modal';
 import { useTranslations } from 'next-intl';
 import { useMenus } from '@/hooks/use-menus';
-import { Button } from '@/components/ui/button';
 
 // Menu items
 const items: Array<{
@@ -54,6 +53,7 @@ export default function MainSidebar() {
   const pathname = usePathname();
   const [showSettings, setShowSettings] = useState(false);
   const t = useTranslations();
+  const triggerRef = useRef<HTMLDivElement>(null);
   const { menus, activeMenuId, setActiveMenuId, isLoading } = useMenus();
 
   const _logout = async () => {
@@ -78,15 +78,25 @@ export default function MainSidebar() {
             <div className="px-2 py-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="w-full justify-start">
-                    <Utensils className="w-4 h-4 mr-2" />
-                    {activeMenuId
-                      ? menus?.find(m => m.id === activeMenuId)?.label
-                      : t('menus.selectMenu')}
-                    <ChevronUp className="ml-auto h-4 w-4" />
-                  </Button>
+                  <div
+                    ref={triggerRef}
+                    className="w-full flex flex-col items-start p-3 border rounded-md bg-white hover:bg-accent/50 cursor-pointer"
+                  >
+                    <div className="text-xs font-medium text-muted-foreground mb-1">
+                      {t('menus.activeMenu')}
+                    </div>
+                    <div className="text-sm">
+                      {menus?.find(m => m.id === activeMenuId)?.label ?? t('menus.selectMenu')}
+                    </div>
+                    <button type="button" className="mt-1 text-xs text-blue-600 hover:underline">
+                      {t('menus.changeMenu')}
+                    </button>
+                  </div>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
+                <DropdownMenuContent
+                  align="start"
+                  style={{ width: triggerRef.current ? triggerRef.current.offsetWidth : undefined }}
+                >
                   {isLoading ? (
                     <DropdownMenuItem disabled>{t('common.loading')}</DropdownMenuItem>
                   ) : (
