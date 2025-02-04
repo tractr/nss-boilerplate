@@ -1,11 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import supabaseClient from '@/lib/supabase-client';
 import { Tables } from '@/types/database';
 
 type MenuStep = Tables<'stream_ai_run_steps'>;
 
 export function useMenuSteps(menuId?: string) {
-  return useQuery<MenuStep[]>({
+  const {
+    data: steps,
+    refetch,
+    ...rest
+  } = useQuery<MenuStep[]>({
     queryKey: ['menu-steps', menuId],
     queryFn: async () => {
       if (!menuId) throw new Error('Menu ID is required');
@@ -25,4 +30,34 @@ export function useMenuSteps(menuId?: string) {
     },
     enabled: !!menuId,
   });
+
+  useEffect(() => {
+    if (!menuId) return;
+
+    console.log('Iyuiouyio');
+
+    // Subscribe to changes in the run steps table
+    const channel = supabaseClient
+      .channel(`menu-steps-${menuId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*', // Listen to all events (INSERT, UPDATE, DELETE)
+          schema: 'public',
+          table: 'stream_ai_run_steps',
+        },
+        () => {
+          // Refetch data when changes occur
+          refetch();
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscription on unmount
+    return () => {
+      channel.unsubscribe();
+    };
+  }, [menuId, refetch]);
+
+  return { data: steps, ...rest };
 }
