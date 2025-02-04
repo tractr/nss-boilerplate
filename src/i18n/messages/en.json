@@ -9,7 +9,9 @@
     "save": "Save",
     "saving": "Saving...",
     "cancel": "Cancel",
-    "view": "View"
+    "view": "View",
+    "cancelling": "Cancelling...",
+    "back": "Back"
   },
   "auth": {
     "signInTitle": "Sign in to your account",
@@ -106,7 +108,12 @@
       "editError": "Error while modifying",
       "invalidJson": "Invalid JSON",
       "history": "History",
-      "viewHistory": "View history"
+      "viewHistory": "View history",
+      "cancelStep": "Cancel step",
+      "cancelConfirmation": "Are you sure you want to cancel this step? This action cannot be undone.",
+      "cancelSuccess": "Step cancelled",
+      "cancelSuccessDescription": "The step has been cancelled successfully",
+      "cancelError": "Error while cancelling"
     },
     "analyze": "Analyze",
     "activeMenu": "Active menu",

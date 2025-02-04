@@ -16,6 +16,7 @@ import {
   Edit,
   History,
   Loader2,
+  AlertCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -63,6 +64,13 @@ interface EditStepInputDialogProps {
 
 interface StepHistoryDialogProps {
   steps: MenuStep[];
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  t: ReturnType<typeof useTranslations>;
+}
+
+interface CancelStepDialogProps {
+  step?: MenuStep;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   t: ReturnType<typeof useTranslations>;
@@ -221,12 +229,78 @@ function StepHistoryDialog({ steps, open, onOpenChange, t }: StepHistoryDialogPr
   );
 }
 
+function CancelStepDialog({ step, open, onOpenChange, t }: CancelStepDialogProps) {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      if (!step) return;
+
+      const { error } = await supabaseClient
+        .from('stream_ai_run_steps')
+        .update({
+          status: 'error',
+          error_message: 'Cancelled by user',
+          finished_at: new Date().toISOString(),
+        })
+        .eq('id', step.id);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['menu-steps'] });
+      toast({
+        title: t('menus.steps.cancelSuccess'),
+        description: t('menus.steps.cancelSuccessDescription'),
+      });
+      onOpenChange(false);
+    },
+    onError: error => {
+      toast({
+        title: t('menus.steps.cancelError'),
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t('menus.steps.cancelStep')}</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="flex gap-2 text-muted-foreground">
+            <AlertCircle className="h-5 w-5 text-destructive shrink-0" />
+            <p>{t('menus.steps.cancelConfirmation')}</p>
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            {t('actions.back')}
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={() => mutation.mutate()}
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending ? t('actions.cancelling') : t('actions.cancel')}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 function StepCard({ steps, type, t, isCollapsed, onToggleCollapse }: StepCardProps) {
   const [elapsedTime, setElapsedTime] = useState<Duration | null>(null);
   const [isInputExpanded, setIsInputExpanded] = useState(false);
   const [isOutputExpanded, setIsOutputExpanded] = useState(false);
   const [isEditInputOpen, setIsEditInputOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [isCancelOpen, setIsCancelOpen] = useState(false);
 
   const step =
     steps.length > 0
@@ -312,7 +386,7 @@ function StepCard({ steps, type, t, isCollapsed, onToggleCollapse }: StepCardPro
       <div className="flex items-center justify-between mb-2">
         <p className="text-sm font-medium">{t(`menus.steps.${label}`)}</p>
         <div className="flex items-center gap-2">
-          {canEdit && type !== 'menu_ocr' && (
+          {canEdit && type !== 'menu_ocr' && step && (step.finished_at || step.error_message) && (
             <Button
               variant="ghost"
               size="sm"
@@ -393,6 +467,20 @@ function StepCard({ steps, type, t, isCollapsed, onToggleCollapse }: StepCardPro
                 >
                   <History className="h-4 w-4" />
                   {t('menus.steps.viewHistory')}
+                </Button>
+              )}
+              {step && !step.finished_at && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-1.5 text-destructive hover:text-destructive"
+                  onClick={e => {
+                    e.stopPropagation();
+                    setIsCancelOpen(true);
+                  }}
+                >
+                  <AlertCircle className="h-4 w-4" />
+                  {t('actions.cancel')}
                 </Button>
               )}
               <Badge variant="secondary" className={cn('gap-1.5', status.color)}>
@@ -478,6 +566,7 @@ function StepCard({ steps, type, t, isCollapsed, onToggleCollapse }: StepCardPro
       </Card>
       <EditStepInputDialog step={step} open={isEditInputOpen} onOpenChange={setIsEditInputOpen} />
       <StepHistoryDialog steps={steps} open={isHistoryOpen} onOpenChange={setIsHistoryOpen} t={t} />
+      <CancelStepDialog step={step} open={isCancelOpen} onOpenChange={setIsCancelOpen} t={t} />
     </>
   );
 }

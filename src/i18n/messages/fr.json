@@ -9,7 +9,9 @@
     "save": "Enregistrer",
     "saving": "Enregistrement...",
     "cancel": "Annuler",
-    "view": "Voir"
+    "view": "Voir",
+    "cancelling": "Annulation...",
+    "back": "Retour"
   },
   "home": {
     "welcome": "Bienvenue, {email}",
@@ -106,7 +108,12 @@
       "editError": "Erreur lors de la modification",
       "invalidJson": "JSON invalide",
       "history": "Historique",
-      "viewHistory": "Voir l'historique"
+      "viewHistory": "Voir l'historique",
+      "cancelStep": "Annuler l'étape",
+      "cancelConfirmation": "Êtes-vous sûr de vouloir annuler cette étape ? Cette action ne peut pas être annulée.",
+      "cancelSuccess": "Étape annulée",
+      "cancelSuccessDescription": "L'étape a été annulée avec succès",
+      "cancelError": "Erreur lors de l'annulation"
     },
     "analyze": "Analyse",
     "activeMenu": "Menu actif",
