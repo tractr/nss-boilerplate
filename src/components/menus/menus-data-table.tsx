@@ -41,11 +41,6 @@ export function MenusDataTable() {
     },
   });
 
-  const handleAnalyze = (menu: Menu) => {
-    setActiveMenuId(menu.id);
-    router.push('/');
-  };
-
   const handleDownload = async (menu: Menu) => {
     if (menu.file_bucket && menu.file_path) {
       await downloadMenuImage(menu);
@@ -71,9 +66,11 @@ export function MenusDataTable() {
               <TableCell>{menu.label}</TableCell>
               <TableCell>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={() => handleAnalyze(menu)}>
-                    <LineChart className="w-4 h-4 mr-2" />
-                    {t('menus.analyze')}
+                  <Button variant="outline" size="sm" asChild>
+                    <Link href={`/menus/${menu.id}`}>
+                      <LineChart className="w-4 h-4 mr-2" />
+                      {t('menus.analyze')}
+                    </Link>
                   </Button>
                   <Button
                     variant="outline"
@@ -85,7 +82,7 @@ export function MenusDataTable() {
                     {t('menus.download')}
                   </Button>
                   <Button variant="outline" size="sm" asChild>
-                    <Link href={`/menus/${menu.id}`}>
+                    <Link href={`/menus/${menu.id}/edit`}>
                       <Pencil className="w-4 h-4 mr-2" />
                       {t('actions.edit')}
                     </Link>

@@ -16,7 +16,7 @@ export default function HomePage() {
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold">{t('menus.title')}</h1>
           <Button asChild>
-            <Link href="/menu/new">
+            <Link href="/menus/new">
               <Plus className="w-4 h-4 mr-2" />
               {t('menus.createMenu')}
             </Link>
