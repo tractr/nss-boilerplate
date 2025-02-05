@@ -87,6 +87,7 @@
     "updatedAt": "Updated on",
     "listView": "List view",
     "gridView": "Grid view",
+    "owner": "Owner",
     "steps": {
       "menu_ocr": "Text recognition",
       "menu_recipe": "Recipe extraction",

@@ -87,6 +87,7 @@
     "updatedAt": "Modifié le",
     "listView": "Vue liste",
     "gridView": "Vue grille",
+    "owner": "Propriétaire",
     "steps": {
       "menu_ocr": "Extraction du texte",
       "menu_recipe": "Analyse des recettes",
