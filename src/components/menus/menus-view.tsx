@@ -6,15 +6,19 @@ import { MenusGridView } from './menus-grid-view';
 import { useTranslations } from 'next-intl';
 import supabaseClient from '@/lib/supabase-client';
 import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 
 type Menu = Tables<'menus'>;
 
 interface MenusViewProps {
   className?: string;
   isGridView: boolean;
+  sortBy: 'newest' | 'oldest' | 'name' | 'version';
 }
 
-export function MenusView({ className, isGridView }: MenusViewProps) {
+const MOCK_MENUS: Menu[] = [];
+
+export function MenusView({ className, isGridView, sortBy }: MenusViewProps) {
   const t = useTranslations();
 
   const { data: menus = [] } = useQuery({
@@ -28,13 +32,30 @@ export function MenusView({ className, isGridView }: MenusViewProps) {
     },
   });
 
+  const sortedMenus = useMemo(() => {
+    const menusData = [...menus];
+    
+    switch (sortBy) {
+      case 'newest':
+        return menusData.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      case 'oldest':
+        return menusData.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+      case 'name':
+        return menusData.sort((a, b) => a.label.localeCompare(b.label));
+      case 'version':
+        return menusData.sort((a, b) => b.version - a.version);
+      default:
+        return menusData;
+    }
+  }, [sortBy, menus]);
+
   return (
     <div className={className}>
       {isGridView ? (
-        <MenusGridView menus={menus} />
+        <MenusGridView menus={sortedMenus} />
       ) : (
         <div className="border rounded-lg">
-          <MenusDataTable menus={menus} />
+          <MenusDataTable menus={sortedMenus} />
         </div>
       )}
     </div>

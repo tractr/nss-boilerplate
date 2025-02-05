@@ -88,6 +88,16 @@
     "listView": "List view",
     "gridView": "Grid view",
     "owner": "Owner",
+    "filters": {
+      "title": "Filters",
+      "sortBy": "Sort by",
+      "sortOptions": {
+        "newest": "Newest",
+        "oldest": "Oldest",
+        "name": "Name",
+        "version": "Version"
+      }
+    },
     "steps": {
       "menu_ocr": "Text recognition",
       "menu_recipe": "Recipe extraction",
