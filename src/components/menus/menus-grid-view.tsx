@@ -75,12 +75,11 @@ export function MenusGridView({ menus }: MenusGridViewProps) {
             key={menu.id} 
             href={`/menus/${menu.id}`}
             className={cn(
-              "transition-transform hover:scale-[1.02]",
               "no-underline focus-visible:outline-none focus-visible:ring-2",
               "focus-visible:ring-ring focus-visible:ring-offset-2"
             )}
           >
-            <Card className="overflow-hidden">
+            <Card className="overflow-hidden transition-shadow hover:shadow-lg">
               <div className="relative aspect-[4/3] w-full bg-muted">
                 {isLoading ? (
                   <Skeleton className="h-full w-full" />

@@ -9,12 +9,13 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Tables } from '@/types/database';
-import Link from 'next/link';
-import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Skeleton } from '@/components/ui/skeleton';
 import supabaseClient from '@/lib/supabase-client';
 import { useCallback, useEffect, useState } from 'react';
@@ -27,6 +28,7 @@ interface MenusDataTableProps {
 
 export function MenusDataTable({ menus }: MenusDataTableProps) {
   const t = useTranslations();
+  const router = useRouter();
   const [menuImages, setMenuImages] = useState<Record<string, string>>({});
   const [loadingImages, setLoadingImages] = useState<Record<string, boolean>>({});
 
@@ -89,9 +91,13 @@ export function MenusDataTable({ menus }: MenusDataTableProps) {
           const isLoading = loadingImages[menu.id];
 
           return (
-            <TableRow key={menu.id}>
+            <TableRow 
+              key={menu.id} 
+              className="cursor-pointer hover:bg-accent/50 transition-colors"
+              onClick={() => router.push(`/menus/${menu.id}`)}
+            >
               <TableCell>
-                <Link href={`/menus/${menu.id}`} className="block w-16 relative aspect-square">
+                <div className="block w-16 relative aspect-square">
                   {isLoading ? (
                     <Skeleton className="h-full w-full rounded-md" />
                   ) : imageUrl ? (
@@ -108,12 +114,10 @@ export function MenusDataTable({ menus }: MenusDataTableProps) {
                   ) : (
                     <div className="h-full w-full bg-muted rounded-md" />
                   )}
-                </Link>
+                </div>
               </TableCell>
               <TableCell>
-                <Link href={`/menus/${menu.id}`} className="hover:underline">
-                  {menu.label}
-                </Link>
+                <span>{menu.label}</span>
               </TableCell>
               <TableCell>
                 <span 

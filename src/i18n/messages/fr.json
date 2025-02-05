@@ -29,11 +29,11 @@
     "loading": "Chargement..."
   },
   "navigation": {
-    "home": "Dashboard",
+    "home": "Mes menus",
     "mainMenu": "Menu principal",
     "todos": "Tâches",
     "manageMenus": "Gérer les menus",
-    "menus": "Menus",
+    "about": "À propos",
     "settings": "Paramètres",
     "logout": "Se déconnecter"
   },

@@ -41,11 +41,11 @@
     "loading": "Loading..."
   },
   "navigation": {
-    "home": "Dashboard",
+    "home": "My menus",
     "mainMenu": "Main menu",
     "todos": "Todos",
     "manageMenus": "Manage menus",
-    "menus": "Menus",
+    "about": "About",
     "settings": "Settings",
     "logout": "Logout"
   },
