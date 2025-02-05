@@ -83,6 +83,10 @@
     "image": "Image",
     "noImage": "No image available",
     "details": "View details",
+    "createdAt": "Created on",
+    "updatedAt": "Updated on",
+    "listView": "List view",
+    "gridView": "Grid view",
     "steps": {
       "menu_ocr": "Text recognition",
       "menu_recipe": "Recipe extraction",
@@ -93,7 +97,6 @@
       "status_created": "Created",
       "status_completed": "Completed",
       "status_error": "Error",
-      "createdAt": "Created at",
       "finishedAt": "Finished at",
       "duration": "Duration",
       "error": "Error",

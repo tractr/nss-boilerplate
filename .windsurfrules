@@ -39,6 +39,7 @@
 - Les composants réutilisables vont dans /components
 - Utiliser les composants de @shadcn/ui en premier choix en les importants si ils ne sont pas disponibles (npx shadcn@latest add [component])
 - Ne pas modifier les composants de @shadcn/ui (/components/ui)
+- Database schema types can be found in src/types/database.ts
 
 # Conventions de Nommage
 - kebab-case pour les fichiers   

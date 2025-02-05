@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { Home, User2, Monitor, LogOut, Utensils, ChevronDown } from 'lucide-react';
+import { Home, User2, Monitor, LogOut, Utensils, ChevronDown, Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -101,6 +101,13 @@ export function MainNav() {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+
+          <Button asChild size="sm">
+            <Link href="/menus/new" className="flex items-center gap-2">
+              <Plus className="h-4 w-4" />
+              {t('menus.createMenu')}
+            </Link>
+          </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

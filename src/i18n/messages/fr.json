@@ -83,6 +83,10 @@
     "image": "Image",
     "noImage": "Aucune image disponible",
     "details": "Voir les détails",
+    "createdAt": "Créé le",
+    "updatedAt": "Modifié le",
+    "listView": "Vue liste",
+    "gridView": "Vue grille",
     "steps": {
       "menu_ocr": "Extraction du texte",
       "menu_recipe": "Analyse des recettes",
