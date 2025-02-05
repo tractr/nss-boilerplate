@@ -2,16 +2,19 @@
 
 import LayoutNav from '@/components/layout-nav';
 import { MenuSteps } from '@/components/menus/menu-steps';
+import { DeleteMenuDialog } from '@/components/menus/delete-menu-dialog';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Download, Pencil, Trash2 } from 'lucide-react';
 import { useMenus } from '@/hooks/use-menus';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { Pencil } from 'lucide-react';
+import { downloadMenuImage } from '@/lib/download-menu';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
 
 export default function MenuPage() {
   const params = useParams();
@@ -19,6 +22,9 @@ export default function MenuPage() {
   const { menus, activeMenuId, setActiveMenuId, isLoading: menuLoading } = useMenus();
   const activeMenu = menus?.find(menu => menu.id === menuId);
   const t = useTranslations();
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const router = useRouter();
+  const queryClient = useQueryClient();
 
   // Synchronize URL menu ID with active menu
   useEffect(() => {
@@ -26,6 +32,12 @@ export default function MenuPage() {
       setActiveMenuId(menuId);
     }
   }, [menuId, activeMenuId, setActiveMenuId]);
+
+  const handleDownload = async () => {
+    if (activeMenu?.file_bucket && activeMenu?.file_path) {
+      await downloadMenuImage(activeMenu);
+    }
+  };
 
   if (menuLoading || !activeMenu) {
     return (
@@ -50,16 +62,36 @@ export default function MenuPage() {
                 {activeMenu.label}
               </h1>
               <p className="text-muted-foreground">
-                Version {activeMenu.version} • Créé le{' '}
-                {format(new Date(activeMenu.created_at), 'PPP', { locale: fr })}
+                {t('menus.createdAt', {
+                  date: format(new Date(activeMenu.created_at), 'PPP', { locale: fr }),
+                })}
               </p>
             </div>
-            <Button asChild variant="outline">
-              <Link href={`/menus/${activeMenu.id}/edit`}>
-                <Pencil className="w-4 h-4 mr-2" />
-                {t('actions.edit')}
-              </Link>
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleDownload}
+                disabled={!activeMenu.file_bucket || !activeMenu.file_path}
+              >
+                <Download className="w-4 h-4 mr-2" />
+                {t('menus.download')}
+              </Button>
+              <Button variant="outline" size="sm" asChild>
+                <Link href={`/menus/${activeMenu.id}/edit`}>
+                  <Pencil className="w-4 h-4 mr-2" />
+                  {t('actions.edit')}
+                </Link>
+              </Button>
+              <Button 
+                variant="destructive" 
+                size="sm"
+                onClick={() => setIsDeleteDialogOpen(true)}
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                {t('actions.delete')}
+              </Button>
+            </div>
           </div>
 
           <div>
@@ -67,6 +99,11 @@ export default function MenuPage() {
           </div>
         </div>
       </div>
+      <DeleteMenuDialog 
+        isOpen={isDeleteDialogOpen} 
+        onClose={() => setIsDeleteDialogOpen(false)} 
+        menuId={activeMenu.id} 
+      />
     </LayoutNav>
   );
 }

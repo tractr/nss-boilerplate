@@ -1,7 +1,7 @@
 'use client';
 
 import LayoutNav from '@/components/layout-nav';
-import { MenusDataTable } from '@/components/menus/menus-data-table';
+import { MenusView } from '@/components/menus/menus-view';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -22,7 +22,7 @@ export default function HomePage() {
             </Link>
           </Button>
         </div>
-        <MenusDataTable />
+        <MenusView />
       </div>
     </LayoutNav>
   );
