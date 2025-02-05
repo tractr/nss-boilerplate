@@ -33,7 +33,9 @@
     "mainMenu": "Menu principal",
     "todos": "Tâches",
     "manageMenus": "Gérer les menus",
-    "menus": "Menus"
+    "menus": "Menus",
+    "settings": "Paramètres",
+    "logout": "Se déconnecter"
   },
   "settings": {
     "title": "Paramètres",

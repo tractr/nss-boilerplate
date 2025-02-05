@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import supabaseClient from '@/lib/supabase-client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import LayoutSidebar from '@/components/layout-sidebar';
+import LayoutNav from '@/components/layout-nav';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslations } from 'next-intl';
 import { Dropzone } from '@/components/ui/dropzone';
@@ -126,7 +126,7 @@ export default function EditMenuPage() {
   };
 
   return (
-    <LayoutSidebar>
+    <LayoutNav>
       <div className="container mx-auto py-6">
         <Card>
           <CardHeader>
@@ -169,6 +169,6 @@ export default function EditMenuPage() {
           </CardContent>
         </Card>
       </div>
-    </LayoutSidebar>
+    </LayoutNav>
   );
 }

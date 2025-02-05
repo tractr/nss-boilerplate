@@ -1,0 +1,45 @@
+# Stack Technique
+- Next.js 15 avec App Router
+  - Server Components par défaut
+  - App directory (/app)
+  - Route handlers pour l'API
+  - Middleware pour l'authentification
+  - Server Components
+
+- React 18
+  - Hooks
+
+- TypeScript 5
+  - Strict mode activé
+  - Types explicites requis
+  - .tsx pour les composants
+  - .ts pour la logique
+
+- Tailwind CSS 3
+  - Classes utilitaires uniquement
+
+- Composants UI
+  - shadcn/ui comme base 
+  - Composants charts de shadcn/ui (Recharts) pour les graphiques
+  - Composants accessibles (a11y)
+
+# Règles de Code
+- Tous les composants React doivent être en TypeScript (.tsx)
+- Utiliser "use client" uniquement quand nécessaire
+
+# Style
+- Utiliser uniquement Tailwind CSS pour le styling
+- Pas de CSS-in-JS ou de styles inline
+- Suivre les classes utilitaires existantes
+- Utiliser cn si besoin pour concatener les classes (src/lib/utils.ts)
+
+# Architecture
+- Respecter la structure des dossiers Next.js App Router
+- Un composant = un fichier
+- Les composants réutilisables vont dans /components
+- Utiliser les composants de @shadcn/ui en premier choix en les importants si ils ne sont pas disponibles (npx shadcn@latest add [component])
+- Ne pas modifier les composants de @shadcn/ui (/components/ui)
+
+# Conventions de Nommage
+- kebab-case pour les fichiers   
+- camelCase pour les fonctions et variables

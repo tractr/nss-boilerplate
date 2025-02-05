@@ -45,7 +45,9 @@
     "mainMenu": "Main menu",
     "todos": "Todos",
     "manageMenus": "Manage menus",
-    "menus": "Menus"
+    "menus": "Menus",
+    "settings": "Settings",
+    "logout": "Logout"
   },
   "settings": {
     "title": "Settings",
