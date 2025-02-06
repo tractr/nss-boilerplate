@@ -198,11 +198,11 @@ export default function MenuPage() {
         </div>
 
         {/* Hero Section - Image et Infos */}
-        <Card className="shadow-lg border-0">
+        <Card className="shadow-lg border-0 p-6">
           <div className="grid md:grid-cols-2">
             {/* Image */}
-            <div className="overflow-hidden rounded-l-lg">
-              <div className="relative aspect-[4/3] w-full bg-muted">
+            <div className="overflow-hidden rounded-l-lg p-6">
+              <div className="relative aspect-[4/3] w-full bg-muted rounded-lg border">
                 {loadingImage ? (
                   <Skeleton className="h-full w-full" />
                 ) : menuImageUrl ? (
@@ -210,12 +210,11 @@ export default function MenuPage() {
                     <Image
                       src={menuImageUrl}
                       alt={activeMenu.label}
-                      className="object-cover object-top"
+                      className="object-cover object-top rounded-lg"
                       fill
                       sizes="(max-width: 768px) 100vw, 50vw"
                       priority
                     />
-                    <div className="absolute inset-0 bg-black/20 rounded-tl-lg" />
                   </>
                 ) : (
                   <div className="flex h-full items-center justify-center">
@@ -226,7 +225,7 @@ export default function MenuPage() {
             </div>
 
             {/* Menu Info */}
-            <div className="px-10 py-10">
+            <div className="px-6 py-6">
               <div className="flex flex-col gap-6">
                 <h1 className="text-4xl font-bold tracking-tight mb-5">
                   {activeMenu.label}
@@ -256,7 +255,10 @@ export default function MenuPage() {
                     )}
                   </div>
 
-                  <div className="h-px bg-border my-2" />
+                  <div className="flex flex-col my-2">
+                    <div className="h-px bg-gray-200" />
+                    <div className="h-px bg-gray-50" />
+                  </div>
 
                   {/* Système */}
                   <div className="grid grid-cols-[120px_1fr] gap-y-2 text-sm">
@@ -279,7 +281,10 @@ export default function MenuPage() {
                     </span>
                   </div>
 
-                  <div className="h-px bg-border my-2" />
+                  <div className="flex flex-col my-2">
+                    <div className="h-px bg-gray-200" />
+                    <div className="h-px bg-gray-50" />
+                  </div>
 
                   {/* Résultats */}
                   <div className="grid grid-cols-[120px_1fr] gap-y-2 text-sm">
@@ -332,30 +337,31 @@ export default function MenuPage() {
           </div>
 
           {/* Tabs Section */}
-          <div className="border-t">
-            <div className="p-6 pt-10">
+          <div>
+            <div className="px-6 pt-10">
               <Tabs defaultValue="analysis" className="w-full">
-                <div className="flex justify-center mb-6">
-                  <TabsList className="bg-muted/50">
+                <div className="flex justify-center mb-6 relative">
+                  <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-border" />
+                  <TabsList className="bg-gray-100 p-1 shadow-inner relative z-10">
                     <TabsTrigger 
                       value="analysis" 
-                      className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground"
+                      className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow text-base px-5 py-1"
                     >
-                      <BarChart3 className="h-4 w-4" />
+                      <BarChart3 className="h-5 w-5" />
                       {t('menus.tabs.analysis')}
                     </TabsTrigger>
                     <TabsTrigger 
                       value="recipes" 
-                      className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground"
+                      className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow text-base px-5 py-1"
                     >
-                      <Utensils className="h-4 w-4" />
+                      <Utensils className="h-5 w-5" />
                       {t('menus.tabs.recipes')}
                     </TabsTrigger>
                     <TabsTrigger 
                       value="ingredients" 
-                      className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground"
+                      className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow text-base px-5 py-1"
                     >
-                      <Apple className="h-4 w-4" />
+                      <Apple className="h-5 w-5" />
                       {t('menus.tabs.ingredients')}
                     </TabsTrigger>
                   </TabsList>
@@ -364,12 +370,12 @@ export default function MenuPage() {
                   <MenuSteps steps={steps} />
                 </TabsContent>
                 <TabsContent value="recipes">
-                  <div className="text-center text-muted-foreground">
+                  <div className="text-center text-muted-foreground min-h-[400px] flex items-center justify-center">
                     <p>Liste des recettes à venir</p>
                   </div>
                 </TabsContent>
                 <TabsContent value="ingredients">
-                  <div className="text-center text-muted-foreground">
+                  <div className="text-center text-muted-foreground min-h-[400px] flex items-center justify-center">
                     <p>Liste des ingrédients à venir</p>
                   </div>
                 </TabsContent>

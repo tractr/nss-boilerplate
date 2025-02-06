@@ -114,14 +114,14 @@ export function MenusGridView({ menus }: MenusGridViewProps) {
                   <div className="pt-2 space-y-1 text-xs text-muted-foreground">
                     <p className="flex items-center gap-1">
                       <span>{t('menus.owner')}:</span>
-                      <span className="text-foreground">{menu.owner}</span>
+                      <span className="text-foreground max-w-[150px] truncate">{menu.owner}</span>
                     </p>
                     <p>
-                      {t('menus.createdAt')}: {format(new Date(menu.created_at), 'PPP', { locale: fr })}
+                      {t('menus.createdAt')}: <span className="text-foreground">{format(new Date(menu.created_at), 'PPP', { locale: fr })}</span>
                     </p>
                     {menu.updated_date && (
                       <p>
-                        {t('menus.updatedAt')}: {format(new Date(menu.updated_date), 'PPP', { locale: fr })}
+                        {t('menus.updatedAt')}: <span className="text-foreground">{format(new Date(menu.updated_date), 'PPP', { locale: fr })}</span>
                       </p>
                     )}
                   </div>
