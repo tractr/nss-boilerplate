@@ -24,7 +24,7 @@ export default function LayoutNav({
         className={cn(
           "flex-1 flex flex-col overflow-auto p-4 md:p-6",
           !isSidebarMode && "pt-[80px] md:pt-[88px]",
-          isSidebarMode && "md:pl-[17.5rem] pt-4",
+          isSidebarMode && "pt-[80px] md:pt-6 md:pl-[17.5rem]",
           containerClassName
         )}
       >

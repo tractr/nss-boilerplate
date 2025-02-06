@@ -11,8 +11,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar';
-import { LayoutDashboard, User2, ChevronUp, Monitor, LogOut, LucideProps, Info, Plus } from 'lucide-react';
+import { LayoutDashboard, User2, ChevronUp, Monitor, LogOut, LucideProps, Info, Plus, Menu } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -55,6 +56,7 @@ export default function MainSidebar() {
   const pathname = usePathname();
   const [showSettings, setShowSettings] = useState(false);
   const t = useTranslations();
+  const { setOpenMobile } = useSidebar();
 
   const _logout = async () => {
     const { error } = await supabaseClient.auth.signOut();
@@ -65,10 +67,18 @@ export default function MainSidebar() {
   };
 
   return (
-    <Sidebar className="bg-background shadow-md">
+    <Sidebar className="bg-background shadow-md z-10">
       <SidebarHeader>
-        <div className="flex-1 flex items-center justify-center p-4">
+        <div className="flex items-center justify-between p-4 md:justify-center">
           <Image src="/images/logo.svg" alt={t('common.logo')} width={130} height={100} />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setOpenMobile(false)}
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
         </div>
         <div className="px-4 pb-4">
           <Link href="/menus/new" className="w-full">
@@ -99,8 +109,8 @@ export default function MainSidebar() {
                       target={item.external ? '_blank' : undefined}
                       rel={item.external ? 'noopener noreferrer' : undefined}
                     >
-                      <item.icon className="h-[1.2rem] w-[1.2rem]" />
-                      <span>{t(item.titleKey)}</span>
+                      <item.icon className="h-4 w-4 mr-2" />
+                      {t(item.titleKey)}
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -110,40 +120,32 @@ export default function MainSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <div className="flex items-center justify-between gap-2">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton data-testid="user-button">
-                    <User2 />
-                    {currentUser?.data?.email ? (
-                      <span className="h-6 inline-flex items-center text-sm truncate flex-shrink">
-                        {currentUser?.data?.email}
-                      </span>
-                    ) : (
-                      <Skeleton className="h-6 w-full" />
-                    )}
-                    <ChevronUp className="ml-auto" />
-                  </SidebarMenuButton>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
-                  <DropdownMenuItem onClick={_logout}>
-                    <LogOut className="h-[1.2rem] w-[1.2rem]" />
-                    <span data-testid="logout-button">{t('actions.logout')}</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setShowSettings(true)}>
-                    <Monitor className="h-[1.2rem] w-[1.2rem]" />
-                    <span>{t('actions.openSettings')}</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </SidebarMenuItem>
-          </SidebarMenu>
-
-          <SettingsModal open={showSettings} onOpenChange={setShowSettings} />
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="w-full flex items-center justify-between h-9 px-3 text-sm font-medium text-muted-foreground hover:text-primary"
+            >
+              <div className="flex items-center">
+                <User2 className="h-4 w-4 mr-2" />
+                <span>{currentUser?.data?.email}</span>
+              </div>
+              <ChevronUp className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-[--radix-dropdown-menu-trigger-width]">
+            <DropdownMenuItem onClick={() => setShowSettings(true)}>
+              <Monitor className="mr-2 h-4 w-4" />
+              <span>{t('navigation.settings')}</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={_logout}>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>{t('navigation.logout')}</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </SidebarFooter>
+      <SettingsModal open={showSettings} onOpenChange={setShowSettings} />
     </Sidebar>
   );
 }

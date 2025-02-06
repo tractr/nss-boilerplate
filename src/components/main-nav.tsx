@@ -39,6 +39,7 @@ export function MainNav() {
   const currentUser = useCurrentUser();
   const pathname = usePathname();
   const [showSettings, setShowSettings] = useState(false);
+  const [openMobile, setOpenMobile] = useState(false);
   const t = useTranslations();
 
   const logout = async () => {
@@ -51,7 +52,7 @@ export function MainNav() {
 
   return (
     <div className="shadow-md bg-white">
-      <Sheet>
+      <Sheet open={openMobile} onOpenChange={setOpenMobile}>
         <div className="flex h-16 items-center mx-auto px-6">
           {/* Burger Menu (Mobile) */}
           <SheetTrigger asChild>
@@ -129,16 +130,18 @@ export function MainNav() {
           </nav>
 
           {/* CTA Nouveau Menu */}
-          <Link href="/menus/new" className="ml-6">
-            <Button
-              variant="outline"
-              size="default"
-              className="h-9 px-3 bg-brand hover:bg-brand/90 text-brand-foreground border-0"
-            >
-              <Plus className="h-4 w-4 mr-1" />
-              <span className="text-sm font-medium">{t('menus.add')}</span>
-            </Button>
-          </Link>
+          <div className="flex items-center space-x-2">
+            <Link href="/menus/new">
+              <Button
+                variant="outline"
+                size="default"
+                className="h-9 px-3 bg-brand hover:bg-brand/90 text-brand-foreground border-0"
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                <span className="text-sm font-medium">{t('menus.add')}</span>
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Mobile Menu */}
