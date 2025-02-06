@@ -22,13 +22,13 @@ export default function HomePage() {
   const [sortBy, setSortBy] = useState<SortOption>('newest');
 
   return (
-    <LayoutNav>
-      <div className="container mx-auto py-6">
-        <div className="flex items-center justify-between mb-8">
+    <LayoutNav containerClassName="bg-muted/50">
+      <div className="container mx-auto max-w-7xl py-4">
+        <div className="flex items-center justify-between mb-8 mt-4">
           <h1 className="text-3xl font-bold">{t('menus.title')}</h1>
           <div className="flex items-center gap-4">
             <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortOption)}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-[180px] bg-white">
                 <SelectValue placeholder={t('menus.filters.sortBy')} />
               </SelectTrigger>
               <SelectContent>
@@ -39,10 +39,10 @@ export default function HomePage() {
               </SelectContent>
             </Select>
 
-            <div className="flex h-9 border rounded-md">
+            <div className="flex h-9 border bg-white rounded-md shadow-sm">
               <Toggle
                 pressed={isGridView}
-                onPressedChange={pressed => setIsGridView(pressed)}
+                onPressedChange={(pressed) => setIsGridView(pressed)}
                 aria-label={t('menus.gridView')}
                 className="h-full data-[state=on]:bg-accent rounded-none rounded-l-md"
               >
@@ -50,7 +50,7 @@ export default function HomePage() {
               </Toggle>
               <Toggle
                 pressed={!isGridView}
-                onPressedChange={pressed => setIsGridView(!pressed)}
+                onPressedChange={(pressed) => setIsGridView(!pressed)}
                 aria-label={t('menus.listView')}
                 className="h-full data-[state=on]:bg-accent rounded-none rounded-r-md"
               >
