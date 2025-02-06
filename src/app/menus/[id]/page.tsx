@@ -49,6 +49,9 @@ import { useMenuSteps } from '@/hooks/use-menu-steps';
 import Image from 'next/image';
 import supabaseClient from '@/lib/supabase-client';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog';
+import { cn } from '@/lib/utils';
+import { ImageModal } from '@/components/menus/image-modal';
 
 export default function MenuPage() {
   const params = useParams();
@@ -62,6 +65,7 @@ export default function MenuPage() {
   const [loadingImage, setLoadingImage] = useState(false);
   const router = useRouter();
   const queryClient = useQueryClient();
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
   const getMenuImageUrl = useCallback(async () => {
     if (!activeMenu?.file_bucket || !activeMenu?.file_path) return null;
@@ -111,12 +115,53 @@ export default function MenuPage() {
   if (menuLoading || !activeMenu) {
     return (
       <LayoutNav containerClassName="bg-muted/50">
-        <div className="container py-8">
-          <div className="flex flex-col gap-8">
-            <Skeleton className="h-12 w-[300px]" />
-            <Skeleton className="h-4 w-[200px]" />
-            <Skeleton className="h-[400px] w-full" />
+        <div className="container max-w-7xl mx-auto py-4">
+          <div className="flex justify-between items-center mb-6">
+            <Skeleton className="h-9 w-24" />
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-8 w-32" />
+              <Skeleton className="h-8 w-8" />
+            </div>
           </div>
+
+          <Card className="shadow-lg border-0 p-12">
+            <div className="grid md:grid-cols-2 gap-6">
+              <Skeleton className="h-[400px] rounded-lg" />
+              <div className="flex flex-col gap-6">
+                <Skeleton className="h-8 w-3/4" />
+                <div className="space-y-4">
+                  <Skeleton className="h-4 w-2/3" />
+                  <Skeleton className="h-4 w-1/2" />
+                </div>
+              </div>
+            </div>
+
+            {/* Tabs Skeleton */}
+            <div className="mt-8">
+              <div className="flex justify-center mb-6 relative">
+                <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-border" />
+                <div className="bg-gray-100 p-1 shadow-inner relative z-10 rounded-lg flex gap-2">
+                  {[1, 2, 3].map((i) => (
+                    <Skeleton key={i} className="h-8 w-32 rounded" />
+                  ))}
+                </div>
+              </div>
+
+              {/* Steps Skeleton */}
+              <div className="space-y-4">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="flex items-center gap-4 p-4 rounded-lg border bg-white">
+                    <Skeleton className="h-8 w-8 rounded-full" />
+                    <div className="flex-1">
+                      <Skeleton className="h-4 w-1/4 mb-2" />
+                      <Skeleton className="h-3 w-2/3" />
+                    </div>
+                    <Skeleton className="h-6 w-16" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Card>
         </div>
       </LayoutNav>
     );
@@ -129,7 +174,7 @@ export default function MenuPage() {
 
   return (
     <LayoutNav containerClassName="bg-muted/50">
-      <div className="container max-w-7xl py-4">
+      <div className="container max-w-7xl mx-auto py-4">
         {/* Navigation et Actions */}
         <div className="flex justify-between items-center mb-6">
           <Button
@@ -198,15 +243,28 @@ export default function MenuPage() {
         </div>
 
         {/* Hero Section - Image et Infos */}
-        <Card className="shadow-lg border-0 p-6">
+        <Card className="shadow-lg border-0 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 mx-auto">
           <div className="grid md:grid-cols-2">
+            {/* Titre mobile uniquement */}
+            <div className="md:hidden mb-4">
+              <h1 className="text-3xl font-bold">{activeMenu.label}</h1>
+              {activeMenu.description && (
+                <p className="text-muted-foreground mt-2">
+                  {activeMenu.description}
+                </p>
+              )}
+            </div>
+
             {/* Image */}
-            <div className="overflow-hidden rounded-l-lg p-6">
-              <div className="relative aspect-[4/3] w-full bg-muted rounded-lg border">
-                {loadingImage ? (
-                  <Skeleton className="h-full w-full" />
-                ) : menuImageUrl ? (
-                  <>
+            <div className="overflow-hidden rounded-l-lg">
+              {loadingImage ? (
+                <Skeleton className="h-full w-full" />
+              ) : menuImageUrl ? (
+                <>
+                  <button 
+                    onClick={() => setIsImageModalOpen(true)} 
+                    className="relative aspect-square md:aspect-[4/3] w-full cursor-zoom-in"
+                  >
                     <Image
                       src={menuImageUrl}
                       alt={activeMenu.label}
@@ -215,19 +273,25 @@ export default function MenuPage() {
                       sizes="(max-width: 768px) 100vw, 50vw"
                       priority
                     />
-                  </>
-                ) : (
-                  <div className="flex h-full items-center justify-center">
-                    <FileText className="w-12 h-12 text-muted-foreground" />
-                  </div>
-                )}
-              </div>
+                  </button>
+                  <ImageModal
+                    isOpen={isImageModalOpen}
+                    onOpenChange={setIsImageModalOpen}
+                    imageUrl={menuImageUrl}
+                    alt={`${activeMenu.label} (vue agrandie)`}
+                  />
+                </>
+              ) : (
+                <div className="flex h-full items-center justify-center">
+                  <FileText className="w-12 h-12 text-muted-foreground" />
+                </div>
+              )}
             </div>
 
             {/* Menu Info */}
-            <div className="px-6 py-6">
+            <div className="py-6">
               <div className="flex flex-col gap-6">
-                <h1 className="text-4xl font-bold tracking-tight mb-5">
+                <h1 className="text-4xl font-bold tracking-tight mb-5 hidden md:block">
                   {activeMenu.label}
                 </h1>
 
@@ -337,31 +401,31 @@ export default function MenuPage() {
           </div>
 
           {/* Tabs Section */}
-          <div>
-            <div className="px-6 pt-10">
+          <div className="mt-8 md:mt-12">
+            <div>
               <Tabs defaultValue="analysis" className="w-full">
                 <div className="flex justify-center mb-6 relative">
                   <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-border" />
                   <TabsList className="bg-gray-100 p-1 shadow-inner relative z-10">
                     <TabsTrigger 
                       value="analysis" 
-                      className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow text-base px-5 py-1"
+                      className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow text-sm px-5 py-1"
                     >
-                      <BarChart3 className="h-5 w-5" />
+                      <BarChart3 className="h-4 w-4" />
                       {t('menus.tabs.analysis')}
                     </TabsTrigger>
                     <TabsTrigger 
                       value="recipes" 
-                      className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow text-base px-5 py-1"
+                      className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow text-sm px-5 py-1"
                     >
-                      <Utensils className="h-5 w-5" />
+                      <Utensils className="h-4 w-4" />
                       {t('menus.tabs.recipes')}
                     </TabsTrigger>
                     <TabsTrigger 
                       value="ingredients" 
-                      className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow text-base px-5 py-1"
+                      className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow text-sm px-5 py-1"
                     >
-                      <Apple className="h-5 w-5" />
+                      <Apple className="h-4 w-4" />
                       {t('menus.tabs.ingredients')}
                     </TabsTrigger>
                   </TabsList>
