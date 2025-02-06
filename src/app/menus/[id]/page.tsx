@@ -244,7 +244,7 @@ export default function MenuPage() {
 
         {/* Hero Section - Image et Infos */}
         <Card className="shadow-lg border-0 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 mx-auto">
-          <div className="grid md:grid-cols-2">
+          <div className="grid md:grid-cols-2 gap-8">
             {/* Titre mobile uniquement */}
             <div className="md:hidden mb-4">
               <h1 className="text-3xl font-bold">{activeMenu.label}</h1>
@@ -256,14 +256,14 @@ export default function MenuPage() {
             </div>
 
             {/* Image */}
-            <div className="overflow-hidden rounded-l-lg">
+            <div className="overflow-hidden rounded-l-lg h-full">
               {loadingImage ? (
                 <Skeleton className="h-full w-full" />
               ) : menuImageUrl ? (
                 <>
                   <button 
                     onClick={() => setIsImageModalOpen(true)} 
-                    className="relative aspect-square md:aspect-[4/3] w-full cursor-zoom-in"
+                    className="relative w-full h-full min-h-[400px]"
                   >
                     <Image
                       src={menuImageUrl}
@@ -282,7 +282,7 @@ export default function MenuPage() {
                   />
                 </>
               ) : (
-                <div className="flex h-full items-center justify-center">
+                <div className="flex h-full min-h-[400px] items-center justify-center">
                   <FileText className="w-12 h-12 text-muted-foreground" />
                 </div>
               )}
