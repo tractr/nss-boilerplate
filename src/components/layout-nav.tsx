@@ -20,13 +20,15 @@ export default function LayoutNav({
   return (
     <div className="min-h-screen flex flex-col">
       <NavigationWrapper />
-      <main className={cn(
-        "flex-1 flex flex-col overflow-auto",
-        !isSidebarMode && "pt-[64px]",
-        isSidebarMode && "pl-[16rem]",
-        containerClassName
-      )}>
-        <div className={cn("flex-1", className)}>
+      <main
+        className={cn(
+          "flex-1 flex flex-col overflow-auto p-4 md:p-6",
+          !isSidebarMode && "pt-[80px] md:pt-[88px]",
+          isSidebarMode && "md:pl-[17.5rem] pt-4",
+          containerClassName
+        )}
+      >
+        <div className={cn("flex-1 w-full max-w-7xl mx-auto", className)}>
           <div className={cn("flex-1", contentClassName)}>{children}</div>
         </div>
       </main>

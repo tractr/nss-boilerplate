@@ -18,7 +18,7 @@ export function NavigationWrapper() {
         </div>
       )}
       {isSidebarMode && (
-        <div className="fixed left-0 top-0 h-screen">
+        <div className="fixed left-0 top-0 h-screen z-50 hidden md:block">
           <SidebarProvider>
             <MainSidebar />
           </SidebarProvider>
