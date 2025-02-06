@@ -1,5 +1,8 @@
+'use client';
+
 import { cn } from '@/lib/utils';
-import { MainNav } from './main-nav';
+import { NavigationWrapper } from './navigation-wrapper';
+import { useNavigationStore } from '@/store/use-navigation-store';
 
 export default function LayoutNav({
   children,
@@ -12,12 +15,19 @@ export default function LayoutNav({
   containerClassName?: string;
   contentClassName?: string;
 }) {
+  const isSidebarMode = useNavigationStore((state) => state.isSidebarMode);
+
   return (
     <div className="min-h-screen flex flex-col">
-      <MainNav />
-      <main className={cn('flex-1 flex flex-col overflow-auto', containerClassName)}>
-        <div className={cn('flex-1 px-4 py-2', className)}>
-          <div className={cn('flex-1 container mx-auto', contentClassName)}>{children}</div>
+      <NavigationWrapper />
+      <main className={cn(
+        "flex-1 flex flex-col overflow-auto",
+        !isSidebarMode && "pt-[64px]",
+        isSidebarMode && "pl-[16rem]",
+        containerClassName
+      )}>
+        <div className={cn("flex-1", className)}>
+          <div className={cn("flex-1", contentClassName)}>{children}</div>
         </div>
       </main>
     </div>
