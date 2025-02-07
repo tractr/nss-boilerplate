@@ -32,20 +32,21 @@ import { fr } from 'date-fns/locale';
 import { downloadMenuImage } from '@/lib/download-menu';
 import { useTranslations } from 'next-intl';
 import { useParams, useRouter } from 'next/navigation';
-import { useQueryClient } from '@tanstack/react-query';
 import { useState, useEffect, useCallback } from 'react';
 import { useMenuSteps } from '@/hooks/use-menu-steps';
 import Image from 'next/image';
 import supabaseClient from '@/lib/supabase-client';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { ImageModal } from '@/components/menus/image-modal';
+import { MenuRecipeOutput } from '@/interfaces/steps/menu_recipe.interface';
+import { MenuEnvironmentalImpactOutput } from '@/interfaces/steps/menu_environmental_impact.interfaces';
 
 export default function MenuPage() {
   const params = useParams();
   const menuId = typeof params.id === 'string' ? params.id : undefined;
   const { menus, activeMenuId, setActiveMenuId, isLoading: menuLoading } = useMenus();
   const activeMenu = menus?.find(menu => menu.id === menuId);
-  const { steps } = useMenuSteps(menuId);
+  const { data: steps } = useMenuSteps(menuId);
   const t = useTranslations();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [menuImageUrl, setMenuImageUrl] = useState<string | null>(null);
@@ -154,7 +155,7 @@ export default function MenuPage() {
   }
 
   // Calculer les statistiques d'analyse
-  const completedSteps = steps?.filter(step => step.status === 'completed')?.length ?? 0;
+  const completedSteps = steps?.filter(step => step.status === 'fully_finished')?.length ?? 0;
   const totalSteps = steps?.length ?? 0;
   const progress = totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
 
@@ -313,13 +314,13 @@ export default function MenuPage() {
                     <span className="text-muted-foreground">
                       {(() => {
                         const completedSteps =
-                          steps?.filter(step => step.status === 'completed') || [];
+                          steps?.filter(step => step.status === 'fully_finished') || [];
                         const totalDuration = completedSteps.reduce((acc, step) => {
-                          if (step.started_at && step.completed_at) {
+                          if (step.created_at && step.finished_at) {
                             return (
                               acc +
-                              (new Date(step.completed_at).getTime() -
-                                new Date(step.started_at).getTime())
+                              (new Date(step.finished_at).getTime() -
+                                new Date(step.created_at).getTime())
                             );
                           }
                           return acc;
@@ -340,19 +341,34 @@ export default function MenuPage() {
                     <span className="font-semibold text-foreground">{t('menus.stats.dishes')}</span>
                     <span className="text-muted-foreground">
                       {steps
-                        ?.filter(step => step.step === 'menu_recipe' && step.output?.dishes?.length)
-                        .reduce((acc, step) => acc + (step.output?.dishes?.length || 0), 0) || 0}
+                        ?.filter(
+                          step =>
+                            step.step === 'menu_recipe' &&
+                            (step.output as unknown as MenuRecipeOutput)?.dishes?.length
+                        )
+                        .reduce(
+                          (acc, step) =>
+                            acc +
+                            ((step.output as unknown as MenuRecipeOutput)?.dishes?.length || 0),
+                          0
+                        ) || 0}
                     </span>
-
                     <span className="font-semibold text-foreground">
                       {t('menus.stats.recipes')}
                     </span>
                     <span className="text-muted-foreground">
                       {steps
                         ?.filter(
-                          step => step.step === 'menu_recipe' && step.output?.recipes?.length
+                          step =>
+                            step.step === 'menu_recipe' &&
+                            (step.output as unknown as MenuRecipeOutput)?.dishes?.length
                         )
-                        .reduce((acc, step) => acc + (step.output?.recipes?.length || 0), 0) || 0}
+                        .reduce(
+                          (acc, step) =>
+                            acc +
+                            ((step.output as unknown as MenuRecipeOutput)?.dishes?.length || 0),
+                          0
+                        ) || 0}
                     </span>
 
                     <span className="font-semibold text-foreground">
@@ -363,15 +379,18 @@ export default function MenuPage() {
                         ?.filter(
                           step =>
                             step.step === 'menu_recipe' &&
-                            step.output?.recipes?.some(recipe => recipe.ingredients?.length)
+                            (step.output as unknown as MenuRecipeOutput)?.dishes?.some(
+                              dish => dish.ingredients?.length
+                            )
                         )
                         .reduce(
                           (acc, step) =>
                             acc +
-                            (step.output?.recipes?.reduce(
-                              (recipeAcc, recipe) => recipeAcc + (recipe.ingredients?.length || 0),
-                              0
-                            ) || 0),
+                              (step.output as unknown as MenuRecipeOutput)?.dishes?.reduce(
+                                (recipeAcc, recipe) =>
+                                  recipeAcc + (recipe.ingredients?.length || 0),
+                                0
+                              ) || 0,
                           0
                         ) || 0}
                     </span>
@@ -384,11 +403,15 @@ export default function MenuPage() {
                         const impactSteps = steps?.filter(
                           step =>
                             step.step === 'menu_environmental_impact' &&
-                            step.output?.environmental_score
+                            (step.output as unknown as MenuEnvironmentalImpactOutput)
+                              ?.environmental_score
                         );
                         const avgScore = impactSteps?.length
                           ? impactSteps.reduce(
-                              (acc, step) => acc + (step.output?.environmental_score || 0),
+                              (acc, step) =>
+                                acc +
+                                ((step.output as unknown as MenuEnvironmentalImpactOutput)
+                                  ?.environmental_score || 0),
                               0
                             ) / impactSteps.length
                           : 0;
@@ -432,7 +455,7 @@ export default function MenuPage() {
                   </TabsList>
                 </div>
                 <TabsContent value="analysis">
-                  <MenuSteps steps={steps} />
+                  <MenuSteps menuId={menuId as string} />
                 </TabsContent>
                 <TabsContent value="recipes">
                   <div className="text-center text-muted-foreground min-h-[400px] flex items-center justify-center">
