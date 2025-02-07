@@ -35,7 +35,7 @@ export default function NewMenuPage() {
         filePath = `${currentUser.data.id}/${crypto.randomUUID()}.${fileExt}`;
 
         const { error: uploadError } = await supabaseClient.storage
-          .from('menus')
+          .from('menu_files')
           .upload(filePath, data.file);
 
         if (uploadError) {
@@ -47,9 +47,8 @@ export default function NewMenuPage() {
         .from('menus')
         .insert({
           label: data.label,
-          image_path: filePath,
-          user_id: currentUser.data.id,
-          version: 1,
+          file_bucket: 'menu_files',
+          file_path: filePath,
         })
         .select()
         .single();
@@ -58,9 +57,21 @@ export default function NewMenuPage() {
         throw error;
       }
 
-      return menu;
+      return { ...menu, trigger: data.file };
     },
-    onSuccess: data => {
+    onSuccess: async data => {
+      if (!data?.id) {
+        return;
+      }
+
+      if (data.trigger) {
+        await supabaseClient.functions.invoke('trigger-menu-run', {
+          body: {
+            menu_id: data.id,
+          },
+        });
+      }
+
       queryClient.invalidateQueries({ queryKey: ['menus'] });
       setActiveMenuId(data.id);
       router.push(`/menus/${data.id}`);

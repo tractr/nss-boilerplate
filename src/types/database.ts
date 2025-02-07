@@ -34,6 +34,120 @@ export type Database = {
   }
   public: {
     Tables: {
+      agribalyse: {
+        Row: {
+          "Acidification terrestre et eaux douces": number | null
+          "Appauvrissement de la couche d'ozone": number | null
+          "Approche emballage": string | null
+          "Changement climatique": number | null
+          "Changement climatique - émissions biogéniques": number | null
+          "Changement climatique - émissions fossiles": number | null
+          "Changement climatique - liées à l'affectation des sols":
+            | number
+            | null
+          "Code AGB": string | null
+          "code avion": number | null
+          "Code CIQUAL": string | null
+          "code saison": number | null
+          "DQR - Note de qualité de la donnée": number | null
+          "Écotoxicité pour écosystèmes aquatiques d'eau douce": number | null
+          "Effets toxicologiques non-cancérogènes": number | null
+          "Effets toxicologiques substances cancérogènes": number | null
+          "Épuisement des ressources eau": number | null
+          "Épuisement des ressources énergétiques": number | null
+          "Épuisement des ressources minéraux": number | null
+          "Eutrophisation eaux douces": number | null
+          "Eutrophisation marine": number | null
+          "Eutrophisation terrestre": number | null
+          "Formation photochimique d'ozone": number | null
+          "Groupe d'aliment": string | null
+          id: string
+          "LCI Name": string | null
+          Livraison: string | null
+          "Nom du Produit en Français": string | null
+          "Particules fines": number | null
+          Préparation: string | null
+          "Rayonnements ionisants": number | null
+          "Score unique EF 3.1": number | null
+          "Sous-groupe d'aliment": string | null
+          "Utilisation du sol": number | null
+        }
+        Insert: {
+          "Acidification terrestre et eaux douces"?: number | null
+          "Appauvrissement de la couche d'ozone"?: number | null
+          "Approche emballage"?: string | null
+          "Changement climatique"?: number | null
+          "Changement climatique - émissions biogéniques"?: number | null
+          "Changement climatique - émissions fossiles"?: number | null
+          "Changement climatique - liées à l'affectation des sols"?:
+            | number
+            | null
+          "Code AGB"?: string | null
+          "code avion"?: number | null
+          "Code CIQUAL"?: string | null
+          "code saison"?: number | null
+          "DQR - Note de qualité de la donnée"?: number | null
+          "Écotoxicité pour écosystèmes aquatiques d'eau douce"?: number | null
+          "Effets toxicologiques non-cancérogènes"?: number | null
+          "Effets toxicologiques substances cancérogènes"?: number | null
+          "Épuisement des ressources eau"?: number | null
+          "Épuisement des ressources énergétiques"?: number | null
+          "Épuisement des ressources minéraux"?: number | null
+          "Eutrophisation eaux douces"?: number | null
+          "Eutrophisation marine"?: number | null
+          "Eutrophisation terrestre"?: number | null
+          "Formation photochimique d'ozone"?: number | null
+          "Groupe d'aliment"?: string | null
+          id?: string
+          "LCI Name"?: string | null
+          Livraison?: string | null
+          "Nom du Produit en Français"?: string | null
+          "Particules fines"?: number | null
+          Préparation?: string | null
+          "Rayonnements ionisants"?: number | null
+          "Score unique EF 3.1"?: number | null
+          "Sous-groupe d'aliment"?: string | null
+          "Utilisation du sol"?: number | null
+        }
+        Update: {
+          "Acidification terrestre et eaux douces"?: number | null
+          "Appauvrissement de la couche d'ozone"?: number | null
+          "Approche emballage"?: string | null
+          "Changement climatique"?: number | null
+          "Changement climatique - émissions biogéniques"?: number | null
+          "Changement climatique - émissions fossiles"?: number | null
+          "Changement climatique - liées à l'affectation des sols"?:
+            | number
+            | null
+          "Code AGB"?: string | null
+          "code avion"?: number | null
+          "Code CIQUAL"?: string | null
+          "code saison"?: number | null
+          "DQR - Note de qualité de la donnée"?: number | null
+          "Écotoxicité pour écosystèmes aquatiques d'eau douce"?: number | null
+          "Effets toxicologiques non-cancérogènes"?: number | null
+          "Effets toxicologiques substances cancérogènes"?: number | null
+          "Épuisement des ressources eau"?: number | null
+          "Épuisement des ressources énergétiques"?: number | null
+          "Épuisement des ressources minéraux"?: number | null
+          "Eutrophisation eaux douces"?: number | null
+          "Eutrophisation marine"?: number | null
+          "Eutrophisation terrestre"?: number | null
+          "Formation photochimique d'ozone"?: number | null
+          "Groupe d'aliment"?: string | null
+          id?: string
+          "LCI Name"?: string | null
+          Livraison?: string | null
+          "Nom du Produit en Français"?: string | null
+          "Particules fines"?: number | null
+          Préparation?: string | null
+          "Rayonnements ionisants"?: number | null
+          "Score unique EF 3.1"?: number | null
+          "Sous-groupe d'aliment"?: string | null
+          "Utilisation du sol"?: number | null
+        }
+        Relationships: []
+      }
       configs: {
         Row: {
           key: string
