@@ -133,6 +133,28 @@
     },
     "analyze": "Analyze",
     "activeMenu": "Active menu",
-    "changeMenu": "Change menu"
+    "changeMenu": "Change menu",
+    "tabs": {
+      "analysis": "Menu Analysis",
+      "recipes": "Recipes",
+      "ingredients": "Ingredients"
+    },
+    "stats": {
+      "version": "Version",
+      "owner": "Owner",
+      "createdAt": "Created on",
+      "updatedAt": "Modified on",
+      "progress": "Progress",
+      "duration": "Duration",
+      "dishes": "Dishes",
+      "recipes": "Recipes",
+      "ingredients": "Ingredients",
+      "environmentalScore": "Env. Score",
+      "minutes": "{count} min",
+      "comingSoon": {
+        "recipes": "Recipe list coming soon",
+        "ingredients": "Ingredient list coming soon"
+      }
+    }
   }
 }

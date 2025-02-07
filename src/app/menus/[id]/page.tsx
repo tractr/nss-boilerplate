@@ -4,7 +4,7 @@ import LayoutNav from '@/components/layout-nav';
 import { MenuSteps } from '@/components/menus/menu-steps';
 import { DeleteMenuDialog } from '@/components/menus/delete-menu-dialog';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   DropdownMenu,
@@ -12,36 +12,25 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-import { 
-  Download, 
-  Pencil, 
-  Trash2, 
-  ArrowLeft, 
-  Calendar, 
-  FileText, 
-  User, 
-  Tag, 
+} from '@/components/ui/dropdown-menu';
+import {
+  Download,
+  Pencil,
+  Trash2,
+  ArrowLeft,
+  FileText,
   Settings2,
-  Timer,
   Utensils,
-  Leaf,
-  Clock,
-  Chart,
-  Flame,
-  Droplet,
-  ChefHat,
   Apple,
   BarChart3,
   ChevronDown,
-  History
+  History,
 } from 'lucide-react';
 import { useMenus } from '@/hooks/use-menus';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { downloadMenuImage } from '@/lib/download-menu';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState, useEffect, useCallback } from 'react';
@@ -49,8 +38,6 @@ import { useMenuSteps } from '@/hooks/use-menu-steps';
 import Image from 'next/image';
 import supabaseClient from '@/lib/supabase-client';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog';
-import { cn } from '@/lib/utils';
 import { ImageModal } from '@/components/menus/image-modal';
 
 export default function MenuPage() {
@@ -64,12 +51,11 @@ export default function MenuPage() {
   const [menuImageUrl, setMenuImageUrl] = useState<string | null>(null);
   const [loadingImage, setLoadingImage] = useState(false);
   const router = useRouter();
-  const queryClient = useQueryClient();
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
   const getMenuImageUrl = useCallback(async () => {
     if (!activeMenu?.file_bucket || !activeMenu?.file_path) return null;
-    
+
     try {
       const { data, error } = await supabaseClient.storage
         .from(activeMenu.file_bucket)
@@ -141,7 +127,7 @@ export default function MenuPage() {
               <div className="flex justify-center mb-6 relative">
                 <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-border" />
                 <div className="bg-gray-100 p-1 shadow-inner relative z-10 rounded-lg flex gap-2">
-                  {[1, 2, 3].map((i) => (
+                  {[1, 2, 3].map(i => (
                     <Skeleton key={i} className="h-8 w-32 rounded" />
                   ))}
                 </div>
@@ -149,7 +135,7 @@ export default function MenuPage() {
 
               {/* Steps Skeleton */}
               <div className="space-y-4">
-                {[1, 2, 3, 4].map((i) => (
+                {[1, 2, 3, 4].map(i => (
                   <div key={i} className="flex items-center gap-4 p-4 rounded-lg border bg-white">
                     <Skeleton className="h-8 w-8 rounded-full" />
                     <div className="flex-1">
@@ -177,12 +163,7 @@ export default function MenuPage() {
       <div className="container max-w-7xl mx-auto py-4">
         {/* Navigation et Actions */}
         <div className="flex justify-between items-center mb-6">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => router.back()}
-            className="gap-2"
-          >
+          <Button variant="ghost" size="sm" onClick={() => router.back()} className="gap-2">
             <ArrowLeft className="h-4 w-4" />
             Retour
           </Button>
@@ -191,11 +172,7 @@ export default function MenuPage() {
             {/* Version */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  className="h-8 w-32"
-                >
+                <Button variant="outline" size="sm" className="h-8 w-32">
                   <History className="mr-1 h-4 w-4" />
                   Version {activeMenu.version}
                   <ChevronDown className="ml-2 h-4 w-4" />
@@ -216,9 +193,7 @@ export default function MenuPage() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  onClick={() => router.push(`/menus/${activeMenu.id}/edit`)}
-                >
+                <DropdownMenuItem onClick={() => router.push(`/menus/${activeMenu.id}/edit`)}>
                   <Pencil className="mr-2 h-4 w-4" />
                   <span>Éditer</span>
                 </DropdownMenuItem>
@@ -248,11 +223,6 @@ export default function MenuPage() {
             {/* Titre mobile uniquement */}
             <div className="md:hidden mb-4">
               <h1 className="text-3xl font-bold">{activeMenu.label}</h1>
-              {activeMenu.description && (
-                <p className="text-muted-foreground mt-2">
-                  {activeMenu.description}
-                </p>
-              )}
             </div>
 
             {/* Image */}
@@ -261,8 +231,8 @@ export default function MenuPage() {
                 <Skeleton className="h-full w-full" />
               ) : menuImageUrl ? (
                 <>
-                  <button 
-                    onClick={() => setIsImageModalOpen(true)} 
+                  <button
+                    onClick={() => setIsImageModalOpen(true)}
                     className="relative w-full h-full min-h-[400px]"
                   >
                     <Image
@@ -298,20 +268,26 @@ export default function MenuPage() {
                 <div className="space-y-4">
                   {/* Informations de base */}
                   <div className="grid grid-cols-[120px_1fr] gap-y-2 text-sm">
-                    <span className="font-semibold text-foreground">Version</span>
+                    <span className="font-semibold text-foreground">
+                      {t('menus.stats.version')}
+                    </span>
                     <span className="text-muted-foreground">{activeMenu.version}</span>
 
-                    <span className="font-semibold text-foreground">Propriétaire</span>
+                    <span className="font-semibold text-foreground">{t('menus.stats.owner')}</span>
                     <span className="text-muted-foreground">{activeMenu.owner}</span>
 
-                    <span className="font-semibold text-foreground">Créé le</span>
+                    <span className="font-semibold text-foreground">
+                      {t('menus.stats.createdAt')}
+                    </span>
                     <span className="text-muted-foreground">
                       {format(new Date(activeMenu.created_at), 'PPP', { locale: fr })}
                     </span>
 
                     {activeMenu.updated_date && (
                       <>
-                        <span className="font-semibold text-foreground">Modifié le</span>
+                        <span className="font-semibold text-foreground">
+                          {t('menus.stats.updatedAt')}
+                        </span>
                         <span className="text-muted-foreground">
                           {format(new Date(activeMenu.updated_date), 'PPP', { locale: fr })}
                         </span>
@@ -326,21 +302,30 @@ export default function MenuPage() {
 
                   {/* Système */}
                   <div className="grid grid-cols-[120px_1fr] gap-y-2 text-sm">
-                    <span className="font-semibold text-foreground">Progression</span>
+                    <span className="font-semibold text-foreground">
+                      {t('menus.stats.progress')}
+                    </span>
                     <span className="text-muted-foreground">{progress}%</span>
 
-                    <span className="font-semibold text-foreground">Durée</span>
+                    <span className="font-semibold text-foreground">
+                      {t('menus.stats.duration')}
+                    </span>
                     <span className="text-muted-foreground">
                       {(() => {
-                        const completedSteps = steps?.filter(step => step.status === 'completed') || [];
+                        const completedSteps =
+                          steps?.filter(step => step.status === 'completed') || [];
                         const totalDuration = completedSteps.reduce((acc, step) => {
                           if (step.started_at && step.completed_at) {
-                            return acc + (new Date(step.completed_at).getTime() - new Date(step.started_at).getTime());
+                            return (
+                              acc +
+                              (new Date(step.completed_at).getTime() -
+                                new Date(step.started_at).getTime())
+                            );
                           }
                           return acc;
                         }, 0);
                         const minutes = Math.floor(totalDuration / (1000 * 60));
-                        return `${minutes} min`;
+                        return t('menus.stats.minutes', { count: minutes });
                       })()}
                     </span>
                   </div>
@@ -352,43 +337,59 @@ export default function MenuPage() {
 
                   {/* Résultats */}
                   <div className="grid grid-cols-[120px_1fr] gap-y-2 text-sm">
-                    <span className="font-semibold text-foreground">Plats</span>
+                    <span className="font-semibold text-foreground">{t('menus.stats.dishes')}</span>
                     <span className="text-muted-foreground">
-                      {steps?.filter(step => step.step === 'menu_recipe' && step.output?.dishes?.length)
+                      {steps
+                        ?.filter(step => step.step === 'menu_recipe' && step.output?.dishes?.length)
                         .reduce((acc, step) => acc + (step.output?.dishes?.length || 0), 0) || 0}
                     </span>
 
-                    <span className="font-semibold text-foreground">Recettes</span>
+                    <span className="font-semibold text-foreground">
+                      {t('menus.stats.recipes')}
+                    </span>
                     <span className="text-muted-foreground">
-                      {steps?.filter(step => 
-                        step.step === 'menu_recipe' && 
-                        step.output?.recipes?.length
-                      ).reduce((acc, step) => acc + (step.output?.recipes?.length || 0), 0) || 0}
+                      {steps
+                        ?.filter(
+                          step => step.step === 'menu_recipe' && step.output?.recipes?.length
+                        )
+                        .reduce((acc, step) => acc + (step.output?.recipes?.length || 0), 0) || 0}
                     </span>
 
-                    <span className="font-semibold text-foreground">Ingrédients</span>
+                    <span className="font-semibold text-foreground">
+                      {t('menus.stats.ingredients')}
+                    </span>
                     <span className="text-muted-foreground">
-                      {steps?.filter(step => 
-                        step.step === 'menu_recipe' && 
-                        step.output?.recipes?.some(recipe => recipe.ingredients?.length)
-                      ).reduce((acc, step) => 
-                        acc + (
-                          step.output?.recipes?.reduce((recipeAcc, recipe) => 
-                            recipeAcc + (recipe.ingredients?.length || 0), 0
-                          ) || 0
-                        ), 0) || 0}
+                      {steps
+                        ?.filter(
+                          step =>
+                            step.step === 'menu_recipe' &&
+                            step.output?.recipes?.some(recipe => recipe.ingredients?.length)
+                        )
+                        .reduce(
+                          (acc, step) =>
+                            acc +
+                            (step.output?.recipes?.reduce(
+                              (recipeAcc, recipe) => recipeAcc + (recipe.ingredients?.length || 0),
+                              0
+                            ) || 0),
+                          0
+                        ) || 0}
                     </span>
 
-                    <span className="font-semibold text-foreground">Score env.</span>
+                    <span className="font-semibold text-foreground">
+                      {t('menus.stats.environmentalScore')}
+                    </span>
                     <span className="text-muted-foreground">
                       {(() => {
-                        const impactSteps = steps?.filter(step => 
-                          step.step === 'menu_environmental_impact' && 
-                          step.output?.environmental_score
+                        const impactSteps = steps?.filter(
+                          step =>
+                            step.step === 'menu_environmental_impact' &&
+                            step.output?.environmental_score
                         );
-                        const avgScore = impactSteps?.length 
-                          ? impactSteps.reduce((acc, step) => 
-                              acc + (step.output?.environmental_score || 0), 0
+                        const avgScore = impactSteps?.length
+                          ? impactSteps.reduce(
+                              (acc, step) => acc + (step.output?.environmental_score || 0),
+                              0
                             ) / impactSteps.length
                           : 0;
                         return avgScore ? avgScore.toFixed(1) : '-';
@@ -407,22 +408,22 @@ export default function MenuPage() {
                 <div className="flex justify-center mb-6 relative">
                   <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-border" />
                   <TabsList className="bg-gray-100 p-1 shadow-inner relative z-10">
-                    <TabsTrigger 
-                      value="analysis" 
+                    <TabsTrigger
+                      value="analysis"
                       className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow text-sm px-5 py-1"
                     >
                       <BarChart3 className="h-4 w-4" />
                       {t('menus.tabs.analysis')}
                     </TabsTrigger>
-                    <TabsTrigger 
-                      value="recipes" 
+                    <TabsTrigger
+                      value="recipes"
                       className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow text-sm px-5 py-1"
                     >
                       <Utensils className="h-4 w-4" />
                       {t('menus.tabs.recipes')}
                     </TabsTrigger>
-                    <TabsTrigger 
-                      value="ingredients" 
+                    <TabsTrigger
+                      value="ingredients"
                       className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow text-sm px-5 py-1"
                     >
                       <Apple className="h-4 w-4" />
@@ -435,12 +436,12 @@ export default function MenuPage() {
                 </TabsContent>
                 <TabsContent value="recipes">
                   <div className="text-center text-muted-foreground min-h-[400px] flex items-center justify-center">
-                    <p>Liste des recettes à venir</p>
+                    <p>{t('menus.stats.comingSoon.recipes')}</p>
                   </div>
                 </TabsContent>
                 <TabsContent value="ingredients">
                   <div className="text-center text-muted-foreground min-h-[400px] flex items-center justify-center">
-                    <p>Liste des ingrédients à venir</p>
+                    <p>{t('menus.stats.comingSoon.ingredients')}</p>
                   </div>
                 </TabsContent>
               </Tabs>
@@ -448,10 +449,10 @@ export default function MenuPage() {
           </div>
         </Card>
 
-        <DeleteMenuDialog 
+        <DeleteMenuDialog
           menu={activeMenu}
-          open={isDeleteDialogOpen} 
-          onOpenChange={setIsDeleteDialogOpen} 
+          open={isDeleteDialogOpen}
+          onOpenChange={setIsDeleteDialogOpen}
           onDelete={() => {
             router.push('/menus');
           }}
