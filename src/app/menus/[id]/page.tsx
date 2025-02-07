@@ -156,7 +156,7 @@ export default function MenuPage() {
 
   // Calculer les statistiques d'analyse
   const completedSteps = steps?.filter(step => step.status === 'fully_finished')?.length ?? 0;
-  const totalSteps = steps?.length ?? 0;
+  const totalSteps = 4;
   const progress = totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
 
   return (
@@ -274,9 +274,6 @@ export default function MenuPage() {
                     </span>
                     <span className="text-muted-foreground">{activeMenu.version}</span>
 
-                    <span className="font-semibold text-foreground">{t('menus.stats.owner')}</span>
-                    <span className="text-muted-foreground">{activeMenu.owner}</span>
-
                     <span className="font-semibold text-foreground">
                       {t('menus.stats.createdAt')}
                     </span>
@@ -313,10 +310,14 @@ export default function MenuPage() {
                     </span>
                     <span className="text-muted-foreground">
                       {(() => {
-                        const completedSteps =
-                          steps?.filter(step => step.status === 'fully_finished') || [];
-                        const totalDuration = completedSteps.reduce((acc, step) => {
+                        const totalDuration = (steps || []).reduce((acc, step, index) => {
+                          console.log(`step ${index}`, step.created_at, step.finished_at);
                           if (step.created_at && step.finished_at) {
+                            console.log(
+                              `step ${index} delta `,
+                              new Date(step.finished_at).getTime() -
+                                new Date(step.created_at).getTime()
+                            );
                             return (
                               acc +
                               (new Date(step.finished_at).getTime() -
@@ -339,23 +340,6 @@ export default function MenuPage() {
                   {/* Résultats */}
                   <div className="grid grid-cols-[120px_1fr] gap-y-2 text-sm">
                     <span className="font-semibold text-foreground">{t('menus.stats.dishes')}</span>
-                    <span className="text-muted-foreground">
-                      {steps
-                        ?.filter(
-                          step =>
-                            step.step === 'menu_recipe' &&
-                            (step.output as unknown as MenuRecipeOutput)?.dishes?.length
-                        )
-                        .reduce(
-                          (acc, step) =>
-                            acc +
-                            ((step.output as unknown as MenuRecipeOutput)?.dishes?.length || 0),
-                          0
-                        ) || 0}
-                    </span>
-                    <span className="font-semibold text-foreground">
-                      {t('menus.stats.recipes')}
-                    </span>
                     <span className="text-muted-foreground">
                       {steps
                         ?.filter(
