@@ -1,7 +1,6 @@
 'use client';
 
 import { useCurrentUser } from '@/hooks/use-current-user';
-import { useMenus } from '@/hooks/use-menus';
 import { cn } from '@/lib/utils';
 import supabaseClient from '@/lib/supabase-client';
 import {
@@ -18,7 +17,6 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { SettingsModal } from '@/components/settings-modal';
-import { useNavigationStore } from '@/store/use-navigation-store';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const items = [
@@ -60,22 +58,27 @@ export function MainNav() {
               variant="ghost"
               size="icon"
               className="md:hidden mr-2"
+              aria-label={t('navigation.mobile.menu')}
             >
               <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
 
           {/* Logo */}
-          <Link href="/" className="hover:opacity-80 transition-all mr-8">
+          <Link
+            href="/"
+            className="hover:opacity-80 transition-all mr-8"
+            aria-label={t('common.logo')}
+          >
             <Image src="/images/logo.svg" alt={t('common.logo')} width={100} height={40} />
           </Link>
 
-          {/* Espace flexible */}
-          <div className="flex-1" />
-
-          {/* Menu Principal et Profil (Desktop uniquement) */}
-          <nav className="hidden md:flex items-center space-x-4">
-            {items.map(item => (
+          {/* Main Menu and Profile (Desktop only) */}
+          <nav
+            className="hidden md:flex items-center space-x-4"
+            aria-label={t('navigation.mainMenu')}
+          >
+            {items.map(item =>
               item.external ? (
                 <a
                   key={item.url}
@@ -103,9 +106,9 @@ export function MainNav() {
                   <span>{t(item.titleKey)}</span>
                 </Link>
               )
-            ))}
+            )}
 
-            {/* Menu Profil */}
+            {/* Profile Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -129,7 +132,7 @@ export function MainNav() {
             </DropdownMenu>
           </nav>
 
-          {/* CTA Nouveau Menu */}
+          {/* Add Menu CTA */}
           <div className="flex items-center space-x-2">
             <Link href="/menus/new">
               <Button
@@ -150,7 +153,7 @@ export function MainNav() {
             <div className="p-4 border-b">
               <Image src="/images/logo.svg" alt={t('common.logo')} width={130} height={100} />
             </div>
-            <nav className="flex-1 p-4">
+            <nav className="flex-1 p-4" aria-label={t('navigation.mobile.menu')}>
               {items.map(item => (
                 <Link
                   key={item.url}
@@ -180,7 +183,10 @@ export function MainNav() {
                     </div>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-[--radix-dropdown-menu-trigger-width]">
+                <DropdownMenuContent
+                  align="end"
+                  className="w-[--radix-dropdown-menu-trigger-width]"
+                >
                   <DropdownMenuItem onClick={() => setShowSettings(true)}>
                     <Monitor className="mr-2 h-4 w-4" />
                     <span>{t('navigation.settings')}</span>

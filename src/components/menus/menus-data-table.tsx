@@ -9,11 +9,9 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Tables } from '@/types/database';
-import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -34,7 +32,7 @@ export function MenusDataTable({ menus }: MenusDataTableProps) {
 
   const getMenuImageUrl = useCallback(async (menu: Menu) => {
     if (!menu.file_bucket || !menu.file_path) return null;
-    
+
     try {
       const { data, error } = await supabaseClient.storage
         .from(menu.file_bucket)
@@ -56,7 +54,7 @@ export function MenusDataTable({ menus }: MenusDataTableProps) {
     const loadImages = async () => {
       const imageUrls: Record<string, string> = {};
       const loadingStates: Record<string, boolean> = {};
-      
+
       for (const menu of menus) {
         loadingStates[menu.id] = true;
         const url = await getMenuImageUrl(menu);
@@ -65,7 +63,7 @@ export function MenusDataTable({ menus }: MenusDataTableProps) {
         }
         loadingStates[menu.id] = false;
       }
-      
+
       setMenuImages(imageUrls);
       setLoadingImages(loadingStates);
     };
@@ -77,12 +75,12 @@ export function MenusDataTable({ menus }: MenusDataTableProps) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>{t('menus.image')}</TableHead>
-          <TableHead>{t('menus.label')}</TableHead>
-          <TableHead>{t('menus.version')}</TableHead>
-          <TableHead>{t('menus.owner')}</TableHead>
-          <TableHead>{t('menus.createdAt')}</TableHead>
-          <TableHead>{t('menus.updatedAt')}</TableHead>
+          <TableHead>{t('menus.table.columns.image')}</TableHead>
+          <TableHead>{t('menus.table.columns.name')}</TableHead>
+          <TableHead>{t('menus.table.columns.version')}</TableHead>
+          <TableHead>{t('menus.table.columns.owner')}</TableHead>
+          <TableHead>{t('menus.table.columns.createdAt')}</TableHead>
+          <TableHead>{t('menus.table.columns.updatedAt')}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -91,8 +89,8 @@ export function MenusDataTable({ menus }: MenusDataTableProps) {
           const isLoading = loadingImages[menu.id];
 
           return (
-            <TableRow 
-              key={menu.id} 
+            <TableRow
+              key={menu.id}
               className="cursor-pointer hover:bg-accent/50 transition-colors"
               onClick={() => router.push(`/menus/${menu.id}`)}
             >
@@ -120,11 +118,11 @@ export function MenusDataTable({ menus }: MenusDataTableProps) {
                 <span>{menu.label}</span>
               </TableCell>
               <TableCell>
-                <span 
+                <span
                   className="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium"
                   style={{ backgroundColor: '#849F78', color: 'white' }}
                 >
-                  v{menu.version}
+                  {t('menus.table.version', { number: menu.version })}
                 </span>
               </TableCell>
               <TableCell>
@@ -134,7 +132,7 @@ export function MenusDataTable({ menus }: MenusDataTableProps) {
               <TableCell>
                 {menu.updated_date
                   ? format(new Date(menu.updated_date), 'PPP', { locale: fr })
-                  : '-'}
+                  : t('menus.table.noUpdate')}
               </TableCell>
             </TableRow>
           );

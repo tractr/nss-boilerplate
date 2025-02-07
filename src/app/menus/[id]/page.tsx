@@ -159,14 +159,30 @@ export default function MenuPage() {
   const totalSteps = 4;
   const progress = totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0;
 
+  const calculateDuration = () => {
+    const totalDuration = (steps || []).reduce((acc, step, index) => {
+      console.log(`step ${index}`, step.created_at, step.finished_at);
+      if (step.created_at && step.finished_at) {
+        console.log(
+          `step ${index} delta `,
+          new Date(step.finished_at).getTime() - new Date(step.created_at).getTime()
+        );
+        return acc + (new Date(step.finished_at).getTime() - new Date(step.created_at).getTime());
+      }
+      return acc;
+    }, 0);
+    const minutes = Math.floor(totalDuration / (1000 * 60));
+    return minutes;
+  };
+
   return (
     <LayoutNav containerClassName="bg-muted/50">
       <div className="container max-w-7xl mx-auto py-4">
-        {/* Navigation et Actions */}
+        {/* Navigation and Actions */}
         <div className="flex justify-between items-center mb-6">
           <Button variant="ghost" size="sm" onClick={() => router.back()} className="gap-2">
             <ArrowLeft className="h-4 w-4" />
-            Retour
+            {t('menus.actions.back')}
           </Button>
 
           <div className="flex items-center gap-2">
@@ -175,14 +191,14 @@ export default function MenuPage() {
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm" className="h-8 w-32">
                   <History className="mr-1 h-4 w-4" />
-                  Version {activeMenu.version}
+                  {t('menus.version.title', { number: activeMenu.version })}
                   <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem>
                   <History className="mr-1 h-4 w-4" />
-                  Version {activeMenu.version}
+                  {t('menus.version.title', { number: activeMenu.version })}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -196,14 +212,14 @@ export default function MenuPage() {
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => router.push(`/menus/${activeMenu.id}/edit`)}>
                   <Pencil className="mr-2 h-4 w-4" />
-                  <span>Éditer</span>
+                  <span>{t('menus.actions.edit')}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={handleDownload}
                   disabled={!activeMenu.file_bucket || !activeMenu.file_path}
                 >
                   <Download className="mr-2 h-4 w-4" />
-                  <span>Télécharger</span>
+                  <span>{t('menus.actions.download')}</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
@@ -211,17 +227,17 @@ export default function MenuPage() {
                   className="text-red-600"
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
-                  <span>Supprimer</span>
+                  <span>{t('menus.actions.delete')}</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
         </div>
 
-        {/* Hero Section - Image et Infos */}
+        {/* Hero Section - Image and Info */}
         <Card className="shadow-lg border-0 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 mx-auto">
           <div className="grid md:grid-cols-2 gap-8">
-            {/* Titre mobile uniquement */}
+            {/* Mobile title only */}
             <div className="md:hidden mb-4">
               <h1 className="text-3xl font-bold">{activeMenu.label}</h1>
             </div>
@@ -249,12 +265,13 @@ export default function MenuPage() {
                     isOpen={isImageModalOpen}
                     onOpenChange={setIsImageModalOpen}
                     imageUrl={menuImageUrl}
-                    alt={`${activeMenu.label} (vue agrandie)`}
+                    alt={t('menus.image.expanded', { label: activeMenu.label })}
                   />
                 </>
               ) : (
-                <div className="flex h-full min-h-[400px] items-center justify-center">
+                <div className="flex flex-col h-full min-h-[400px] items-center justify-center">
                   <FileText className="w-12 h-12 text-muted-foreground" />
+                  <span className="mt-2 text-muted-foreground">{t('menus.image.noImage')}</span>
                 </div>
               )}
             </div>
@@ -267,7 +284,8 @@ export default function MenuPage() {
                 </h1>
 
                 <div className="space-y-4">
-                  {/* Informations de base */}
+                  {/* Basic Information */}
+                  <h2 className="text-lg font-semibold">{t('menus.details.basicInfo')}</h2>
                   <div className="grid grid-cols-[120px_1fr] gap-y-2 text-sm">
                     <span className="font-semibold text-foreground">
                       {t('menus.stats.version')}
@@ -298,37 +316,21 @@ export default function MenuPage() {
                     <div className="h-px bg-gray-50" />
                   </div>
 
-                  {/* Système */}
+                  {/* System Information */}
+                  <h2 className="text-lg font-semibold">{t('menus.details.systemInfo')}</h2>
                   <div className="grid grid-cols-[120px_1fr] gap-y-2 text-sm">
                     <span className="font-semibold text-foreground">
                       {t('menus.stats.progress')}
                     </span>
-                    <span className="text-muted-foreground">{progress}%</span>
+                    <span className="text-muted-foreground">
+                      {t('menus.details.status.progress', { progress })}
+                    </span>
 
                     <span className="font-semibold text-foreground">
                       {t('menus.stats.duration')}
                     </span>
                     <span className="text-muted-foreground">
-                      {(() => {
-                        const totalDuration = (steps || []).reduce((acc, step, index) => {
-                          console.log(`step ${index}`, step.created_at, step.finished_at);
-                          if (step.created_at && step.finished_at) {
-                            console.log(
-                              `step ${index} delta `,
-                              new Date(step.finished_at).getTime() -
-                                new Date(step.created_at).getTime()
-                            );
-                            return (
-                              acc +
-                              (new Date(step.finished_at).getTime() -
-                                new Date(step.created_at).getTime())
-                            );
-                          }
-                          return acc;
-                        }, 0);
-                        const minutes = Math.floor(totalDuration / (1000 * 60));
-                        return t('menus.stats.minutes', { count: minutes });
-                      })()}
+                      {t('menus.details.status.duration', { minutes: calculateDuration() })}
                     </span>
                   </div>
 
@@ -337,7 +339,8 @@ export default function MenuPage() {
                     <div className="h-px bg-gray-50" />
                   </div>
 
-                  {/* Résultats */}
+                  {/* Results */}
+                  <h2 className="text-lg font-semibold">{t('menus.details.results')}</h2>
                   <div className="grid grid-cols-[120px_1fr] gap-y-2 text-sm">
                     <span className="font-semibold text-foreground">{t('menus.stats.dishes')}</span>
                     <span className="text-muted-foreground">
