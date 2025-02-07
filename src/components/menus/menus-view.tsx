@@ -16,11 +16,7 @@ interface MenusViewProps {
   sortBy: 'newest' | 'oldest' | 'name' | 'version';
 }
 
-const MOCK_MENUS: Menu[] = [];
-
 export function MenusView({ className, isGridView, sortBy }: MenusViewProps) {
-  const t = useTranslations();
-
   const { data: menus = [] } = useQuery({
     queryKey: ['menus'],
     queryFn: async () => {
@@ -34,12 +30,16 @@ export function MenusView({ className, isGridView, sortBy }: MenusViewProps) {
 
   const sortedMenus = useMemo(() => {
     const menusData = [...menus];
-    
+
     switch (sortBy) {
       case 'newest':
-        return menusData.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+        return menusData.sort(
+          (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
       case 'oldest':
-        return menusData.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+        return menusData.sort(
+          (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        );
       case 'name':
         return menusData.sort((a, b) => a.label.localeCompare(b.label));
       case 'version':
