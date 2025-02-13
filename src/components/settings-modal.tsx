@@ -27,7 +27,7 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const t = useTranslations();
-  const [language, setLanguage] = useState<string>('en');
+  const [language, setLanguage] = useState<string>();
 
   // Get initial language from cookie on mount
   useEffect(() => {
@@ -36,6 +36,10 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
     if (langCookie) {
       setLanguage(langCookie.split('=')[1]);
     }
+  }, []);
+
+  useEffect(() => {
+    setLanguage(document.documentElement.lang);
   }, []);
 
   const handleLanguageChange = (newLocale: string) => {

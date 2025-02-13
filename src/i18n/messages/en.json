@@ -15,7 +15,21 @@
     "passwordPlaceholder": "Password",
     "passwordRequired": "Password is required",
     "passwordMinLength": "Password must be at least 6 characters",
-    "signingIn": "Signing in..."
+    "signingIn": "Signing in...",
+    "forgotPassword": "Forgot password?",
+    "authError": "Failed to authenticate. Please try again.",
+    "signInButton": "Sign in",
+    "signInLoading": "Signing in...",
+    "resetPassword": {
+      "title": "Reset your password",
+      "emailPlaceholder": "Enter your email address",
+      "sendButton": "Send Reset Link",
+      "sendingButton": "Sending reset link...",
+      "backToLogin": "Back to login",
+      "returnToLogin": "Return to login",
+      "successMessage": "If an account exists with that email, we've sent password reset instructions to your email address.",
+      "sendError": "Failed to send reset email"
+    }
   },
   "home": {
     "welcome": "Welcome back, {email}",
