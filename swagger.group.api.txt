@@ -1,0 +1,540 @@
+api
+Operations with CRAFT APIs
+
+
+
+GET
+/apis
+Get the list of the configured APIs through CRAFTS
+
+
+Parameters
+Try it out
+No parameters
+
+Responses
+Code	Description	Links
+200	
+A list of API summaries
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+[
+  {
+    "apiId": "educawood",
+    "url": "https://forestexplorer.gsic.uva.es/crafts/apis/educawood"
+  },
+  {
+    "apiId": "simanfor",
+    "url": "https://forestexplorer.gsic.uva.es/crafts/apis/simanfor"
+  }
+]
+GetApiByID
+The apiId value of an ApiSummary returned in the response can be used as the apiId parameter in GET /apis/{apiId}
+
+Operation `getApi`
+
+Parameters {
+  "apiId": "$response.body#/apiId"
+}
+
+GET
+/apis/{apiId}
+Get a configured API
+
+
+Parameters
+Try it out
+Name	Description
+apiId *
+string
+(path)
+apiId
+Responses
+Code	Description	Links
+200	
+A configuration of an API
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "apiId": "string",
+  "endpoints": [
+    {
+      "id": "string",
+      "sparqlURI": "string",
+      "graphURI": "string",
+      "httpMethod": "GET",
+      "authInfo": {
+        "user": "string",
+        "password": "string",
+        "type": "basic"
+      },
+      "sparqlUpdate": {
+        "id": "string",
+        "sparqlURI": "string",
+        "graphURI": "string",
+        "httpMethod": "GET",
+        "authInfo": {
+          "user": "string",
+          "password": "string",
+          "type": "basic"
+        }
+      }
+    }
+  ],
+  "model": [
+    {
+      "id": "string",
+      "types": [
+        {
+          "label": "string",
+          "endpoint": "string",
+          "inferred": true,
+          "restrictions": [
+            "string"
+          ],
+          "targetId": "string",
+          "embed": true,
+          "writeonly": true
+        }
+      ],
+      "dprops": [
+        {
+          "label": "string",
+          "endpoint": "string",
+          "iri": "string",
+          "restrictions": [
+            "string"
+          ],
+          "writeonly": true
+        }
+      ],
+      "oprops": [
+        {
+          "label": "string",
+          "endpoint": "string",
+          "iri": "string",
+          "inv": true,
+          "restrictions": [
+            "string"
+          ],
+          "targetId": "string",
+          "embed": true,
+          "writeonly": true
+        }
+      ]
+    }
+  ],
+  "queryTemplates": [
+    {
+      "id": "string",
+      "endpoint": "string",
+      "description": "string",
+      "template": "string",
+      "variables": [
+        "string"
+      ],
+      "parameters": [
+        {
+          "label": "string",
+          "type": "iri",
+          "optional": true
+        }
+      ]
+    }
+  ]
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+404	
+API not found
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+
+PUT
+/apis/{apiId}
+Update or create a configured API
+
+
+Parameters
+Try it out
+Name	Description
+apiId *
+string
+(path)
+apiId
+Request body
+
+application/json
+The API configuration to create or update
+
+Example Value
+Schema
+{
+  "apiId": "string",
+  "endpoints": [
+    {
+      "id": "string",
+      "sparqlURI": "string",
+      "graphURI": "string",
+      "httpMethod": "GET",
+      "authInfo": {
+        "user": "string",
+        "password": "string",
+        "type": "basic"
+      },
+      "sparqlUpdate": {
+        "id": "string",
+        "sparqlURI": "string",
+        "graphURI": "string",
+        "httpMethod": "GET",
+        "authInfo": {
+          "user": "string",
+          "password": "string",
+          "type": "basic"
+        }
+      }
+    }
+  ],
+  "model": [
+    {
+      "id": "string",
+      "types": [
+        {
+          "label": "string",
+          "endpoint": "string",
+          "inferred": true,
+          "restrictions": [
+            "string"
+          ],
+          "targetId": "string",
+          "embed": true,
+          "writeonly": true
+        }
+      ],
+      "dprops": [
+        {
+          "label": "string",
+          "endpoint": "string",
+          "iri": "string",
+          "restrictions": [
+            "string"
+          ],
+          "writeonly": true
+        }
+      ],
+      "oprops": [
+        {
+          "label": "string",
+          "endpoint": "string",
+          "iri": "string",
+          "inv": true,
+          "restrictions": [
+            "string"
+          ],
+          "targetId": "string",
+          "embed": true,
+          "writeonly": true
+        }
+      ]
+    }
+  ],
+  "queryTemplates": [
+    {
+      "id": "string",
+      "endpoint": "string",
+      "description": "string",
+      "template": "string",
+      "variables": [
+        "string"
+      ],
+      "parameters": [
+        {
+          "label": "string",
+          "type": "iri",
+          "optional": true
+        }
+      ]
+    }
+  ]
+}
+Responses
+Code	Description	Links
+200	
+API updated
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+201	
+API created
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+400	
+Invalid API configuration
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+403	
+Forbidden
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+
+DELETE
+/apis/{apiId}
+Delete a configured API
+
+
+Parameters
+Try it out
+Name	Description
+apiId *
+string
+(path)
+apiId
+Responses
+Code	Description	Links
+200	
+API deleted
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+403	
+Forbidden
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+404	
+API not found
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+
+POST
+/apis/{apiId}/tokens
+Regenerate the access tokens of a CRAFTS API
+
+
+Parameters
+Try it out
+Name	Description
+apiId *
+string
+(path)
+apiId
+Responses
+Code	Description	Links
+200	
+API tokens regenerated
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+403	
+Forbidden
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+404	
+API not found
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+
+POST
+/apis/{apiId}/cleanCache
+Clean the cache of a configured API
+
+
+Parameters
+Try it out
+Name	Description
+apiId *
+string
+(path)
+apiId
+Responses
+Code	Description	Links
+200	
+Cache of the API cleaned
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+403	
+Forbidden
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+404	
+API not found
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
