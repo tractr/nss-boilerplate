@@ -1,0 +1,403 @@
+dump
+Dump operations with a CRAFTS API
+
+
+
+GET
+/apis/{apiId}/dumps
+Get the list of dumps of a CRAFTS API
+
+
+Parameters
+Try it out
+Name	Description
+apiId *
+string
+(path)
+apiId
+Responses
+Code	Description	Links
+200	
+A list of dump summaries
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+[
+  {
+    "id": "string",
+    "location": "string",
+    "path": "string",
+    "status": "scheduled",
+    "config": {
+      "parameters": {
+        "additionalProp1": "string",
+        "additionalProp2": "string",
+        "additionalProp3": "string"
+      },
+      "steps": [
+        {
+          "id": "string",
+          "type": "resource",
+          "parameters": {
+            "additionalProp1": "string",
+            "additionalProp2": "string",
+            "additionalProp3": "string"
+          }
+        }
+      ],
+      "output": [
+        {
+          "source": "parameters",
+          "id": "string",
+          "key": "string",
+          "label": "string"
+        }
+      ]
+    },
+    "started": "2025-03-18T21:11:21.500Z",
+    "ended": "2025-03-18T21:11:21.500Z"
+  }
+]
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+404	
+API not found
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+
+POST
+/apis/{apiId}/dumps
+Create a dump of a CRAFTS API with config data
+
+
+Parameters
+Try it out
+Name	Description
+apiId *
+string
+(path)
+apiId
+Request body
+
+application/json
+The dump configuration
+
+Example Value
+Schema
+{
+  "parameters": {
+    "additionalProp1": "string",
+    "additionalProp2": "string",
+    "additionalProp3": "string"
+  },
+  "steps": [
+    {
+      "id": "string",
+      "type": "resource",
+      "parameters": {
+        "additionalProp1": "string",
+        "additionalProp2": "string",
+        "additionalProp3": "string"
+      }
+    }
+  ],
+  "output": [
+    {
+      "source": "parameters",
+      "id": "string",
+      "key": "string",
+      "label": "string"
+    }
+  ]
+}
+Responses
+Code	Description	Links
+202	
+Dump creation request accepted
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+400	
+Invalid request
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+403	
+Forbidden
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+404	
+API not found
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+
+GET
+/apis/{apiId}/dumps/{dumpId}
+Get a dump of a CRAFTS API
+
+
+Parameters
+Try it out
+Name	Description
+apiId *
+string
+(path)
+apiId
+dumpId *
+string
+(path)
+dumpId
+Responses
+Code	Description	Links
+200	
+A dump
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "id": "string",
+  "location": "string",
+  "path": "string",
+  "status": "scheduled",
+  "config": {
+    "parameters": {
+      "additionalProp1": "string",
+      "additionalProp2": "string",
+      "additionalProp3": "string"
+    },
+    "steps": [
+      {
+        "id": "string",
+        "type": "resource",
+        "parameters": {
+          "additionalProp1": "string",
+          "additionalProp2": "string",
+          "additionalProp3": "string"
+        }
+      }
+    ],
+    "output": [
+      {
+        "source": "parameters",
+        "id": "string",
+        "key": "string",
+        "label": "string"
+      }
+    ]
+  },
+  "started": "2025-03-18T21:11:21.508Z",
+  "ended": "2025-03-18T21:11:21.508Z",
+  "output": {
+    "additionalProp1": [
+      "string"
+    ],
+    "additionalProp2": [
+      "string"
+    ],
+    "additionalProp3": [
+      "string"
+    ]
+  }
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+404	
+Not found
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+
+DELETE
+/apis/{apiId}/dumps/{dumpId}
+Delete a dump of a CRAFTS API
+
+
+Parameters
+Try it out
+Name	Description
+apiId *
+string
+(path)
+apiId
+dumpId *
+string
+(path)
+dumpId
+Responses
+Code	Description	Links
+200	
+Dump deleted
+
+Media type
+
+application/json
+Controls Accept header.
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+401	
+Unauthorized
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+403	
+Forbidden
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
+404	
+Dump not found
+
+Media type
+
+application/json
+Example Value
+Schema
+{
+  "status": 0,
+  "message": "string",
+  "location": "string",
+  "url": "string"
+}
+No links
