@@ -1,8 +1,140 @@
-This project is a modern full-stack boilerplate utilizing Next.js 15, Supabase, Shadcn/UI, and more.  
-It follows a well-organized structure with Next.js App Router pages in `src/app/`, component definitions under `src/components/`, and utility configurations in `src/lib/`.  
 
-You can review the reusable UI components from `shadcn/ui` in `src/components/ui` and explore the database functionality in `src/lib/supabase`. Additionally, database schema types can be found in `src/types/database.ts`. Component stories are located in `src/stories/` directory and can be viewed using Storybook.  
+# Next.js + Supabase + Shadcn/UI (NSS) Boilerplate
 
-Each component is structured as a **Single File Component (SFC)**, meaning it contains its logic, styles (if needed), and JSX in a single file.  
+This project is a modern full-stack boilerplate utilizing Next.js 15, Supabase, Shadcn/UI, and more. It provides a solid foundation for building web applications with authentication, internationalization, and database integration.
 
-For further guidance on authentication, internationalization, and customization, please refer to the project's `README` and the code comments.
+## Project Structure
+
+The project follows a well-organized structure:
+
+```
+src/
+├── app/                    # Next.js App Router pages
+│   ├── auth/               # Authentication routes
+│   │   ├── confirm/        # Email confirmation
+│   │   ├── forgot-password/
+│   │   └── login/
+│   └── todos/              # Example feature
+├── components/             # Reusable components
+│   └── ui/                 # Shadcn/UI components
+├── fonts/                  # Font assets
+├── hooks/                  # Custom React hooks
+├── i18n/                   # Internationalization
+│   └── messages/           # Translation files
+│       ├── en.json         # English translations
+│       └── fr.json         # French translations
+├── lib/                    # Utility configurations
+│   ├── api/                # API utilities
+│   │   ├── queries.ts      # React Query definitions
+│   │   └── todos.ts        # Todo API functions
+│   ├── supabase/           # Supabase client config
+│   ├── cookies.ts          # Cookie handling
+│   ├── env.ts              # Environment variables
+│   ├── supabase-client.ts  # Supabase client setup
+│   └── utils.ts            # General utilities
+├── stories/                # Storybook stories
+├── types/                  # TypeScript type definitions
+│   └── database.ts         # Supabase schema types
+├── middleware.ts           # Next.js middleware
+└── supabase/               # Supabase configuration
+```
+
+## Key Technologies & Libraries
+
+Based on the package.json, this boilerplate includes:
+
+### Core Technologies
+- **Next.js 15**: React framework with App Router
+- **Supabase**: Open-source Firebase alternative for backend services
+- **TypeScript**: Static type checking
+- **React 18**: UI library
+
+### UI & Styling
+- **Shadcn/UI**: Reusable UI components based on Radix UI
+- **Tailwind CSS**: Utility-first CSS framework
+- **Lucide React**: Icon library
+- **Next Themes**: Theme management (light/dark mode)
+
+### Form Management
+- **React Hook Form**: Form validation and state management
+- **Zod**: Schema validation
+- **@hookform/resolvers**: Connects Zod with React Hook Form
+
+### Data Fetching
+- **TanStack Query (React Query)**: Data fetching and state management
+
+### Internationalization
+- **next-intl**: Library for i18n in Next.js applications
+- Translation files located in `src/i18n/messages/` (en.json, fr.json, etc.)
+
+### Development & Testing
+- **Storybook**: Component documentation and development
+- **Cypress**: End-to-end testing
+- **Vitest**: Unit testing
+- **ESLint & Prettier**: Code linting and formatting
+
+## Authentication
+
+Authentication is handled through Supabase Auth with the following features:
+
+- Email/password authentication
+- Email confirmation flow
+- Password reset functionality
+- Protected routes via Next.js middleware
+
+The middleware (`src/middleware.ts`) handles authenticated route protection by:
+- Redirecting authenticated users away from auth pages
+- Redirecting unauthenticated users to the login page
+- Preserving the intended destination via query parameters
+
+## Internationalization
+
+The boilerplate uses next-intl for multilingual support:
+
+- Translation files are stored in `src/i18n/messages/` directory
+- Default supported languages include English (`en.json`) and French (`fr.json`)
+- Messages are structured in a hierarchical format
+- The i18n configuration is set up in the Next.js app
+
+To use translations in components:
+- Import and use the `useTranslations` hook from next-intl
+- Access translations using the key hierarchy
+
+## Database & API Integration
+
+Supabase provides the database and backend functionality:
+
+- Database schema types are generated in `src/types/database.ts`
+- API functions are organized in `src/lib/api/`
+- React Query is used for data fetching, caching, and state management
+- Server-side rendering support via Supabase SSR client
+
+## Styling & UI Components
+
+The project uses a combination of:
+
+- Tailwind CSS for utility-based styling
+- Shadcn/UI for high-quality, accessible UI components
+- Each component follows the Single File Component (SFC) pattern
+
+## Development Workflow
+
+- **Development**: `npm run dev`
+- **Type Checking**: `npm run typecheck`
+- **Linting**: `npm run lint`
+- **Formatting**: `npm run format`
+- **Database Types**: `npm run gen:types`
+- **Testing**: `npm run test` (Vitest) or `npm run cypress:open` (E2E)
+- **Component Development**: `npm run storybook`
+
+## Customization
+
+This boilerplate is designed to be extended and customized. Key areas for customization:
+
+- Create new routes in `src/app/`
+- Add components in `src/components/`
+- Extend the database schema and update types with `npm run gen:types` (never manually edit the database.ts file)
+- Add new translations to support additional languages
+- Configure environment variables for different deployment environments
+
+For further guidance on authentication, internationalization, and customization, please refer to the project's README and code comments.
