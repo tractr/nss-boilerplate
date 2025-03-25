@@ -1,4 +1,3 @@
-
 # Next.js + Supabase + Shadcn/UI (NSS) Boilerplate
 
 This project is a modern full-stack boilerplate utilizing Next.js 15, Supabase, Shadcn/UI, and more. It provides a solid foundation for building web applications with authentication, internationalization, and database integration.
@@ -39,9 +38,33 @@ src/
 └── supabase/               # Supabase configuration
 ```
 
-## Key Technologies & Libraries
+## Good Practices and DRY Principle
 
-Based on the package.json, this boilerplate includes:
+To maintain a clean, efficient, and maintainable codebase, follow these good practices and adhere strictly to the DRY (Don't Repeat Yourself) principle:
+
+- **Reusable Components**:
+  - Keep components atomic, reusable, and clearly named.
+  - Centralize component logic in the `src/components/ui/` directory.
+
+- **Abstract Common Logic**:
+  - Extract frequently used logic into custom hooks (`src/hooks/`) and utilities (`src/lib/utils.ts`).
+  - Avoid duplicating code by creating utility functions for common tasks (e.g., API calls, data formatting, error handling).
+
+- **Single Source of Truth**:
+  - Centralize configurations (e.g., environment variables in `src/lib/env.ts`, database schema types in `src/types/database.ts`).
+  - Always regenerate types with `npm run gen:types` after database schema changes to avoid manual type duplication.
+
+- **Consistent Styling & Theming**:
+  - Maintain consistent styling using Tailwind CSS utility classes.
+  - Leverage global theme management (`next-themes`) to ensure consistent theming across components.
+
+- **Maintainable Translations**:
+  - Organize translations hierarchically and avoid duplications across translation files (`src/i18n/messages/`).
+
+- **Clear Separation of Concerns**:
+  - Clearly separate UI components, business logic, data fetching, and state management.
+
+## Key Technologies & Libraries
 
 ### Core Technologies
 - **Next.js 15**: React framework with App Router
@@ -73,50 +96,6 @@ Based on the package.json, this boilerplate includes:
 - **Vitest**: Unit testing
 - **ESLint & Prettier**: Code linting and formatting
 
-## Authentication
-
-Authentication is handled through Supabase Auth with the following features:
-
-- Email/password authentication
-- Email confirmation flow
-- Password reset functionality
-- Protected routes via Next.js middleware
-
-The middleware (`src/middleware.ts`) handles authenticated route protection by:
-- Redirecting authenticated users away from auth pages
-- Redirecting unauthenticated users to the login page
-- Preserving the intended destination via query parameters
-
-## Internationalization
-
-The boilerplate uses next-intl for multilingual support:
-
-- Translation files are stored in `src/i18n/messages/` directory
-- Default supported languages include English (`en.json`) and French (`fr.json`)
-- Messages are structured in a hierarchical format
-- The i18n configuration is set up in the Next.js app
-
-To use translations in components:
-- Import and use the `useTranslations` hook from next-intl
-- Access translations using the key hierarchy
-
-## Database & API Integration
-
-Supabase provides the database and backend functionality:
-
-- Database schema types are generated in `src/types/database.ts`
-- API functions are organized in `src/lib/api/`
-- React Query is used for data fetching, caching, and state management
-- Server-side rendering support via Supabase SSR client
-
-## Styling & UI Components
-
-The project uses a combination of:
-
-- Tailwind CSS for utility-based styling
-- Shadcn/UI for high-quality, accessible UI components
-- Each component follows the Single File Component (SFC) pattern
-
 ## Development Workflow
 
 - **Development**: `npm run dev`
@@ -133,8 +112,8 @@ This boilerplate is designed to be extended and customized. Key areas for custom
 
 - Create new routes in `src/app/`
 - Add components in `src/components/`
-- Extend the database schema and update types with `npm run gen:types` (never manually edit the database.ts file)
+- Extend the database schema and update types with `npm run gen:types` (**never manually edit the database.ts file**)
 - Add new translations to support additional languages
 - Configure environment variables for different deployment environments
 
-For further guidance on authentication, internationalization, and customization, please refer to the project's README and code comments.
+For further guidance on authentication, internationalization, customization, and best practices, please refer to the project's README and code comments.
