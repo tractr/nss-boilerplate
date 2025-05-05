@@ -1,0 +1,124 @@
+---
+description: Explanation of the main stack / structure of the project
+globs: 
+alwaysApply: true
+---
+# Next.js + Supabase + Shadcn/UI (NSS) Boilerplate
+
+This project is a modern full-stack boilerplate utilizing Next.js 15, Supabase, Shadcn/UI, and more. It provides a solid foundation for building web applications with authentication, internationalization, and database integration.
+
+## Project Structure
+
+The project follows a well-organized structure:
+
+```
+src/
+├── app/                    # Next.js App Router pages
+│   ├── auth/               # Authentication routes
+│   │   ├── confirm/        # Email confirmation
+│   │   ├── forgot-password/
+│   │   └── login/
+│   └── todos/              # Example feature
+├── components/             # Reusable components
+│   └── ui/                 # Shadcn/UI components
+├── fonts/                  # Font assets
+├── hooks/                  # Custom React hooks
+├── i18n/                   # Internationalization
+│   └── messages/           # Translation files
+│       ├── en.json         # English translations
+│       └── fr.json         # French translations
+├── lib/                    # Utility configurations
+│   ├── api/                # API utilities
+│   │   ├── queries.ts      # React Query definitions
+│   │   └── todos.ts        # Todo API functions
+│   ├── supabase/           # Supabase client config
+│   ├── cookies.ts          # Cookie handling
+│   ├── env.ts              # Environment variables
+│   ├── supabase-client.ts  # Supabase client setup
+│   └── utils.ts            # General utilities
+├── stories/                # Storybook stories
+├── types/                  # TypeScript type definitions
+│   └── database.ts         # Supabase schema types
+├── middleware.ts           # Next.js middleware
+└── supabase/               # Supabase configuration
+```
+
+## Good Practices and DRY Principle
+
+To maintain a clean, efficient, and maintainable codebase, follow these good practices and adhere strictly to the DRY (Don't Repeat Yourself) principle:
+
+- **Reusable Components**:
+  - Keep components atomic, reusable, and clearly named.
+  - Centralize component logic in the `src/components/ui/` directory.
+
+- **Abstract Common Logic**:
+  - Extract frequently used logic into custom hooks (`src/hooks/`) and utilities (`src/lib/utils.ts`).
+  - Avoid duplicating code by creating utility functions for common tasks (e.g., API calls, data formatting, error handling).
+
+- **Single Source of Truth**:
+  - Centralize configurations (e.g., environment variables in `src/lib/env.ts`, database schema types in `src/types/database.ts`).
+  - Always regenerate types with `npm run gen:types` after database schema changes to avoid manual type duplication.
+
+- **Consistent Styling & Theming**:
+  - Maintain consistent styling using Tailwind CSS utility classes.
+  - Leverage global theme management (`next-themes`) to ensure consistent theming across components.
+
+- **Maintainable Translations**:
+  - Organize translations hierarchically and avoid duplications across translation files (`src/i18n/messages/`).
+
+- **Clear Separation of Concerns**:
+  - Clearly separate UI components, business logic, data fetching, and state management.
+
+## Key Technologies & Libraries
+
+### Core Technologies
+- **Next.js 15**: React framework with App Router
+- **Supabase**: Open-source Firebase alternative for backend services
+- **TypeScript**: Static type checking
+- **React 18**: UI library
+
+### UI & Styling
+- **Shadcn/UI**: Reusable UI components based on Radix UI
+- **Tailwind CSS**: Utility-first CSS framework
+- **Lucide React**: Icon library
+- **Next Themes**: Theme management (light/dark mode)
+
+### Form Management
+- **React Hook Form**: Form validation and state management
+- **Zod**: Schema validation
+- **@hookform/resolvers**: Connects Zod with React Hook Form
+
+### Data Fetching
+- **TanStack Query (React Query)**: Data fetching and state management
+
+### Internationalization
+- **next-intl**: Library for i18n in Next.js applications
+- Translation files located in `src/i18n/messages/` (en.json, fr.json, etc.)
+
+### Development & Testing
+- **Storybook**: Component documentation and development
+- **Cypress**: End-to-end testing
+- **Vitest**: Unit testing
+- **ESLint & Prettier**: Code linting and formatting
+
+## Development Workflow
+
+- **Development**: `npm run dev`
+- **Type Checking**: `npm run typecheck`
+- **Linting**: `npm run lint`
+- **Formatting**: `npm run format`
+- **Database Types**: `npm run gen:types`
+- **Testing**: `npm run test` (Vitest) or `npm run cypress:open` (E2E)
+- **Component Development**: `npm run storybook`
+
+## Customization
+
+This boilerplate is designed to be extended and customized. Key areas for customization:
+
+- Create new routes in `src/app/`
+- Add components in `src/components/`
+- Extend the database schema and update types with `npm run gen:types` (**never manually edit the database.ts file**)
+- Add new translations to support additional languages
+- Configure environment variables for different deployment environments
+
+For further guidance on authentication, internationalization, customization, and best practices, please refer to the project's README and code comments.
