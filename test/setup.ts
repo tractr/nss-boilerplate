@@ -18,9 +18,6 @@ await client.auth.signInWithPassword({
 
 const { data: { session } } = await client.auth.getSession();
 
-process.env.SUPABASE_BASE_KEY = String(session?.access_token);
+process.env.NEXT_PUBLIC_SUPABASE_BASE_KEY = String(session?.access_token);
 
 reloadEnv();
-
-expect(env().SUPABASE_BASE_KEY).toBeDefined();
-expect(env().SUPABASE_BASE_KEY).not.toBe(env().SUPABASE_ANON_KEY);

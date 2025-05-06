@@ -78,13 +78,13 @@ This will create the initial database structure, including the todos table.
 5. Set environment variables:
 
 ```bash
-cp .env.example .env
+cp .env.example .env.local
 ```
 
 Update the `.env` file with your Supabase credentials:
 
-- `SUPABASE_URL`: Usually `http://127.0.0.1:54321`
-- `SUPABASE_ANON_KEY`: The anon key from step 3
+- `NEXT_PUBLIC_SUPABASE_URL`: Usually `http://127.0.0.1:54321`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: The anon key from step
 - `SUPABASE_BASE_KEY`: Same as your anon key for local development
 
 6. Create a first user:
