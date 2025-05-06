@@ -78,7 +78,7 @@ This will create the initial database structure, including the todos table.
 5. Set environment variables:
 
 ```bash
-cp .env.example .env.local
+cp .env .env.local
 ```
 
 Update the `.env` file with your Supabase credentials:
