@@ -30,7 +30,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # env files (can opt-in for commiting if needed)
-.env
+.env.local
 .env.test
 
 # vercel
@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 .vscode
 *storybook.log
+
+
+

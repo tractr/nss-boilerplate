@@ -106,7 +106,7 @@ export default function MainSidebar() {
                   <SidebarMenuButton data-testid="user-button">
                     <User2 />
                     {currentUser?.data?.email ? (
-                      <span className="h-6 inline-flex items-center text-sm truncate flex-shrink">
+                      <span className="h-6 inline-flex items-center text-sm truncate shrink">
                         {currentUser?.data?.email}
                       </span>
                     ) : (
@@ -115,7 +115,7 @@ export default function MainSidebar() {
                     <ChevronUp className="ml-auto" />
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
+                <DropdownMenuContent side="top" className="w-(--radix-popper-anchor-width)">
                   <DropdownMenuItem onClick={_logout}>
                     <LogOut className="h-[1.2rem] w-[1.2rem]" />
                     <span data-testid="logout-button">{t('actions.logout')}</span>
